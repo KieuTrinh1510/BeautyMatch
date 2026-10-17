@@ -230,3 +230,32 @@ class SaleOrder(models.Model):
             _logger.warning("Could not send payment notification email (non-blocking): %s", e)
             return False
 
+    def _try_apply_code(self, code):
+        clean_code = (code or '').strip().upper()
+        if clean_code == 'BEAUTY50':
+            order_amount = sum(
+                line.price_total for line in self.order_line.filtered(
+                    lambda l: not l.is_delivery and not l.is_reward_line and not l.reward_id
+                )
+            )
+            if order_amount < 700000:
+                return {'error': "Đơn hàng chưa đạt giá trị tối thiểu 700.000đ để sử dụng mã BEAUTY50."}
+
+        res = super()._try_apply_code(code)
+        if res and isinstance(res, dict) and res.get('error'):
+            if clean_code == 'BEAUTY50':
+                res['error'] = "Đơn hàng chưa đạt giá trị tối thiểu 700.000đ để sử dụng mã BEAUTY50."
+        return res
+
+
+class SaleOrderLine(models.Model):
+    _inherit = 'sale.order.line'
+
+    def _set_shop_warning_stock(self, desired_qty, new_qty, save=True):
+        self.ensure_one()
+        warning = "Sản phẩm này hiện không đủ số lượng tồn kho."
+        if save:
+            self.shop_warning = warning
+        return warning
+
+

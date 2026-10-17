@@ -210,6 +210,20 @@ class BeautyMatchWebsiteSale(WebsiteSale):
 
         return response
 
+    @http.route(['/shop/<model("product.template"):product>'], type='http', auth="public", website=True, sitemap=True)
+    def product(self, product, category='', search='', **kwargs):
+        """Theo dõi sản phẩm đã xem gần đây (Recently Viewed) trong session"""
+        if product and product.exists():
+            curr_id = product.id
+            recent_ids = list(request.session.get('bm_recently_viewed') or [])
+            if curr_id in recent_ids:
+                recent_ids.remove(curr_id)
+            recent_ids.insert(0, curr_id)
+            request.session['bm_recently_viewed'] = recent_ids[:10]
+            request.session.touch()
+
+        return super().product(product, category=category, search=search, **kwargs)
+
 
 class BeautyMatchController(http.Controller):
 

@@ -481,6 +481,66 @@
                     </div>
                 </section>
 
+                <!-- 1.5 PROMOTION BANNER: ƯU ĐÃI BEAUTYMATCH -->
+                <section class="bm-promo-banner-section py-4" style="background: linear-gradient(135deg, #FAF7FB 0%, #F3ECF8 100%); border-top: 1px solid #ECE3F2; border-bottom: 1px solid #ECE3F2;">
+                    <div class="container">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+                            <div>
+                                <span class="bm-badge bm-badge-primary mb-1">Đặc quyền mua sắm</span>
+                                <h3 class="fw-bold text-dark mb-0 fs-4">Ưu Đãi BeautyMatch</h3>
+                            </div>
+                            <a href="/shop" class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-semibold">
+                                Mua sắm ngay <i class="fa fa-arrow-right ms-1"/>
+                            </a>
+                        </div>
+                        <div class="row g-3">
+                            <!-- Card 1: WELCOME10 -->
+                            <div class="col-12 col-md-6">
+                                <div class="bm-promo-voucher-card p-3 rounded-4 bg-white shadow-sm d-flex align-items-center justify-content-between border position-relative overflow-hidden h-100">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="bm-promo-icon-box rounded-3 p-3 text-center d-flex align-items-center justify-content-center" style="background: #F3ECF8; color: #6E4C7E; width: 56px; height: 56px;">
+                                            <i class="fa fa-percent fa-2x"/>
+                                        </div>
+                                        <div>
+                                            <div class="d-flex align-items-center gap-2 mb-1">
+                                                <span class="badge fw-bold px-2 py-1 user-select-all" style="background-color: #F3ECF8; color: #6E4C7E; font-size: 0.85rem; letter-spacing: 0.05em;">WELCOME10</span>
+                                                <span class="badge bg-success-subtle text-success small">Mọi đơn hàng</span>
+                                            </div>
+                                            <strong class="d-block text-dark" style="font-size: 0.95rem;">Giảm 10% cho đơn hàng</strong>
+                                            <small class="text-muted">Áp dụng trực tiếp tại bước giỏ hàng hoặc thanh toán</small>
+                                        </div>
+                                    </div>
+                                    <a href="/shop" class="btn btn-sm btn-primary rounded-pill px-3 text-nowrap ms-2">
+                                        Dùng mã
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Card 2: BEAUTY50 -->
+                            <div class="col-12 col-md-6">
+                                <div class="bm-promo-voucher-card p-3 rounded-4 bg-white shadow-sm d-flex align-items-center justify-content-between border position-relative overflow-hidden h-100">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="bm-promo-icon-box rounded-3 p-3 text-center d-flex align-items-center justify-content-center" style="background: #FFF5F7; color: #E0245E; width: 56px; height: 56px;">
+                                            <i class="fa fa-gift fa-2x"/>
+                                        </div>
+                                        <div>
+                                            <div class="d-flex align-items-center gap-2 mb-1">
+                                                <span class="badge fw-bold px-2 py-1 user-select-all" style="background-color: #FFF5F7; color: #E0245E; font-size: 0.85rem; letter-spacing: 0.05em;">BEAUTY50</span>
+                                                <span class="badge bg-info-subtle text-info small">Đơn từ 700.000đ</span>
+                                            </div>
+                                            <strong class="d-block text-dark" style="font-size: 0.95rem;">Giảm 50.000đ cho đơn từ 700.000đ</strong>
+                                            <small class="text-muted">Tiết kiệm ngay 50k khi mua combo hoặc chu trình skincare</small>
+                                        </div>
+                                    </div>
+                                    <a href="/shop" class="btn btn-sm btn-primary rounded-pill px-3 text-nowrap ms-2">
+                                        Dùng mã
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 <!-- 2. SHOP BY CONCERN SECTION -->
                 <section class="bm-section-py py-5 bg-white">
                     <div class="container py-lg-3">

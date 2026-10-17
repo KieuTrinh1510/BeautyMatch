@@ -156,13 +156,28 @@ class ProductTemplate(models.Model):
         ]
 
         Quant = self.env['stock.quant']
+        somebymi_tmpl = self.env.ref('beautymatch.product_template_somebymi_toner', raise_if_not_found=False)
+
         for xml_id in demo_xml_ids:
             tmpl = self.env.ref(f'beautymatch.{xml_id}', raise_if_not_found=False)
             if not tmpl:
                 continue
+            if hasattr(tmpl, 'allow_out_of_stock_order'):
+                tmpl.sudo().write({'allow_out_of_stock_order': False})
+
             for variant in tmpl.product_variant_ids:
                 if not variant.default_code and tmpl.default_code:
                     variant.default_code = tmpl.default_code
+                if hasattr(variant, 'allow_out_of_stock_order'):
+                    variant.sudo().write({'allow_out_of_stock_order': False})
+
+                # Test scenario: CeraVe 473ml and SomeByMi Toner are out of stock (qty = 0)
+                # Variant 236ml has 45 stock -> In stock
+                if variant.default_code == 'CV-FFC-473' or (somebymi_tmpl and tmpl.id == somebymi_tmpl.id):
+                    target_qty = 0.0
+                else:
+                    target_qty = 45.0
+
                 quant = Quant.search([
                     ('product_id', '=', variant.id),
                     ('location_id', '=', location.id),
@@ -171,10 +186,10 @@ class ProductTemplate(models.Model):
                     quant = Quant.create({
                         'product_id': variant.id,
                         'location_id': location.id,
-                        'inventory_quantity': 45.0,
+                        'inventory_quantity': target_qty,
                     })
                 else:
-                    quant.inventory_quantity = 45.0
+                    quant.inventory_quantity = target_qty
                 quant.action_apply_inventory()
 
         # Tự động nạp review mẫu cho sản phẩm
@@ -346,4 +361,68 @@ class ProductTemplate(models.Model):
             for template in self:
                 if template.beautymatch_brand or template.type == 'service':
                     template.currency_id = vnd.id
+
+    def _get_beautymatch_related_products(self, limit=4):
+        """Gợi ý sản phẩm phù hợp dựa trên Skin Concern, Skin Type và Routine Step"""
+        self.ensure_one()
+        domain = [
+            ('id', '!=', self.id),
+            ('website_published', '=', True),
+            ('active', '=', True),
+        ]
+        Product = self.env['product.template'].sudo()
+        results = Product.browse()
+
+        # 1. Ưu tiên: Cùng vấn đề da (Skin Concern)
+        if self.beautymatch_skin_concern:
+            c1 = Product.search(domain + [('beautymatch_skin_concern', '=', self.beautymatch_skin_concern)], limit=limit)
+            results |= c1
+
+        # 2. Bổ sung: Cùng loại da (Skin Type)
+        if len(results) < limit and self.beautymatch_skin_type:
+            c2 = Product.search(domain + [
+                ('id', 'not in', results.ids),
+                ('beautymatch_skin_type', 'in', [self.beautymatch_skin_type, 'all'])
+            ], limit=limit - len(results))
+            results |= c2
+
+        # 3. Bổ sung: Các sản phẩm BeautyMatch khác
+        if len(results) < limit:
+            c3 = Product.search(domain + [
+                ('id', 'not in', results.ids),
+                ('beautymatch_brand', '!=', False)
+            ], limit=limit - len(results))
+            results |= c3
+
+        return results[:limit]
+
+    def _get_beautymatch_recently_viewed(self, limit=4):
+        """Lấy danh sách sản phẩm đã xem gần đây từ session (tối đa 4, không trùng, newest first)"""
+        self.ensure_one()
+        from odoo.http import request
+        if not request:
+            return self.env['product.template'].browse()
+
+        recent_ids = request.session.get('bm_recently_viewed', [])
+        # Loại trừ sản phẩm đang xem
+        filtered_ids = [pid for pid in recent_ids if pid != self.id]
+        if not filtered_ids:
+            return self.env['product.template'].browse()
+
+        Product = self.env['product.template'].sudo()
+        records = Product.search([
+            ('id', 'in', filtered_ids),
+            ('website_published', '=', True),
+            ('active', '=', True),
+        ])
+        record_map = {r.id: r for r in records}
+
+        ordered_records = []
+        for pid in filtered_ids:
+            if pid in record_map and record_map[pid] not in ordered_records:
+                ordered_records.append(record_map[pid])
+            if len(ordered_records) >= limit:
+                break
+
+        return Product.browse([r.id for r in ordered_records])
 

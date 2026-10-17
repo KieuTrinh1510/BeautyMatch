@@ -212,7 +212,12 @@
     <!-- 4. PRODUCT CARD CHUẨN Y KHOA (website_sale.products_item) -->
     <!-- Chỉ hiển thị: Ảnh, Brand, Tên, Giá, Skin type, 1-2 tags,  -->
     <!-- Wishlist icon, Xem sản phẩm. Không nhồi nhét.            -->
-    <!-- ======================================================== -->
+    <template id="beautymatch_products_item_safe_preview" inherit_id="website_sale.products_item" name="BeautyMatch Safe Previewed Attributes" priority="5">
+        <xpath expr="//t[@t-if='show_variations']" position="attributes">
+            <attribute name="t-if">show_variations and previewed_attribute_values and product.id in previewed_attribute_values</attribute>
+        </xpath>
+    </template>
+
     <template id="beautymatch_products_item" inherit_id="website_sale.products_item" name="BeautyMatch Clean Product Card">
         <xpath expr="//form" position="replace">
             <form t-attf-class="oe_product_cart bm-product-card h-100 d-flex flex-column bg-white position-relative"
@@ -352,10 +357,12 @@
     <!-- 5.2 Thêm Tồn Kho & Badges phía trên CTA wrapper -->
     <template id="beautymatch_product_stock_badge" inherit_id="website_sale.cta_wrapper" name="BeautyMatch Product Stock Status">
         <xpath expr="//div[@id='o_wsale_cta_wrapper']" position="before">
+            <t t-set="bm_has_stock" t-value="product_variant.sudo().qty_available &gt; 0 if product_variant else product.sudo().qty_available &gt; 0"/>
             <!-- Badge Tồn kho và Cam kết chuẩn nguồn gốc -->
             <div class="bm-detail-stock-box d-flex flex-wrap align-items-center gap-2 mb-3">
-                <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 rounded-pill small">
-                    <i class="fa fa-check-circle me-1"/>Còn hàng (Sẵn sàng giao nhanh)
+                <span id="bm_stock_status_badge" t-attf-class="badge #{'bg-success-subtle text-success border-success-subtle' if bm_has_stock else 'bg-danger-subtle text-danger border-danger-subtle'} border px-2 py-1 rounded-pill small">
+                    <i t-attf-class="fa #{'fa-check-circle' if bm_has_stock else 'fa-times-circle'} me-1"/>
+                    <span id="bm_stock_status_text"><t t-out="'Còn hàng' if bm_has_stock else 'Hết hàng'"/></span>
                 </span>
                 <span class="badge bg-light text-muted border px-2 py-1 rounded-pill small">
                     <i class="fa fa-shield me-1"/>Hỗ trợ đổi trả 48h
@@ -527,6 +534,141 @@
                 <i t-attf-class="fa #{in_wish and 'fa-heart text-danger' or 'fa-heart-o'} me-2"/>
                 <span class="js_bm_wishlist_text"><t t-out="in_wish and 'Đã yêu thích' or 'Yêu thích'"/></span>
             </a>
+        </xpath>
+    </template>
+
+    <!-- ======================================================== -->
+    <!-- 6. PRODUCT DETAIL: REVIEWS, RELATED & RECENTLY VIEWED    -->
+    <!-- ======================================================== -->
+    <template id="beautymatch_product_comment" inherit_id="website_sale.product_comment" name="BeautyMatch Reviews, Related &amp; Recently Viewed" priority="30">
+        <xpath expr="//div[hasclass('o_shop_discussion_rating')]" position="replace">
+            <div class="o_shop_discussion_rating border-top mt-5" data-anchor="true">
+                <!-- 6.1 Review Section with id="reviews" for Anchor Scroll -->
+                <div class="container pt48 pb24" id="reviews" data-anchor="true">
+                    <div class="bm-product-reviews-box bg-white p-4 p-md-5 rounded-4 shadow-sm border">
+                        <div class="d-flex flex-wrap align-items-center justify-content-between mb-4 pb-3 border-bottom gap-3">
+                            <div>
+                                <span class="bm-badge bm-badge-primary mb-1">Trải nghiệm thực tế</span>
+                                <h3 class="fw-bold text-dark mb-0 fs-4">Đánh giá từ khách hàng</h3>
+                            </div>
+                            <div class="d-flex align-items-center gap-2 bg-light px-3 py-2 rounded-pill border">
+                                <t t-call="portal_rating.rating_widget_stars_static">
+                                    <t t-set="rating_avg" t-value="product.sudo().rating_avg or 5.0"/>
+                                    <t t-set="rating_count" t-value="product.rating_count or 1"/>
+                                </t>
+                                <span class="fw-bold text-dark"><t t-out="'%.1f' % (product.sudo().rating_avg or 5.0)"/> / 5</span>
+                                <span class="text-muted small">(<t t-out="product.rating_count or 1"/> đánh giá)</span>
+                            </div>
+                        </div>
+
+                        <!-- Native Odoo Review & Chatter Thread -->
+                        <div id="bm_reviews_thread_container">
+                            <t t-call="portal.message_thread">
+                                <t t-set="object" t-value="product"/>
+                                <t t-set="display_rating" t-value="True"/>
+                                <t t-set="message_per_page" t-value="10"/>
+                                <t t-set="two_columns" t-value="true"/>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6.2 Related Products: Có thể phù hợp với bạn -->
+                <t t-set="bm_related_products" t-value="product._get_beautymatch_related_products(4)"/>
+                <div t-if="bm_related_products" class="container py-4 bm-related-section">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+                        <div>
+                            <span class="bm-badge bm-badge-primary mb-1">Routine gợi ý</span>
+                            <h3 class="fw-bold text-dark mb-0 fs-4">Có thể phù hợp với bạn</h3>
+                            <p class="text-muted small mb-0 mt-1">Các sản phẩm cùng tình trạng da và bước dưỡng để tối ưu hiệu quả</p>
+                        </div>
+                        <a href="/shop" class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-semibold">
+                            Xem tất cả <i class="fa fa-arrow-right ms-1"/>
+                        </a>
+                    </div>
+                    <div class="row row-cols-2 row-cols-md-4 g-3 g-lg-4">
+                        <t t-foreach="bm_related_products" t-as="rel_p">
+                            <div class="col">
+                                <t t-call="beautymatch.beautymatch_products_item">
+                                    <t t-set="product" t-value="rel_p"/>
+                                    <t t-set="product_href" t-value="rel_p.website_url"/>
+                                    <t t-set="show_variations" t-value="False"/>
+                                    <t t-set="show_ribbons" t-value="False"/>
+                                    <t t-set="previewed_attribute_values" t-value="{}"/>
+                                </t>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+
+                <!-- 6.3 Recently Viewed: Sản phẩm bạn đã xem -->
+                <t t-set="bm_recently_viewed" t-value="product._get_beautymatch_recently_viewed(4)"/>
+                <div t-if="bm_recently_viewed" class="container py-4 bm-recent-section">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+                        <div>
+                            <span class="bm-badge bm-badge-concern mb-1">Lịch sử khám phá</span>
+                            <h3 class="fw-bold text-dark mb-0 fs-4">Sản phẩm bạn đã xem</h3>
+                        </div>
+                    </div>
+                    <div class="row row-cols-2 row-cols-md-4 g-3 g-lg-4">
+                        <t t-foreach="bm_recently_viewed" t-as="rec_p">
+                            <div class="col">
+                                <t t-call="beautymatch.beautymatch_products_item">
+                                    <t t-set="product" t-value="rec_p"/>
+                                    <t t-set="product_href" t-value="rec_p.website_url"/>
+                                    <t t-set="show_variations" t-value="False"/>
+                                    <t t-set="show_ribbons" t-value="False"/>
+                                    <t t-set="previewed_attribute_values" t-value="{}"/>
+                                </t>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- ======================================================== -->
+    <!-- 7. EMPTY STATES: WISHLIST & CART                         -->
+    <!-- ======================================================== -->
+
+    <!-- 7.1 Empty State: Wishlist (/shop/wishlist) -->
+    <template id="beautymatch_empty_wishlist" inherit_id="website_sale_wishlist.product_wishlist" name="BeautyMatch Empty Wishlist State">
+        <xpath expr="//div[@id='empty-wishlist-message']" position="replace">
+            <div id="empty-wishlist-message" t-attf-class="w-100 #{'d-none' if wishes else ''}">
+                <div class="bg-white p-5 rounded-4 shadow-sm text-center my-4 mx-auto border" style="max-width: 550px;">
+                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 72px; height: 72px; background-color: #F3ECF8; color: #8F6FA8; font-size: 2rem;">
+                        <i class="fa fa-heart-o"/>
+                    </div>
+                    <h4 class="fw-bold text-dark mb-2">Bạn chưa có sản phẩm yêu thích.</h4>
+                    <p class="text-muted small mb-4" style="line-height: 1.6;">
+                        Khám phá các sản phẩm chăm sóc da chuẩn khoa học và lưu lại những sản phẩm phù hợp nhất với bạn.
+                    </p>
+                    <a href="/shop" class="btn text-white px-4 py-2 rounded-pill shadow-sm fw-semibold" style="background-color: #8F6FA8;">
+                        <i class="fa fa-shopping-bag me-1"/> Khám phá sản phẩm
+                    </a>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- 7.2 Empty State: Cart (/shop/cart) -->
+    <template id="beautymatch_empty_cart" inherit_id="website_sale.cart_lines" name="BeautyMatch Empty Cart State">
+        <xpath expr="//div[hasclass('js_cart_lines')][h5]" position="replace">
+            <div t-if="not website_sale_order or not website_sale_order.website_order_line" class="js_cart_lines w-100">
+                <div class="bg-white p-5 rounded-4 shadow-sm text-center my-4 mx-auto border" style="max-width: 550px;">
+                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 72px; height: 72px; background-color: #F3ECF8; color: #8F6FA8; font-size: 2rem;">
+                        <i class="fa fa-shopping-cart"/>
+                    </div>
+                    <h4 class="fw-bold text-dark mb-2">Giỏ hàng của bạn đang trống.</h4>
+                    <p class="text-muted small mb-4" style="line-height: 1.6;">
+                        Hãy chọn các sản phẩm phù hợp cho chu trình skincare của bạn và quay lại giỏ hàng nhé.
+                    </p>
+                    <a href="/shop" class="btn text-white px-4 py-2 rounded-pill shadow-sm fw-semibold" style="background-color: #8F6FA8;">
+                        <i class="fa fa-shopping-bag me-1"/> Tiếp tục mua sắm
+                    </a>
+                </div>
+            </div>
         </xpath>
     </template>
 

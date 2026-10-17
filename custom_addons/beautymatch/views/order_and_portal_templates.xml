@@ -145,9 +145,70 @@
     </template>
 
     <!-- ======================================================== -->
-    <!-- 2. CUSTOMER ACCOUNT / PORTAL: WISHLIST INTEGRATION       -->
+    <!-- 2. CUSTOMER ACCOUNT / PORTAL: NAVIGATION & WISHLIST      -->
     <!-- ======================================================== -->
-    <template id="beautymatch_portal_my_home" inherit_id="portal.portal_my_home" name="BeautyMatch Wishlist in Portal">
+    <template id="beautymatch_portal_my_home" inherit_id="portal.portal_my_home" name="BeautyMatch Customer Account Portal">
+        <!-- Quick Account Navigation Header -->
+        <xpath expr="//div[hasclass('o_portal_my_home')]" position="before">
+            <div class="bm-portal-quicknav mb-4 p-4 rounded-4 bg-white border shadow-sm">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 pb-2 border-bottom gap-2">
+                    <div>
+                        <span class="bm-badge bm-badge-primary mb-1">BeautyMatch Account</span>
+                        <h4 class="fw-bold text-dark mb-0">Tài khoản của bạn</h4>
+                    </div>
+                    <a href="/shop" class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-semibold">
+                        <i class="fa fa-shopping-bag me-1"/>Tiếp tục mua sắm
+                    </a>
+                </div>
+                <div class="row g-3">
+                    <div class="col-6 col-md-3">
+                        <a href="/my/account" class="p-3 rounded-3 bg-light d-flex align-items-center gap-3 text-decoration-none text-dark h-100 hover-shadow border transition">
+                            <div class="rounded-circle p-2 d-flex align-items-center justify-content-center" style="background: #F3ECF8; color: #8F6FA8; width: 42px; height: 42px;">
+                                <i class="fa fa-user fa-lg"/>
+                            </div>
+                            <div>
+                                <strong class="d-block small">Thông tin cá nhân</strong>
+                                <small class="text-muted" style="font-size: 0.75rem;">Hồ sơ &amp; bảo mật</small>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a href="/my/addresses" class="p-3 rounded-3 bg-light d-flex align-items-center gap-3 text-decoration-none text-dark h-100 hover-shadow border transition">
+                            <div class="rounded-circle p-2 d-flex align-items-center justify-content-center" style="background: #F3ECF8; color: #8F6FA8; width: 42px; height: 42px;">
+                                <i class="fa fa-map-marker fa-lg"/>
+                            </div>
+                            <div>
+                                <strong class="d-block small">Sổ địa chỉ</strong>
+                                <small class="text-muted" style="font-size: 0.75rem;">Địa chỉ nhận hàng</small>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a href="/my/orders" class="p-3 rounded-3 bg-light d-flex align-items-center gap-3 text-decoration-none text-dark h-100 hover-shadow border transition">
+                            <div class="rounded-circle p-2 d-flex align-items-center justify-content-center" style="background: #F3ECF8; color: #8F6FA8; width: 42px; height: 42px;">
+                                <i class="fa fa-shopping-bag fa-lg"/>
+                            </div>
+                            <div>
+                                <strong class="d-block small">Đơn hàng của tôi</strong>
+                                <small class="text-muted" style="font-size: 0.75rem;">Theo dõi &amp; tiến trình</small>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a href="/shop/wishlist" class="p-3 rounded-3 bg-light d-flex align-items-center gap-3 text-decoration-none text-dark h-100 hover-shadow border transition">
+                            <div class="rounded-circle p-2 d-flex align-items-center justify-content-center" style="background: #F3ECF8; color: #8F6FA8; width: 42px; height: 42px;">
+                                <i class="fa fa-heart fa-lg text-danger"/>
+                            </div>
+                            <div>
+                                <strong class="d-block small">Sản phẩm yêu thích</strong>
+                                <small class="text-muted" style="font-size: 0.75rem;">Wishlist đã lưu</small>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+
         <xpath expr="//div[@id='portal_common_category']" position="inside">
             <t t-call="portal.portal_docs_entry">
                 <t t-set="icon" t-value="'/website_sale_wishlist/static/description/icon.svg'"/>
@@ -163,6 +224,21 @@
     <!-- 3. ORDER HISTORY (/my/orders) RESPONSIVE TABLE & CARDS    -->
     <!-- ======================================================== -->
     <template id="beautymatch_portal_my_orders" inherit_id="sale.portal_my_orders" name="BeautyMatch Orders History" priority="30">
+        <!-- Empty State when no orders -->
+        <xpath expr="//div[@t-if='not orders']" position="replace">
+            <div t-if="not orders" class="bg-white p-5 rounded-4 shadow-sm text-center my-4 mx-auto border" style="max-width: 550px;">
+                <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 72px; height: 72px; background-color: #F3ECF8; color: #8F6FA8; font-size: 2rem;">
+                    <i class="fa fa-shopping-bag"/>
+                </div>
+                <h4 class="fw-bold text-dark mb-2">Bạn chưa có đơn hàng nào.</h4>
+                <p class="text-muted small mb-4" style="line-height: 1.6;">
+                    Bạn chưa có đơn hàng nào tại BeautyMatch. Hãy khám phá các sản phẩm skincare chính hãng và bắt đầu mua sắm ngay nhé!
+                </p>
+                <a href="/shop" class="btn text-white px-4 py-2 rounded-pill shadow-sm fw-semibold" style="background-color: #8F6FA8;">
+                    <i class="fa fa-shopping-bag me-1"/> Mua sắm ngay
+                </a>
+            </div>
+        </xpath>
         <!-- Hide standard sale_stock delivery column if present -->
         <xpath expr="//th[@name='order_delivery']" position="replace"/>
         <xpath expr="//td[@name='order_delivery_status']" position="replace"/>

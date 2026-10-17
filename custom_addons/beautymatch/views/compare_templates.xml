@@ -71,16 +71,16 @@
 
                     <!-- Trường hợp 0 sản phẩm (Empty State) -->
                     <t t-if="not products">
-                        <div class="bg-white p-5 rounded-4 shadow-sm text-center my-4 mx-auto" style="max-width: 600px;">
-                            <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 72px; height: 72px; background-color: #F3ECF8; color: #6E4C7E; font-size: 2rem;">
+                        <div class="bg-white p-5 rounded-4 shadow-sm text-center my-4 mx-auto border" style="max-width: 600px;">
+                            <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 72px; height: 72px; background-color: #F3ECF8; color: #8F6FA8; font-size: 2rem;">
                                 <i class="fa fa-exchange"/>
                             </div>
-                            <h4 class="fw-bold text-dark mb-2">Chưa có sản phẩm nào để so sánh</h4>
+                            <h4 class="fw-bold text-dark mb-2">Bạn chưa chọn sản phẩm để so sánh.</h4>
                             <p class="text-muted small mb-4" style="line-height: 1.7;">
                                 Hãy bấm vào biểu tượng <strong>[⇄ So sánh]</strong> trên thẻ sản phẩm ở Cửa hàng hoặc trang Chi tiết sản phẩm để chọn từ 2 đến 3 sản phẩm cần đối chiếu.
                             </p>
-                            <a href="/shop" class="btn text-white px-4 py-2 rounded-pill shadow-sm fw-semibold" style="background-color: #6E4C7E;">
-                                <i class="fa fa-shopping-bag me-1"/> Khám phá Cửa hàng ngay
+                            <a href="/shop" class="btn text-white px-4 py-2 rounded-pill shadow-sm fw-semibold" style="background-color: #8F6FA8;">
+                                <i class="fa fa-shopping-bag me-1"/> Đến cửa hàng
                             </a>
                         </div>
                     </t>
