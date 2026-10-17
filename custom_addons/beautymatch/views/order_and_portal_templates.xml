@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ======================================================== -->
+    <!-- 1. ORDER CONFIRMATION PAGE (/shop/confirmation)          -->
+    <!-- ======================================================== -->
+    <template id="beautymatch_confirmation" inherit_id="website_sale.confirmation" name="BeautyMatch Order Confirmation">
+        <xpath expr="//div[hasclass('d-flex')][h3]" position="replace">
+            <t t-set="bm_tracking" t-value="order._get_beautymatch_tracking_status()"/>
+            <t t-set="bm_payment" t-value="order._get_beautymatch_payment_info()"/>
+            <t t-set="bm_shipping" t-value="order._get_beautymatch_shipping_info()"/>
+
+            <!-- Confirmation Top Banner -->
+            <div class="bm-confirmation-card mb-4">
+                <div class="bm-conf-header">
+                    <div class="bm-conf-icon">
+                        <i class="fa fa-heart"/>
+                    </div>
+                    <h2>Cảm ơn bạn đã đặt hàng tại BeautyMatch!</h2>
+                    <p>Đơn hàng của bạn đã được ghi nhận và đang được xử lý theo quy trình chuẩn.</p>
+                </div>
+
+                <!-- Tracking Timeline Widget -->
+                <div class="p-3 p-md-4 border-bottom bg-white">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="fw-bold text-purple text-uppercase mb-0">
+                            <i class="fa fa-map-marker me-1"/>Tiến Trình Đơn Hàng
+                        </h6>
+                        <span t-att-class="bm_tracking['badge_class']" t-out="bm_tracking['label']"/>
+                    </div>
+                    <div class="bm-tracking-timeline">
+                        <t t-foreach="bm_tracking['steps']" t-as="step">
+                            <div t-attf-class="bm-track-step is-#{step['status']}">
+                                <div class="bm-track-icon">
+                                    <i t-attf-class="fa #{step['icon']}"/>
+                                </div>
+                                <div class="bm-track-label">
+                                    <t t-out="step['name']"/>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+
+                <!-- Order Info Grid -->
+                <div class="bm-conf-body">
+                    <div class="row g-3">
+                        <div class="col-6 col-md-3">
+                            <small class="text-muted d-block">Mã đơn hàng</small>
+                            <span class="fw-bold text-purple fs-6" t-out="order.reference or order.name"/>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <small class="text-muted d-block">Ngày đặt hàng</small>
+                            <span class="fw-bold text-dark" t-field="order.date_order" t-options="{'widget': 'date'}"/>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <small class="text-muted d-block">Khách hàng</small>
+                            <span class="fw-bold text-dark" t-out="order.partner_id.name"/>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <small class="text-muted d-block">Trạng thái đơn</small>
+                            <span t-att-class="bm_tracking['badge_class']" t-out="bm_tracking['label']"/>
+                        </div>
+
+                        <div class="col-12"><hr class="my-1"/></div>
+
+                        <div class="col-6 col-md-3">
+                            <small class="text-muted d-block">Phương thức giao</small>
+                            <span class="fw-semibold text-dark" t-out="bm_shipping['carrier_name']"/>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <small class="text-muted d-block">Phí giao hàng</small>
+                            <span class="fw-bold text-dark" t-out="bm_shipping['price_formatted']"/>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <small class="text-muted d-block">Phương thức thanh toán</small>
+                            <span class="fw-semibold text-dark" t-out="bm_payment['method_name']"/>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <small class="text-muted d-block">Trạng thái thanh toán</small>
+                            <span t-att-class="bm_payment['status_badge']" t-out="bm_payment['status_label']"/>
+                        </div>
+                    </div>
+
+                    <!-- Payment Guidance: COD -->
+                    <div t-if="bm_payment['is_cod']" class="alert alert-warning mt-3 mb-0 rounded-3">
+                        <i class="fa fa-info-circle me-1"/>
+                        <strong>Hình thức COD:</strong> Bạn sẽ thanh toán khi nhận hàng. Nhân viên giao hàng sẽ liên hệ thu tiền khi giao sản phẩm.
+                    </div>
+
+                    <!-- Payment Guidance: Bank Wire Transfer -->
+                    <div t-if="bm_payment['is_wire']" class="bm-bank-transfer-box mt-3">
+                        <div class="bm-bank-title">
+                            <i class="fa fa-university me-2"/>Vui lòng chuyển khoản theo thông tin đã cung cấp:
+                        </div>
+                        <div class="bm-bank-info-grid">
+                            <div class="bm-bank-item">
+                                <div class="label">Ngân hàng</div>
+                                <div class="val" t-out="bm_payment['bank_name']"/>
+                            </div>
+                            <div class="bm-bank-item">
+                                <div class="label">Chủ tài khoản</div>
+                                <div class="val" t-out="bm_payment['account_holder']"/>
+                            </div>
+                            <div class="bm-bank-item">
+                                <div class="label">Số tài khoản</div>
+                                <div class="val" t-out="bm_payment['account_number']"/>
+                            </div>
+                        </div>
+                        <div class="bm-transfer-note-highlight">
+                            <span><i class="fa fa-pencil me-2"/>Nội dung chuyển khoản:</span>
+                            <span class="fs-6 user-select-all" t-out="bm_payment['transfer_ref']"/>
+                        </div>
+                        <small class="text-muted fst-italic mt-2 d-block">* Vui lòng ghi chính xác nội dung để đơn hàng được tự động kích hoạt nhanh nhất.</small>
+                    </div>
+
+                    <!-- Action CTAs -->
+                    <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mt-4 pt-3 border-top">
+                        <a t-att-href="order.get_portal_url()" class="btn bm-btn-reorder">
+                            <i class="fa fa-eye me-1"/>Theo dõi đơn hàng
+                        </a>
+                        <div class="d-flex gap-2">
+                            <a href="/shop/print" target="_blank" class="btn btn-outline-secondary rounded-pill px-3">
+                                <i class="fa fa-print me-1"/>In đơn hàng
+                            </a>
+                            <a href="/shop" class="btn btn-outline-primary rounded-pill px-3">
+                                <i class="fa fa-shopping-bag me-1"/>Tiếp tục mua sắm
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+
+        <!-- Hide redundant default order_name container -->
+        <xpath expr="//div[@id='order_name']" position="attributes">
+            <attribute name="class" add="d-none" separator=" "/>
+        </xpath>
+    </template>
+
+    <!-- ======================================================== -->
+    <!-- 2. CUSTOMER ACCOUNT / PORTAL: WISHLIST INTEGRATION       -->
+    <!-- ======================================================== -->
+    <template id="beautymatch_portal_my_home" inherit_id="portal.portal_my_home" name="BeautyMatch Wishlist in Portal">
+        <xpath expr="//div[@id='portal_common_category']" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/website_sale_wishlist/static/description/icon.svg'"/>
+                <t t-set="title">Sản phẩm yêu thích</t>
+                <t t-set="text">Xem danh sách các sản phẩm skincare bạn đã lưu</t>
+                <t t-set="url" t-value="'/shop/wishlist'"/>
+                <t t-set="config_card" t-value="True"/>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- ======================================================== -->
+    <!-- 3. ORDER HISTORY (/my/orders) RESPONSIVE TABLE & CARDS    -->
+    <!-- ======================================================== -->
+    <template id="beautymatch_portal_my_orders" inherit_id="sale.portal_my_orders" name="BeautyMatch Orders History" priority="30">
+        <!-- Hide standard sale_stock delivery column if present -->
+        <xpath expr="//th[@name='order_delivery']" position="replace"/>
+        <xpath expr="//td[@name='order_delivery_status']" position="replace"/>
+
+        <!-- Add Payment and Status Columns in Table Header before Total -->
+        <xpath expr="//th[@name='order_total']" position="before">
+            <th class="text-center d-none d-lg-table-cell">Thanh toán</th>
+            <th class="text-center">Trạng thái</th>
+        </xpath>
+
+        <!-- Add Actions Column after Total in Table Header -->
+        <xpath expr="//th[@name='order_total']" position="after">
+            <th class="text-center">Thao tác</th>
+        </xpath>
+
+        <!-- Add Payment and Status Columns in Table Body before Total -->
+        <xpath expr="//td[@name='order_amount_total']" position="before">
+            <t t-set="bm_tracking" t-value="order._get_beautymatch_tracking_status()"/>
+            <t t-set="bm_payment" t-value="order._get_beautymatch_payment_info()"/>
+            <td class="text-center d-none d-lg-table-cell">
+                <small class="text-muted" t-out="bm_payment['method_name']"/>
+            </td>
+            <td class="text-center">
+                <span t-att-class="bm_tracking['badge_class']" t-out="bm_tracking['label']"/>
+            </td>
+        </xpath>
+
+        <!-- Add Action Button after Total in Table Body -->
+        <xpath expr="//td[@name='order_amount_total']" position="after">
+            <td class="text-center">
+                <a t-att-href="order.get_portal_url()" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                    Xem chi tiết
+                </a>
+            </td>
+        </xpath>
+
+        <!-- Mobile-friendly Card View (Visible on small screens) -->
+        <xpath expr="//t[@t-if='orders']" position="after">
+            <div class="d-block d-md-none mt-3" t-if="orders">
+                <t t-foreach="orders" t-as="order">
+                    <t t-set="bm_tracking" t-value="order._get_beautymatch_tracking_status()"/>
+                    <t t-set="bm_payment" t-value="order._get_beautymatch_payment_info()"/>
+                    <div class="bm-order-mobile-card">
+                        <div class="bm-order-mobile-header">
+                            <div>
+                                <a t-att-href="order.get_portal_url()" class="fw-bold text-purple fs-6 text-decoration-none">
+                                    <t t-out="order.reference or order.name"/>
+                                </a>
+                                <small class="text-muted d-block" t-field="order.date_order" t-options="{'widget': 'date'}"/>
+                            </div>
+                            <span t-att-class="bm_tracking['badge_class']" t-out="bm_tracking['label']"/>
+                        </div>
+                        <div class="small mb-2">
+                            <span class="text-muted">Thanh toán:</span>
+                            <span class="fw-semibold text-dark ms-1" t-out="bm_payment['method_name']"/>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                            <div>
+                                <small class="text-muted d-block">Tổng cộng</small>
+                                <span class="fw-bold text-purple fs-6" t-field="order.amount_total"/>
+                            </div>
+                            <a t-att-href="order.get_portal_url()" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                Chi tiết <i class="fa fa-arrow-right ms-1"/>
+                            </a>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- ======================================================== -->
+    <!-- 4. ORDER DETAIL: TRACKING TIMELINE & REORDER & REVIEW     -->
+    <!-- ======================================================== -->
+    <template id="beautymatch_sale_order_portal_content" inherit_id="sale.sale_order_portal_content" name="BeautyMatch Order Detail Content">
+        <!-- Add Tracking Timeline at Top of Order Content -->
+        <xpath expr="//div[@id='introduction']" position="before">
+            <t t-set="bm_tracking" t-value="sale_order._get_beautymatch_tracking_status()"/>
+            <t t-set="bm_payment" t-value="sale_order._get_beautymatch_payment_info()"/>
+            <t t-set="bm_shipping" t-value="sale_order._get_beautymatch_shipping_info()"/>
+
+            <div class="bm-tracking-container">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                    <h5 class="fw-bold text-purple text-uppercase mb-0">
+                        <i class="fa fa-truck me-2"/>Tiến Trình Đơn Hàng: <t t-out="sale_order.reference or sale_order.name"/>
+                    </h5>
+                    <div class="d-flex gap-2 align-items-center">
+                        <span t-att-class="bm_tracking['badge_class']" t-out="bm_tracking['label']"/>
+                        <a t-attf-href="/shop/order/reorder/#{sale_order.id}" class="btn btn-sm bm-btn-reorder" title="Thêm toàn bộ sản phẩm vào giỏ hàng">
+                            <i class="fa fa-repeat me-1"/>Mua lại
+                        </a>
+                    </div>
+                </div>
+                <div class="bm-tracking-timeline">
+                    <t t-foreach="bm_tracking['steps']" t-as="step">
+                        <div t-attf-class="bm-track-step is-#{step['status']}">
+                            <div class="bm-track-icon">
+                                <i t-attf-class="fa #{step['icon']}"/>
+                            </div>
+                            <div class="bm-track-label">
+                                <t t-out="step['name']"/>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </xpath>
+
+        <!-- Enrich Sale Info Table with Payment & Shipping Details -->
+        <xpath expr="//tbody[@id='sale_info_table']" position="inside">
+            <tr>
+                <th class="ps-0 pb-0">Thanh toán:</th>
+                <td class="w-100 pb-0 text-wrap">
+                    <span t-out="sale_order._get_beautymatch_payment_info()['method_name']"/>
+                    (<span t-att-class="sale_order._get_beautymatch_payment_info()['status_badge']" t-out="sale_order._get_beautymatch_payment_info()['status_label']"/>)
+                </td>
+            </tr>
+            <tr>
+                <th class="ps-0 pb-0">Vận chuyển:</th>
+                <td class="w-100 pb-0 text-wrap">
+                    <span t-out="sale_order._get_beautymatch_shipping_info()['carrier_name']"/> -
+                    <span class="fw-bold text-purple" t-out="sale_order._get_beautymatch_shipping_info()['price_formatted']"/>
+                </td>
+            </tr>
+        </xpath>
+
+        <!-- Product Table: Add SKU, Variant, and Review CTA -->
+        <xpath expr="//td[@name='td_product_name']" position="inside">
+            <!-- Display Variant / SKU -->
+            <div t-if="line.product_id.default_code" class="small text-muted">
+                <span>SKU: </span><span t-out="line.product_id.default_code"/>
+            </div>
+
+            <!-- Review Button: If order is confirmed/delivered and line is real product -->
+            <t t-if="sale_order.state in ['sale', 'done'] and line.product_id and not line.is_delivery and not line.is_reward_line">
+                <div class="mt-1">
+                    <a t-att-href="line.product_id.website_url + '#reviews'" class="bm-btn-review" title="Đánh giá sản phẩm này">
+                        <i class="fa fa-star text-warning me-1"/>Đánh giá sản phẩm
+                    </a>
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Sidebar Reorder CTA Enhancement -->
+    <template id="beautymatch_sale_order_portal_template" inherit_id="sale.sale_order_portal_template" name="BeautyMatch Order Sidebar Reorder">
+        <xpath expr="//div[@id='print_invoice_sidebar_button']" position="before">
+            <a t-attf-href="/shop/order/reorder/#{sale_order.id}" class="btn bm-btn-reorder w-100 mb-2 py-2">
+                <i class="fa fa-repeat me-1"/>Mua lại đơn này
+            </a>
+        </xpath>
+    </template>
+
+</odoo>

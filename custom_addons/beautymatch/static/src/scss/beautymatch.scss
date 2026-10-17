@@ -599,3 +599,326 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
         }
     }
 }
+
+// ========================================================
+// 7. Post-Order Flow: Confirmation, Tracking, Portal & History
+// ========================================================
+
+// A. Order Tracking Timeline
+.bm-tracking-container {
+    background: #FFFFFF;
+    border-radius: 16px;
+    border: 1px solid #E6DCED;
+    padding: 1.5rem 1rem;
+    box-shadow: 0 4px 16px rgba(110, 76, 126, 0.06);
+    margin-bottom: 1.5rem;
+}
+
+.bm-tracking-timeline {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    padding: 0 0.5rem;
+
+    // Background connecting line
+    &::before {
+        content: '';
+        position: absolute;
+        top: 22px;
+        left: 5%;
+        right: 5%;
+        height: 3px;
+        background-color: #E2D9E8;
+        z-index: 1;
+    }
+
+    .bm-track-step {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        flex: 1;
+
+        .bm-track-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            background: #FFFFFF;
+            border: 2px solid #E2D9E8;
+            color: #8C8294;
+            transition: all 0.3s ease;
+        }
+
+        .bm-track-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #6C757D;
+            line-height: 1.3;
+        }
+
+        // Completed state
+        &.is-completed {
+            .bm-track-icon {
+                background-color: #6E4C7E;
+                border-color: #6E4C7E;
+                color: #FFFFFF;
+            }
+            .bm-track-label {
+                color: #2B2430;
+                font-weight: 600;
+            }
+        }
+
+        // Active / Current state
+        &.is-active {
+            .bm-track-icon {
+                background-color: #8F6FA8;
+                border-color: #8F6FA8;
+                color: #FFFFFF;
+                box-shadow: 0 0 0 5px #F3ECF8;
+                animation: bm-pulse 2s infinite;
+            }
+            .bm-track-label {
+                color: #6E4C7E;
+                font-weight: 700;
+            }
+        }
+
+        // Cancelled state
+        &.is-cancelled {
+            .bm-track-icon {
+                background-color: #DC3545;
+                border-color: #DC3545;
+                color: #FFFFFF;
+            }
+            .bm-track-label {
+                color: #DC3545;
+                font-weight: 700;
+            }
+        }
+    }
+}
+
+@keyframes bm-pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(143, 111, 168, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(143, 111, 168, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(143, 111, 168, 0);
+    }
+}
+
+// B. Order Confirmation Card
+.bm-confirmation-card {
+    background-color: #FFFFFF;
+    border: 1px solid #E6DCED;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(110, 76, 126, 0.08);
+    overflow: hidden;
+    margin-bottom: 2rem;
+
+    .bm-conf-header {
+        background: linear-gradient(135deg, #F3ECF8 0%, #FFFFFF 100%);
+        border-bottom: 1px solid #E6DCED;
+        padding: 2rem 1.5rem;
+        text-align: center;
+
+        .bm-conf-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background-color: #6E4C7E;
+            color: #FFFFFF;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 14px rgba(110, 76, 126, 0.25);
+        }
+
+        h2 {
+            color: #6E4C7E;
+            font-weight: 700;
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            color: #6C757D;
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+    }
+
+    .bm-conf-body {
+        padding: 1.75rem;
+    }
+}
+
+// C. Wire Transfer Instructions Box
+.bm-bank-transfer-box {
+    background-color: #F3ECF8;
+    border: 1px solid #CDB7DD;
+    border-radius: 14px;
+    padding: 1.25rem;
+    margin-top: 1rem;
+    color: #2B2430;
+
+    .bm-bank-title {
+        color: #6E4C7E;
+        font-weight: 700;
+        font-size: 1rem;
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .bm-bank-info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 0.75rem;
+        margin-bottom: 0.75rem;
+
+        .bm-bank-item {
+            background: #FFFFFF;
+            padding: 0.65rem 0.85rem;
+            border-radius: 10px;
+            border: 1px solid #E6DCED;
+
+            .label {
+                font-size: 0.75rem;
+                color: #6C757D;
+                text-transform: uppercase;
+                margin-bottom: 0.2rem;
+            }
+            .val {
+                font-weight: 700;
+                color: #2B2430;
+                font-size: 0.95rem;
+            }
+        }
+    }
+
+    .bm-transfer-note-highlight {
+        background: #FFFFFF;
+        border: 2px dashed #8F6FA8;
+        padding: 0.65rem 1rem;
+        border-radius: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 700;
+        color: #6E4C7E;
+    }
+}
+
+// D. Portal Cards & Badges
+.bm-portal-card-wishlist {
+    background-color: #FFFFFF !important;
+    border: 1px solid #E6DCED !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 14px rgba(110, 76, 126, 0.05);
+    transition: all 0.2s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(110, 76, 126, 0.12);
+        border-color: #8F6FA8 !important;
+    }
+}
+
+// E. Order History Table & Mobile Cards
+.bm-orders-table {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #E6DCED;
+    box-shadow: 0 4px 16px rgba(110, 76, 126, 0.05);
+
+    thead th {
+        background-color: #F3ECF8;
+        color: #6E4C7E;
+        font-weight: 700;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        border-bottom: 1px solid #E6DCED;
+        padding: 0.85rem 1rem;
+    }
+
+    tbody td {
+        padding: 1rem;
+        vertical-align: middle;
+        border-bottom: 1px solid #F1EBF5;
+    }
+}
+
+.bm-order-mobile-card {
+    background: #FFFFFF;
+    border: 1px solid #E6DCED;
+    border-radius: 16px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 14px rgba(110, 76, 126, 0.06);
+
+    .bm-order-mobile-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #F1EBF5;
+    }
+}
+
+// F. Buttons & CTAs
+.bm-btn-reorder {
+    background-color: #6E4C7E !important;
+    border-color: #6E4C7E !important;
+    color: #FFFFFF !important;
+    border-radius: 50px !important;
+    padding: 0.5rem 1.25rem !important;
+    font-weight: 600 !important;
+    font-size: 0.85rem !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background-color: #8F6FA8 !important;
+        border-color: #8F6FA8 !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(110, 76, 126, 0.25);
+    }
+}
+
+.bm-btn-review {
+    background-color: #F3ECF8 !important;
+    border-color: #CDB7DD !important;
+    color: #6E4C7E !important;
+    border-radius: 50px !important;
+    padding: 0.35rem 0.85rem !important;
+    font-weight: 600 !important;
+    font-size: 0.8rem !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background-color: #6E4C7E !important;
+        border-color: #6E4C7E !important;
+        color: #FFFFFF !important;
+    }
+}

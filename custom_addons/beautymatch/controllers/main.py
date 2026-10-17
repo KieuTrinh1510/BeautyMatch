@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from odoo import http
+# pyrefly: ignore[missing-import]
 from odoo.http import request
+# pyrefly: ignore[missing-import]
 from odoo.fields import Domain
 from odoo.addons.website.controllers.main import Website
 from odoo.addons.website_sale.controllers.main import WebsiteSale
+from odoo.addons.website_sale.controllers.cart import Cart
 
 
 class BeautyMatchWebsite(Website):
@@ -435,3 +438,56 @@ class BeautyMatchController(http.Controller):
         return request.render('beautymatch.page_brands', {
             'brands': brands_data,
         })
+
+
+class BeautyMatchOrderController(http.Controller):
+
+    @http.route(['/shop/order/reorder/<int:order_id>'], type='http', auth='public', website=True)
+    def beautymatch_reorder(self, order_id, access_token=None, **kw):
+        """1-Click Reorder logic for BeautyMatch customers.
+        - Gets real sellable product lines from the specified order.
+        - Skips delivery lines and coupon/reward lines.
+        - Does NOT copy old discounts, prices, or shipping fees.
+        - Checks that products are active, sellable, and published.
+        - Uses the CURRENT active price in the website cart.
+        - Adds items to the customer's cart and redirects to /shop/cart.
+        """
+        try:
+            order_sudo = request.env['sale.order'].sudo().browse(order_id).exists()
+            if not order_sudo:
+                return request.redirect('/shop/cart')
+        except Exception:
+            return request.redirect('/shop/cart')
+
+        # Check access permission: public with access_token or matching user or internal user
+        user = request.env.user
+        if not user.has_group('base.group_user') and order_sudo.partner_id != user.partner_id:
+            if not access_token or access_token != order_sudo.access_token:
+                return request.redirect('/my/orders')
+
+        lines_to_add = order_sudo.order_line.filtered(
+            lambda l: not l.is_delivery
+            and not l.reward_id
+            and not l.is_reward_line
+            and not l.display_type
+            and l.product_id
+            and l.product_id.active
+            and l.product_id.sale_ok
+            and l.product_id.is_published
+        )
+
+        if not lines_to_add:
+            return request.redirect('/shop/cart')
+
+        Cart_controller = Cart()
+        for line in lines_to_add:
+            try:
+                Cart_controller.add_to_cart(
+                    product_id=line.product_id.id,
+                    product_template_id=line.product_id.product_tmpl_id.id,
+                    quantity=line.product_uom_qty,
+                )
+            except Exception:
+                pass
+
+        return request.redirect('/shop/cart')
