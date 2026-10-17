@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Thuộc tính biến thể: Dung tích -->
+    <record id="product_attribute_volume" model="product.attribute">
+        <field name="name">Dung tích</field>
+        <field name="create_variant">always</field>
+        <field name="display_type">pills</field>
+        <field name="sequence">10</field>
+    </record>
+
+    <!-- Giá trị Dung tích: 236ml -->
+    <record id="product_attribute_value_volume_236ml" model="product.attribute.value">
+        <field name="name">236ml</field>
+        <field name="attribute_id" ref="product_attribute_volume"/>
+        <field name="sequence">1</field>
+    </record>
+
+    <!-- Giá trị Dung tích: 473ml -->
+    <record id="product_attribute_value_volume_473ml" model="product.attribute.value">
+        <field name="name">473ml</field>
+        <field name="attribute_id" ref="product_attribute_volume"/>
+        <field name="sequence">2</field>
+    </record>
+</odoo>

@@ -1,0 +1,601 @@
+// ========================================================
+// BeautyMatch Design System
+// Vietnamese B2C Beauty & Personal Care e-Commerce
+// ========================================================
+
+// Color Palette Variables
+$bm-primary: #8F6FA8;
+$bm-deep-purple: #6E4C7E;
+$bm-secondary-lilac: #CDB7DD;
+$bm-light-bg: #F3ECF8;
+$bm-dark-text: #2B2430;
+$bm-white: #FFFFFF;
+$bm-muted: #6c757d;
+$bm-border-color: #E6DCED;
+
+// Shadows & Radii
+$bm-radius-sm: 8px;
+$bm-radius-md: 14px;
+$bm-radius-card: 20px;
+$bm-radius-pill: 50px;
+$bm-shadow-subtle: 0 4px 18px rgba(110, 76, 126, 0.07);
+$bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
+
+// Utility Classes
+.text-purple {
+    color: $bm-deep-purple !important;
+}
+
+// 1. Layout & Sections
+.bm-section {
+    background-color: #FAFAFC;
+    color: $bm-dark-text;
+    min-height: 60vh;
+}
+
+.bm-section-py {
+    padding-top: 4.5rem;
+    padding-bottom: 4.5rem;
+}
+
+// 2. Cards
+.bm-card {
+    background-color: $bm-white;
+    border-radius: $bm-radius-card;
+    border: 1px solid $bm-border-color;
+    box-shadow: $bm-shadow-subtle;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: $bm-shadow-hover;
+    }
+}
+
+// 3. Badges
+.bm-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.35rem 0.75rem;
+    border-radius: $bm-radius-pill;
+    line-height: 1.2;
+
+    &-primary {
+        background-color: $bm-light-bg;
+        color: $bm-deep-purple;
+        border: 1px solid $bm-secondary-lilac;
+    }
+
+    &-skin {
+        background-color: #EBF3FC;
+        color: #2B5C8F;
+    }
+
+    &-concern {
+        background-color: #FDF2F4;
+        color: #9C3D52;
+    }
+
+    &-step {
+        background-color: #F1F8F4;
+        color: #2F6B45;
+    }
+
+    &-time {
+        background-color: #FFF8EB;
+        color: #9A6614;
+    }
+}
+
+// 4. Buttons
+.bm-button-primary {
+    display: inline-block;
+    background-color: $bm-deep-purple;
+    color: $bm-white !important;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.65rem 1.4rem;
+    border-radius: $bm-radius-pill;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        background-color: darken($bm-deep-purple, 6%);
+        color: $bm-white !important;
+        box-shadow: 0 4px 12px rgba(110, 76, 126, 0.25);
+    }
+
+    &:focus, &:active {
+        background-color: darken($bm-deep-purple, 10%);
+        outline: none;
+    }
+}
+
+.bm-button-secondary {
+    display: inline-block;
+    background-color: $bm-light-bg;
+    color: $bm-deep-purple !important;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.65rem 1.4rem;
+    border-radius: $bm-radius-pill;
+    border: 1px solid $bm-secondary-lilac;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+
+    &:hover {
+        background-color: darken($bm-light-bg, 4%);
+        border-color: $bm-deep-purple;
+        color: $bm-deep-purple !important;
+    }
+}
+
+// 5. Product Page Decision Support Extension
+.bm-product-meta {
+    background-color: #FAF8FC;
+    border: 1px solid $bm-border-color;
+    border-radius: $bm-radius-card;
+    box-shadow: $bm-shadow-subtle;
+}
+
+.bm-fit-reason {
+    background-color: #F5EEF9;
+    border-left: 3px solid $bm-primary;
+    border-radius: 0 $bm-radius-sm $bm-radius-sm 0;
+    padding: 0.85rem 1rem;
+
+    &-title {
+        color: $bm-deep-purple;
+        font-weight: 700;
+        font-size: 0.88rem;
+        margin-bottom: 0.25rem;
+    }
+
+    &-text {
+        color: $bm-dark-text;
+        font-size: 0.85rem;
+        line-height: 1.45;
+    }
+}
+
+.bm-meta-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-top: 0.5rem;
+}
+
+.bm-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0.35rem 0;
+    border-bottom: 1px dashed $bm-border-color;
+    font-size: 0.85rem;
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.bm-meta-label {
+    color: $bm-muted;
+    font-weight: 500;
+}
+
+.bm-meta-value {
+    color: $bm-dark-text;
+    font-weight: 600;
+    text-align: right;
+}
+
+// 6. Beauty Quiz Specifics
+.bm-quiz {
+    &-option {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        border: 1px solid $bm-border-color;
+        border-radius: $bm-radius-md;
+        background-color: $bm-white;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 0.9rem;
+        color: $bm-dark-text;
+
+        input[type="radio"] {
+            margin-right: 0.6rem;
+            accent-color: $bm-deep-purple;
+        }
+
+        &:hover {
+            border-color: $bm-primary;
+            background-color: $bm-light-bg;
+        }
+
+        &:has(input[type="radio"]:checked) {
+            border-color: $bm-deep-purple;
+            background-color: $bm-light-bg;
+            font-weight: 600;
+            color: $bm-deep-purple;
+        }
+    }
+}
+
+// 7. Routine Guide Specifics
+.bm-routine-step {
+    border-top: 3px solid $bm-primary;
+    transition: all 0.2s ease;
+
+    &:hover {
+        border-top-color: $bm-deep-purple;
+    }
+}
+
+// 8. Homepage Specific Styling
+.bm-homepage {
+    color: $bm-dark-text;
+}
+
+.bm-hero-section {
+    background: linear-gradient(180deg, #F3ECF8 0%, #FAFAFC 100%);
+    border-bottom: 1px solid $bm-border-color;
+}
+
+.bm-hero-title {
+    color: $bm-deep-purple;
+    letter-spacing: -0.5px;
+    line-height: 1.15;
+}
+
+.bm-hero-visual-card {
+    background: $bm-white;
+    border-radius: 24px;
+    border: 1px solid $bm-border-color;
+    box-shadow: 0 10px 30px rgba(110, 76, 126, 0.12);
+    max-width: 460px;
+}
+
+.bm-avatar-badge {
+    width: 38px;
+    height: 38px;
+    background-color: $bm-light-bg;
+    color: $bm-deep-purple;
+    border: 1px solid $bm-secondary-lilac;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.85rem;
+}
+
+.bm-routine-preview-box {
+    background-color: #FAF8FC;
+    border: 1px solid #ECE3F2;
+}
+
+.bm-card-icon-wrapper {
+    width: 48px;
+    height: 48px;
+    background-color: $bm-light-bg;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bm-flow-step {
+    background-color: $bm-white;
+    border: 1px solid $bm-border-color;
+    box-shadow: $bm-shadow-subtle;
+    transition: all 0.2s ease;
+
+    &:hover {
+        border-color: $bm-primary;
+        transform: translateY(-2px);
+    }
+}
+
+.bm-flow-num {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: $bm-deep-purple;
+}
+
+.bm-final-cta-section {
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.bm-footer-section {
+    a {
+        transition: color 0.15s ease;
+        &:hover {
+            color: $bm-deep-purple !important;
+        }
+    }
+}
+
+// ========================================================
+// 7. SHOP & PRODUCT DETAIL STYLING (LAB 5 & LAB 6)
+// Palette: #8F6FA8, #6E4C7E, #CDB7DD, #F3ECF8, #2B2430, #FFFFFF
+// ========================================================
+
+// 7.1 Filter Sidebar & Mobile Offcanvas
+.bm-filter-wrapper {
+    .bm-filter-title {
+        color: $bm-deep-purple;
+        letter-spacing: 0.05em;
+    }
+
+    .bm-category-list {
+        a {
+            color: $bm-dark-text;
+            transition: all 0.15s ease;
+
+            &:hover {
+                background-color: $bm-light-bg;
+                color: $bm-deep-purple;
+            }
+
+            &.active {
+                background-color: $bm-light-bg !important;
+                color: $bm-deep-purple !important;
+                font-weight: 700;
+                border-left: 3px solid $bm-primary;
+            }
+        }
+    }
+
+    .bm-filter-pill {
+        background-color: $bm-light-bg;
+        color: $bm-dark-text;
+        border: 1px solid #ECE3F2;
+        padding: 0.4rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.78rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.15s ease;
+
+        &:hover {
+            background-color: $bm-secondary-lilac;
+            color: $bm-dark-text;
+        }
+
+        &.active {
+            background-color: $bm-primary !important;
+            color: $bm-white !important;
+            border-color: $bm-deep-purple !important;
+            font-weight: 600;
+        }
+    }
+
+    .form-check-input:checked {
+        background-color: $bm-primary;
+        border-color: $bm-deep-purple;
+    }
+}
+
+// 7.2 Product Card (Clean Skincare Design, Radius 18px, Light Shadow)
+.bm-product-card {
+    border-radius: 18px !important;
+    border: 1px solid #ECE3F2 !important;
+    box-shadow: 0 4px 16px rgba(110, 76, 126, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 24px rgba(110, 76, 126, 0.12);
+        border-color: $bm-secondary-lilac !important;
+    }
+
+    .bm-card-image-wrap {
+        height: 220px;
+        background-color: #FAF8FC;
+        position: relative;
+
+        .bm-card-img {
+            max-height: 190px;
+            object-fit: contain;
+            transition: transform 0.25s ease;
+        }
+
+        &:hover .bm-card-img {
+            transform: scale(1.04);
+        }
+
+        .bm-card-wishlist-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid #ECE3F2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            z-index: 5;
+            transition: all 0.15s ease;
+
+            &:hover {
+                background: #FFFFFF;
+                color: #e0245e;
+                transform: scale(1.1);
+            }
+        }
+
+        .bm-card-skin-badge {
+            position: absolute;
+            bottom: 8px;
+            left: 10px;
+            z-index: 4;
+        }
+    }
+
+    .bm-card-title {
+        font-size: 0.92rem;
+        line-height: 1.35;
+        height: 2.7em;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+
+        a {
+            color: $bm-dark-text;
+            transition: color 0.15s ease;
+            &:hover {
+                color: $bm-primary;
+            }
+        }
+    }
+
+    .bm-ingredient-tag {
+        background-color: $bm-light-bg;
+        color: $bm-deep-purple;
+        font-weight: 500;
+        font-size: 0.72rem;
+        border-radius: 6px;
+        padding: 3px 8px;
+        border: 1px solid #ECE3F2;
+    }
+
+    .bm-button-view {
+        background-color: $bm-light-bg;
+        color: $bm-deep-purple;
+        font-weight: 600;
+        border-radius: 20px;
+        padding: 5px 12px;
+        font-size: 0.8rem;
+        border: 1px solid $bm-secondary-lilac;
+        transition: all 0.15s ease;
+
+        &:hover {
+            background-color: $bm-deep-purple;
+            color: $bm-white;
+        }
+    }
+}
+
+// 7.3 Product Detail Page Support & Decision Block
+.bm-decision-support-box {
+    border-radius: 20px !important;
+    border: 1px solid #ECE3F2 !important;
+}
+
+.o_wsale_product_information {
+    .product_price {
+        color: $bm-deep-purple;
+        font-weight: 700;
+    }
+}
+
+// 7.4 Checkout Shipping / Delivery Methods
+#o_delivery_methods {
+    .list-group-item {
+        border-radius: $bm-radius-md !important;
+        margin-bottom: 0.6rem;
+        border: 1px solid $bm-border-color !important;
+        background-color: $bm-white;
+        padding: 1rem 1.25rem;
+        transition: all 0.2s ease;
+
+        &:hover {
+            border-color: $bm-primary !important;
+            background-color: rgba($bm-light-bg, 0.35);
+        }
+
+        .form-check-input:checked ~ .form-check-label {
+            font-weight: 600;
+            color: $bm-deep-purple;
+        }
+
+        .o_wsale_delivery_price_badge {
+            color: $bm-deep-purple !important;
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+    }
+}
+
+// 7.5 Payment Form & Method Cards
+.o_payment_form {
+    #o_payment_form_options {
+        .list-group {
+            gap: 0.75rem;
+        }
+
+        .list-group-item[name="o_payment_option"] {
+            border-radius: 16px !important;
+            border: 1px solid #E6DCED !important;
+            background-color: #FFFFFF;
+            padding: 1.15rem 1.25rem;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+
+            &:hover {
+                border-color: #8F6FA8 !important;
+                background-color: rgba(#F3ECF8, 0.4);
+            }
+
+            // Checked / Selected state
+            &:has(input[name="o_payment_radio"]:checked) {
+                background-color: #F3ECF8 !important;
+                border-color: #8F6FA8 !important;
+                box-shadow: 0 4px 14px rgba(110, 76, 126, 0.12);
+
+                .o_payment_option_label {
+                    color: #6E4C7E;
+                    font-weight: 700;
+                }
+            }
+
+            .o_payment_option_label {
+                font-size: 1rem;
+                font-weight: 600;
+                color: #2B2430;
+                cursor: pointer;
+            }
+
+            input[name="o_payment_radio"] {
+                width: 1.2rem;
+                height: 1.2rem;
+                border-color: #8F6FA8;
+                cursor: pointer;
+
+                &:checked {
+                    background-color: #6E4C7E;
+                    border-color: #6E4C7E;
+                }
+            }
+        }
+    }
+
+    button[name="o_payment_submit_button"],
+    .btn-primary[type="submit"] {
+        background-color: #6E4C7E !important;
+        border-color: #6E4C7E !important;
+        color: #FFFFFF !important;
+        border-radius: 50px !important;
+        padding: 0.75rem 2rem !important;
+        font-weight: 600 !important;
+        font-size: 1rem !important;
+        transition: all 0.2s ease;
+
+        &:hover {
+            background-color: #8F6FA8 !important;
+            border-color: #8F6FA8 !important;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(110, 76, 126, 0.2);
+        }
+    }
+}

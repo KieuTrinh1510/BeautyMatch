@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- ======================================================= -->
+    <!-- 1. eCommerce Public Categories (product.public.category) -->
+    <!-- Dùng cho giao diện bán hàng website, menu danh mục và lọc sản phẩm -->
+    <!-- ======================================================= -->
+    <record id="public_category_cleanser" model="product.public.category">
+        <field name="name">Sữa rửa mặt</field>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="public_category_toner" model="product.public.category">
+        <field name="name">Toner</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="public_category_serum" model="product.public.category">
+        <field name="name">Serum</field>
+        <field name="sequence">30</field>
+    </record>
+
+    <record id="public_category_moisturizer" model="product.public.category">
+        <field name="name">Kem dưỡng</field>
+        <field name="sequence">40</field>
+    </record>
+
+    <record id="public_category_sunscreen" model="product.public.category">
+        <field name="name">Chống nắng</field>
+        <field name="sequence">50</field>
+    </record>
+
+    <!-- ======================================================= -->
+    <!-- 2. Internal Product Categories (product.category)       -->
+    <!-- Dùng cho quản lý nội bộ, kho vận và hạch toán kế toán  -->
+    <!-- ======================================================= -->
+    <record id="cat_skincare_root" model="product.category">
+        <field name="name">Chăm sóc da (Skincare)</field>
+        <field name="parent_id" ref="product.product_category_goods"/>
+    </record>
+
+    <record id="cat_skincare_cleanser" model="product.category">
+        <field name="name">Sữa rửa mặt</field>
+        <field name="parent_id" ref="cat_skincare_root"/>
+    </record>
+
+    <record id="cat_skincare_toner" model="product.category">
+        <field name="name">Toner</field>
+        <field name="parent_id" ref="cat_skincare_root"/>
+    </record>
+
+    <record id="cat_skincare_serum" model="product.category">
+        <field name="name">Serum</field>
+        <field name="parent_id" ref="cat_skincare_root"/>
+    </record>
+
+    <record id="cat_skincare_moisturizer" model="product.category">
+        <field name="name">Kem dưỡng</field>
+        <field name="parent_id" ref="cat_skincare_root"/>
+    </record>
+
+    <record id="cat_skincare_sunscreen" model="product.category">
+        <field name="name">Chống nắng</field>
+        <field name="parent_id" ref="cat_skincare_root"/>
+    </record>
+</odoo>

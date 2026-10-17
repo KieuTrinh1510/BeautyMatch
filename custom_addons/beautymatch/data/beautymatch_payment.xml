@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ======================================================== -->
+    <!-- BEAUTYMATCH PAYMENT CONFIGURATION                        -->
+    <!-- COD & Bank Wire Transfer Setup                           -->
+    <!-- ======================================================== -->
+
+    <!-- Cấu hình và kích hoạt các phương thức thanh toán phù hợp cho BeautyMatch -->
+    <function model="payment.provider" name="_setup_beautymatch_payment_providers"/>
+</odoo>

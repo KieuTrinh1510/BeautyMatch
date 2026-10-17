@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tái sử dụng & đồng bộ tên tiếng Việt cho các menu mặc định của Odoo -->
+    <record id="website.menu_home" model="website.menu">
+        <field name="name">Trang chủ</field>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="website_sale.menu_shop" model="website.menu">
+        <field name="name">Cửa hàng</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <!-- Các menu điều hướng mới phục vụ định vị BeautyMatch -->
+    <record id="menu_theo_van_de_da" model="website.menu">
+        <field name="name">Theo vấn đề da</field>
+        <field name="url">/theo-van-de-da</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence">30</field>
+    </record>
+
+    <record id="menu_beauty_quiz" model="website.menu">
+        <field name="name">Beauty Quiz</field>
+        <field name="url">/beauty-quiz</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence">40</field>
+    </record>
+
+    <record id="menu_routine" model="website.menu">
+        <field name="name">Routine</field>
+        <field name="url">/routine</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence">50</field>
+    </record>
+
+    <record id="menu_brands" model="website.menu">
+        <field name="name">Thương hiệu</field>
+        <field name="url">/brands</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence">60</field>
+    </record>
+
+    <record id="menu_blog" model="website.menu">
+        <field name="name">Blog</field>
+        <field name="url">/blog</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence">70</field>
+    </record>
+</odoo>

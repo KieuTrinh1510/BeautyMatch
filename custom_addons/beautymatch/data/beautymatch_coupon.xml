@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ======================================================== -->
+    <!-- BEAUTYMATCH PROMO CODE: WELCOME10 (GIẢM 10%)            -->
+    <!-- ======================================================== -->
+
+    <!-- 1. Chương trình khuyến mãi theo mã code -->
+    <record id="loyalty_program_welcome10" model="loyalty.program">
+        <field name="name">BeautyMatch WELCOME10 - Giảm 10% Đơn Hàng</field>
+        <field name="program_type">promo_code</field>
+        <field name="trigger">with_code</field>
+        <field name="applies_on">current</field>
+        <field name="active" eval="True"/>
+        <field name="ecommerce_ok" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="currency_id" ref="base.VND"/>
+        <field name="website_id" ref="website.default_website"/>
+        <field name="portal_visible" eval="False"/>
+        <field name="portal_point_name">Điểm giảm giá</field>
+    </record>
+
+    <!-- 2. Điều kiện kích hoạt: Nhập mã WELCOME10 -->
+    <record id="loyalty_rule_welcome10" model="loyalty.rule">
+        <field name="program_id" ref="loyalty_program_welcome10"/>
+        <field name="mode">with_code</field>
+        <field name="code">WELCOME10</field>
+        <field name="reward_point_mode">order</field>
+        <field name="reward_point_amount">1</field>
+        <field name="minimum_qty">1</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <!-- 3. Phần thưởng ưu đãi: Giảm 10% giá trị đơn hàng -->
+    <record id="loyalty_reward_welcome10" model="loyalty.reward">
+        <field name="program_id" ref="loyalty_program_welcome10"/>
+        <field name="reward_type">discount</field>
+        <field name="discount">10</field>
+        <field name="discount_mode">percent</field>
+        <field name="discount_applicability">order</field>
+        <field name="description">Giảm 10% đơn hàng (WELCOME10)</field>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

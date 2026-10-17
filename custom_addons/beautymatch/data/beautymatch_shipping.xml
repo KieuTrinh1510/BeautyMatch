@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ======================================================== -->
+    <!-- BEAUTYMATCH SHIPPING / PHƯƠNG THỨC VẬN CHUYỂN            -->
+    <!-- ======================================================== -->
+
+    <!-- 1. Sản phẩm dịch vụ vận chuyển BeautyMatch -->
+    <record id="beautymatch_product_delivery_standard" model="product.product">
+        <field name="name">Giao hàng tiêu chuẩn</field>
+        <field name="default_code">SHIP_BM_STANDARD</field>
+        <field name="type">service</field>
+        <field name="categ_id" ref="delivery.product_category_deliveries"/>
+        <field name="sale_ok" eval="False"/>
+        <field name="purchase_ok" eval="False"/>
+        <field name="list_price">30000.0</field>
+        <field name="invoice_policy">order</field>
+        <field name="taxes_id" eval="[(6, 0, [])]"/>
+        <field name="beautymatch_brand">BeautyMatch</field>
+    </record>
+
+    <!-- 2. Phương thức vận chuyển: Giao hàng tiêu chuẩn -->
+    <!-- Cố định 30.000 VND, miễn phí khi đơn hàng sau giảm giá >= 500.000 VND -->
+    <record id="beautymatch_delivery_carrier_standard" model="delivery.carrier">
+        <field name="name">Giao hàng tiêu chuẩn</field>
+        <field name="delivery_type">fixed</field>
+        <field name="product_id" ref="beautymatch_product_delivery_standard"/>
+        <field name="fixed_price">30000.0</field>
+        <field name="free_over" eval="True"/>
+        <field name="amount">500000.0</field>
+        <field name="sequence">1</field>
+        <field name="active" eval="True"/>
+        <field name="is_published" eval="True"/>
+        <field name="website_id" ref="website.default_website"/>
+        <field name="allow_cash_on_delivery" eval="True"/>
+    </record>
+
+    <!-- 3. Tự động dọn dẹp và vô hiệu hóa các phương thức giao hàng demo Odoo -->
+    <function model="delivery.carrier" name="_archive_demo_carriers"/>
+</odoo>

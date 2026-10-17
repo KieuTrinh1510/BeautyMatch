@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Khởi tạo cấu hình biến thể (SKU, giá) và áp dụng tồn kho demo 45 sản phẩm/item -->
+    <function model="product.template" name="_setup_beautymatch_demo_inventory"/>
+</odoo>

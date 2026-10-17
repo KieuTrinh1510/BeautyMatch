@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ======================================================== -->
+    <!-- 1. BẬT CÁC TÍNH NĂNG NATIVE ODOO 19                      -->
+    <!-- ======================================================== -->
+
+    <!-- Bật Đánh giá & Rating khách hàng trên trang sản phẩm -->
+    <record id="website_sale.product_comment" model="ir.ui.view">
+        <field name="active" eval="True"/>
+    </record>
+
+    <!-- Bật nút Mua ngay (Buy Now) -->
+    <record id="website_sale.product_buy_now" model="ir.ui.view">
+        <field name="active" eval="True"/>
+    </record>
+
+    <!-- Bật bộ chọn số lượng (Quantity Selector +/-) -->
+    <record id="website_sale.product_quantity" model="ir.ui.view">
+        <field name="active" eval="True"/>
+    </record>
+
+    <!-- Bật hiển thị danh mục và bộ lọc trên Shop -->
+    <record id="website_sale.products_categories" model="ir.ui.view">
+        <field name="active" eval="True"/>
+    </record>
+    <record id="website_sale.products_attributes" model="ir.ui.view">
+        <field name="active" eval="True"/>
+    </record>
+
+    <!-- ======================================================== -->
+    <!-- 2. TEMPLATE BỘ LỌC CHUYÊN SÂU BEAUTYMATCH (FILTERS)      -->
+    <!-- Dùng chung cho Desktop Sidebar và Mobile Offcanvas Drawer-->
+    <!-- ======================================================== -->
+    <template id="beautymatch_skincare_filters" name="BeautyMatch Skincare Filters">
+        <div class="bm-filter-wrapper">
+            <!-- Nút xóa bộ lọc khi có filter đang kích hoạt -->
+            <div t-if="bm_has_active_filters" class="mb-3 p-2 bg-light rounded-3 d-flex align-items-center justify-content-between">
+                <span class="small fw-semibold text-purple">Đang áp dụng bộ lọc</span>
+                <a t-att-href="keep(skin_type=0, concern=0, brand=0, ingredient=0, budget=0, volume=0)"
+                   class="btn btn-sm btn-outline-danger py-1 px-2 rounded-pill small">
+                    <i class="fa fa-times me-1"/>Xóa tất cả
+                </a>
+            </div>
+
+            <!-- 1. DANH MỤC SẢN PHẨM (Category dùng để điều hướng) -->
+            <div class="bm-filter-group mb-4">
+                <h6 class="bm-filter-title text-uppercase fw-bold small mb-2 d-flex align-items-center">
+                    <i class="fa fa-folder-open-o me-2 text-purple"/>Danh Mục Routine
+                </h6>
+                <div class="list-group list-group-flush bm-category-list">
+                    <a href="/shop"
+                       t-attf-class="list-group-item list-group-item-action border-0 px-2 py-1 rounded-2 small #{'active fw-bold' if not category else ''}">
+                        <i class="fa fa-th-large me-2 text-muted"/>Tất cả sản phẩm
+                    </a>
+                    <t t-if="bm_main_categories">
+                        <t t-foreach="bm_main_categories" t-as="c">
+                            <a t-att-href="'/shop/category/%s' % slug(c)"
+                               t-attf-class="list-group-item list-group-item-action border-0 px-2 py-1 rounded-2 small #{'active fw-bold' if category and category.id == c.id else ''}">
+                                <i class="fa fa-angle-right me-2 text-muted"/>
+                                <t t-out="c.name"/>
+                            </a>
+                        </t>
+                    </t>
+                </div>
+            </div>
+
+            <hr class="bm-filter-divider my-3"/>
+
+            <!-- 2. BỘ LỌC LOẠI DA -->
+            <div class="bm-filter-group mb-3">
+                <h6 class="bm-filter-title text-uppercase fw-bold small mb-2 d-flex align-items-center">
+                    <i class="fa fa-user-circle-o me-2 text-purple"/>Loại Da
+                </h6>
+                <div class="d-flex flex-wrap gap-1">
+                    <t t-if="bm_skin_types_data">
+                        <t t-foreach="bm_skin_types_data" t-as="st">
+                            <t t-set="is_selected" t-value="st[0] in bm_selected_skin_types"/>
+                            <a t-att-href="keep(skin_type=0 if is_selected else st[0])"
+                               t-attf-class="badge bm-filter-pill text-decoration-none #{'active' if is_selected else ''}">
+                                <i t-if="is_selected" class="fa fa-check me-1 small"/>
+                                <t t-out="st[1]"/>
+                            </a>
+                        </t>
+                    </t>
+                </div>
+            </div>
+
+            <!-- 3. BỘ LỌC VẤN ĐỀ DA -->
+            <div class="bm-filter-group mb-3">
+                <h6 class="bm-filter-title text-uppercase fw-bold small mb-2 d-flex align-items-center">
+                    <i class="fa fa-dot-circle-o me-2 text-purple"/>Vấn Đề Da
+                </h6>
+                <div class="d-flex flex-wrap gap-1">
+                    <t t-if="bm_skin_concerns_data">
+                        <t t-foreach="bm_skin_concerns_data" t-as="sc">
+                            <t t-set="is_selected" t-value="sc[0] in bm_selected_concerns"/>
+                            <a t-att-href="keep(concern=0 if is_selected else sc[0])"
+                               t-attf-class="badge bm-filter-pill text-decoration-none #{'active' if is_selected else ''}">
+                                <i t-if="is_selected" class="fa fa-check me-1 small"/>
+                                <t t-out="sc[1]"/>
+                            </a>
+                        </t>
+                    </t>
+                </div>
+            </div>
+
+            <!-- 4. BỘ LỌC THƯƠNG HIỆU -->
+            <div class="bm-filter-group mb-3">
+                <h6 class="bm-filter-title text-uppercase fw-bold small mb-2 d-flex align-items-center">
+                    <i class="fa fa-bookmark-o me-2 text-purple"/>Thương Hiệu
+                </h6>
+                <div class="bm-filter-scroll-list" style="max-height: 160px; overflow-y: auto;">
+                    <t t-if="bm_available_brands">
+                        <t t-foreach="bm_available_brands" t-as="b">
+                            <t t-set="is_selected" t-value="b in bm_selected_brands"/>
+                            <div class="form-check py-1">
+                                <input type="checkbox"
+                                       class="form-check-input"
+                                       t-att-id="'brand_' + b"
+                                       t-att-checked="is_selected"
+                                       t-attf-onclick="location.href='#{keep(brand=0 if is_selected else b)}';"/>
+                                <label class="form-check-label small" t-att-for="'brand_' + b">
+                                    <t t-out="b"/>
+                                </label>
+                            </div>
+                        </t>
+                    </t>
+                </div>
+            </div>
+
+            <!-- 5. BỘ LỌC THÀNH PHẦN NỔI BẬT -->
+            <div class="bm-filter-group mb-3">
+                <h6 class="bm-filter-title text-uppercase fw-bold small mb-2 d-flex align-items-center">
+                    <i class="fa fa-flask me-2 text-purple"/>Thành Phần NỔI BẬT
+                </h6>
+                <div class="d-flex flex-wrap gap-1">
+                    <t t-if="bm_popular_ingredients">
+                        <t t-foreach="bm_popular_ingredients" t-as="ingr">
+                            <t t-set="is_selected" t-value="ingr in bm_selected_ingredients"/>
+                            <a t-att-href="keep(ingredient=0 if is_selected else ingr)"
+                               t-attf-class="badge bm-filter-pill text-decoration-none #{'active' if is_selected else ''}">
+                                <i t-if="is_selected" class="fa fa-check me-1 small"/>
+                                <t t-out="ingr"/>
+                            </a>
+                        </t>
+                    </t>
+                </div>
+            </div>
+
+            <!-- 6. BỘ LỌC DUNG TÍCH -->
+            <div class="bm-filter-group mb-3">
+                <h6 class="bm-filter-title text-uppercase fw-bold small mb-2 d-flex align-items-center">
+                    <i class="fa fa-tint me-2 text-purple"/>Dung Tích
+                </h6>
+                <div class="d-flex flex-wrap gap-1">
+                    <t t-if="bm_available_volumes">
+                        <t t-foreach="bm_available_volumes" t-as="vol">
+                            <t t-set="is_selected" t-value="vol in bm_selected_volumes"/>
+                            <a t-att-href="keep(volume=0 if is_selected else vol)"
+                               t-attf-class="badge bm-filter-pill text-decoration-none #{'active' if is_selected else ''}">
+                                <i t-if="is_selected" class="fa fa-check me-1 small"/>
+                                <t t-out="vol"/>
+                            </a>
+                        </t>
+                    </t>
+                </div>
+            </div>
+
+            <!-- 7. BỘ LỌC PHÂN KHÚC GIÁ -->
+            <div class="bm-filter-group mb-3">
+                <h6 class="bm-filter-title text-uppercase fw-bold small mb-2 d-flex align-items-center">
+                    <i class="fa fa-tag me-2 text-purple"/>Phân Khúc Ngân Sách
+                </h6>
+                <div class="d-flex flex-column gap-1">
+                    <t t-if="bm_budget_levels_data">
+                        <t t-foreach="bm_budget_levels_data" t-as="bg">
+                            <t t-set="is_selected" t-value="bg[0] in bm_selected_budgets"/>
+                            <a t-att-href="keep(budget=0 if is_selected else bg[0])"
+                               t-attf-class="badge bm-filter-pill text-start py-2 text-decoration-none #{'active' if is_selected else ''}">
+                                <i t-if="is_selected" class="fa fa-check me-1 small"/>
+                                <t t-out="bg[1]"/>
+                            </a>
+                        </t>
+                    </t>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- ======================================================== -->
+    <!-- 3. TÍCH HỢP BỘ LỌC VÀO SIDEBAR & OFFCANVAS TRANG SHOP     -->
+    <!-- ======================================================== -->
+    <template id="beautymatch_shop_sidebar" inherit_id="website_sale.products" name="BeautyMatch Shop Sidebar Extension">
+        <xpath expr="//aside[@id='products_grid_before']//div[hasclass('o_wsale_products_grid_before_rail')]" position="replace">
+            <div class="o_wsale_products_grid_before_rail vh-100 ms-n2 px-lg-2 ps-2 overflow-y-scroll pe-2">
+                <t t-call="beautymatch.beautymatch_skincare_filters"/>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Tích hợp bộ lọc vào Mobile / Tablet Offcanvas Drawer -->
+    <template id="beautymatch_shop_offcanvas" inherit_id="website_sale.o_wsale_offcanvas" name="BeautyMatch Mobile Offcanvas Filter">
+        <xpath expr="//div[@id='o_wsale_offcanvas_content']" position="inside">
+            <div class="p-3">
+                <t t-call="beautymatch.beautymatch_skincare_filters"/>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- ======================================================== -->
+    <!-- 4. PRODUCT CARD CHUẨN Y KHOA (website_sale.products_item) -->
+    <!-- Chỉ hiển thị: Ảnh, Brand, Tên, Giá, Skin type, 1-2 tags,  -->
+    <!-- Wishlist icon, Xem sản phẩm. Không nhồi nhét.            -->
+    <!-- ======================================================== -->
+    <template id="beautymatch_products_item" inherit_id="website_sale.products_item" name="BeautyMatch Clean Product Card">
+        <xpath expr="//form" position="replace">
+            <form t-attf-class="oe_product_cart bm-product-card h-100 d-flex flex-column bg-white"
+                  t-att-data-publish="product.website_published and 'on' or 'off'"
+                  role="article"
+                  t-att-aria-label="product.name">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                <!-- 1. Ảnh sản phẩm + Nút Wishlist + Skin Type Badge -->
+                <div class="bm-card-image-wrap position-relative text-center overflow-hidden">
+                    <a t-att-href="product_href" class="d-block w-100 h-100" t-att-title="product.name">
+                        <span t-field="product.image_1920"
+                              t-options="{'widget': 'image', 'preview_image': 'image_512', 'class': 'bm-card-img img-fluid'}"
+                              class="d-flex justify-content-center align-items-center w-100 h-100"/>
+                    </a>
+
+                    <!-- Wishlist Button (Native website_sale_wishlist) -->
+                    <t t-set="isWishlistAvailable" t-value="products_in_wishlist is not None"/>
+                    <t t-if="isWishlistAvailable">
+                        <t t-set="in_wish" t-value="product in products_in_wishlist"/>
+                        <t t-set="product_variant_id" t-value="in_wish or product._get_first_possible_variant_id()"/>
+                        <button t-if="product_variant_id"
+                                type="button"
+                                t-attf-class="btn bm-card-wishlist-btn shadow-sm #{in_wish and 'o_in_wishlist text-danger'}"
+                                t-att-disabled="in_wish"
+                                t-att-data-product-template-id="product.id"
+                                t-att-data-product-product-id="product_variant_id"
+                                data-action="o_wishlist"
+                                title="Yêu thích">
+                            <i t-attf-class="fa #{in_wish and 'fa-heart text-danger' or 'fa-heart-o'}"/>
+                        </button>
+                    </t>
+
+                    <!-- Skin Type Badge -->
+                    <div t-if="product.beautymatch_skin_type" class="bm-card-skin-badge">
+                        <span class="badge bm-badge-skin">
+                            <t t-out="dict(product._fields['beautymatch_skin_type'].selection).get(product.beautymatch_skin_type)"/>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- 2. Nội dung tinh giản của thẻ sản phẩm -->
+                <div class="bm-card-body p-3 d-flex flex-column flex-grow-1">
+                    <!-- Brand -->
+                    <div class="bm-card-brand text-uppercase fw-bold small mb-1" style="color: #8F6FA8; font-size: 0.78rem; letter-spacing: 0.05em;">
+                        <t t-out="product.beautymatch_brand or 'BeautyMatch'"/>
+                    </div>
+
+                    <!-- Tên sản phẩm -->
+                    <h6 class="bm-card-title fw-semibold mb-2">
+                        <a t-att-href="product_href" class="text-reset text-decoration-none">
+                            <t t-out="product.name"/>
+                        </a>
+                    </h6>
+
+                    <!-- Rating sao & số đánh giá -->
+                    <div class="bm-card-rating d-flex align-items-center gap-1 mb-2">
+                        <t t-call="portal_rating.rating_widget_stars_static">
+                            <t t-set="rating_avg" t-value="product.sudo().rating_avg or 5.0"/>
+                            <t t-set="rating_count" t-value="product.rating_count or 1"/>
+                        </t>
+                        <span class="text-muted small ms-1">(<t t-out="product.rating_count or 1"/>)</span>
+                    </div>
+
+                    <!-- 1–2 Ingredient Tags -->
+                    <div t-if="product.beautymatch_key_ingredients" class="bm-card-ingredients d-flex flex-wrap gap-1 mb-3">
+                        <t t-foreach="product.beautymatch_key_ingredients.split(',')[:2]" t-as="ingr">
+                            <span class="badge bm-ingredient-tag"><t t-out="ingr.strip()"/></span>
+                        </t>
+                    </div>
+
+                    <!-- Giá và Nút Xem Sản Phẩm -->
+                    <div class="bm-card-footer mt-auto pt-2 border-top d-flex align-items-center justify-content-between">
+                        <div class="bm-card-price">
+                            <t t-set="template_price_vals" t-value="get_product_prices(product)"/>
+                            <span class="fw-bold text-dark fs-6"
+                                  t-out="template_price_vals['price_reduce']"
+                                  t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                        </div>
+                        <a t-att-href="product_href" class="btn btn-sm bm-button-view">
+                            Xem sản phẩm <i class="fa fa-chevron-right ms-1 small"/>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </xpath>
+    </template>
+
+    <!-- ======================================================== -->
+    <!-- 5. PRODUCT DETAIL PAGE ENHANCEMENT (LAB 6)               -->
+    <!-- Phần đầu: Gallery, Brand, Tên, Giá, Rating, Variant,     -->
+    <!-- Tồn kho, Quantity, Add to Cart, Buy Now, Wishlist        -->
+    <!-- Decision Support: Phù hợp với bạn khi, Vì sao phù hợp    -->
+    <!-- Reviews: Rating trung bình, số đánh giá, list reviews    -->
+    <!-- ======================================================== -->
+
+    <!-- 5.1 Thêm Brand trên tên sản phẩm và Rating star jump link -->
+    <template id="beautymatch_product_title_brand" inherit_id="website_sale.product_title" name="BeautyMatch Product Brand and Rating">
+        <xpath expr="//h1" position="before">
+            <div t-if="product.beautymatch_brand" class="bm-detail-brand text-uppercase fw-bold mb-1" style="color: #8F6FA8; font-size: 0.88rem; letter-spacing: 0.08em;">
+                <i class="fa fa-shield me-1"/>
+                <t t-out="product.beautymatch_brand"/>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- 5.2 Thêm Tồn Kho & Badges phía trên CTA wrapper -->
+    <template id="beautymatch_product_stock_badge" inherit_id="website_sale.cta_wrapper" name="BeautyMatch Product Stock Status">
+        <xpath expr="//div[@id='o_wsale_cta_wrapper']" position="before">
+            <!-- Badge Tồn kho và Cam kết chuẩn nguồn gốc -->
+            <div class="bm-detail-stock-box d-flex flex-wrap align-items-center gap-2 mb-3">
+                <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 rounded-pill small">
+                    <i class="fa fa-check-circle me-1"/>Còn hàng (Sẵn sàng giao nhanh)
+                </span>
+                <span class="badge bg-light text-muted border px-2 py-1 rounded-pill small">
+                    <i class="fa fa-truck me-1"/>Miễn phí đổi trả 7 ngày
+                </span>
+                <span t-if="product.beautymatch_origin" class="badge bg-light text-muted border px-2 py-1 rounded-pill small">
+                    <i class="fa fa-globe me-1"/>Xuất xứ: <t t-out="product.beautymatch_origin"/>
+                </span>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- 5.3 Nâng cấp khối Decision Support và Vì sao phù hợp? -->
+    <template id="beautymatch_product_decision_support" inherit_id="website_sale.product" name="BeautyMatch Decision Support &amp; Review Integration">
+        <xpath expr="//div[@id='o_wsale_product_details_content']" position="inside">
+            <div class="bm-decision-support-box mt-4 p-4 rounded-4 shadow-sm bg-white border">
+                <!-- Tiêu đề Section 1 -->
+                <div class="d-flex align-items-center mb-3 pb-2 border-bottom">
+                    <span class="bm-badge bm-badge-primary me-2">
+                        <i class="fa fa-heartbeat me-1"/>BeautyMatch Advisor
+                    </span>
+                    <h5 class="mb-0 fw-bold text-dark text-uppercase fs-6">Phù Hợp Với Bạn Khi</h5>
+                </div>
+
+                <!-- Lưới 6 tiêu chuẩn phù hợp -->
+                <div class="row g-2 mb-3">
+                    <!-- 1. Loại da -->
+                    <div class="col-6 col-md-4">
+                        <div class="p-2 rounded-3 bg-light h-100">
+                            <div class="text-muted small"><i class="fa fa-user-circle-o me-1 text-purple"/>Loại da:</div>
+                            <div class="fw-semibold small text-dark mt-1">
+                                <t t-if="product.beautymatch_skin_type">
+                                    <t t-esc="dict(product._fields['beautymatch_skin_type'].selection).get(product.beautymatch_skin_type)"/>
+                                </t>
+                                <t t-else="">Mọi loại da</t>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Vấn đề da -->
+                    <div class="col-6 col-md-4">
+                        <div class="p-2 rounded-3 bg-light h-100">
+                            <div class="text-muted small"><i class="fa fa-dot-circle-o me-1 text-purple"/>Vấn đề da:</div>
+                            <div class="fw-semibold small text-dark mt-1">
+                                <t t-if="product.beautymatch_skin_concern">
+                                    <t t-esc="dict(product._fields['beautymatch_skin_concern'].selection).get(product.beautymatch_skin_concern)"/>
+                                </t>
+                                <t t-else="">Chăm sóc toàn diện</t>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Hoạt chất -->
+                    <div class="col-12 col-md-4">
+                        <div class="p-2 rounded-3 bg-light h-100">
+                            <div class="text-muted small"><i class="fa fa-flask me-1 text-purple"/>Hoạt chất chính:</div>
+                            <div class="fw-semibold small text-dark mt-1 text-truncate" t-att-title="product.beautymatch_key_ingredients">
+                                <t t-out="product.beautymatch_key_ingredients or 'Công thức y khoa an toàn'"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Routine Step -->
+                    <div class="col-6 col-md-4">
+                        <div class="p-2 rounded-3 bg-light h-100">
+                            <div class="text-muted small"><i class="fa fa-list-ol me-1 text-purple"/>Bước Routine:</div>
+                            <div class="fw-semibold small text-dark mt-1">
+                                <t t-if="product.beautymatch_routine_step">
+                                    <t t-esc="dict(product._fields['beautymatch_routine_step'].selection).get(product.beautymatch_routine_step)"/>
+                                </t>
+                                <t t-else="">Hàng ngày</t>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 5. Usage Time -->
+                    <div class="col-6 col-md-4">
+                        <div class="p-2 rounded-3 bg-light h-100">
+                            <div class="text-muted small"><i class="fa fa-clock-o me-1 text-purple"/>Thời điểm dùng:</div>
+                            <div class="fw-semibold small text-dark mt-1">
+                                <t t-if="product.beautymatch_usage_time">
+                                    <t t-esc="dict(product._fields['beautymatch_usage_time'].selection).get(product.beautymatch_usage_time)"/>
+                                </t>
+                                <t t-else="">Sáng &amp; Tối</t>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 6. Phân khúc ngân sách -->
+                    <div class="col-12 col-md-4">
+                        <div class="p-2 rounded-3 bg-light h-100">
+                            <div class="text-muted small"><i class="fa fa-tag me-1 text-purple"/>Phân khúc giá:</div>
+                            <div class="fw-semibold small text-dark mt-1">
+                                <t t-if="product.beautymatch_budget_level">
+                                    <t t-esc="dict(product._fields['beautymatch_budget_level'].selection).get(product.beautymatch_budget_level)"/>
+                                </t>
+                                <t t-else="">Tầm trung</t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tiêu đề Section 2: VÌ SAO PHÙ HỢP? -->
+                <div t-if="product.beautymatch_short_fit_reason" class="bm-reason-box p-3 rounded-3" style="background-color: #F3ECF8; border-left: 4px solid #8F6FA8;">
+                    <div class="fw-bold small mb-1 text-uppercase" style="color: #6E4C7E;">
+                        <i class="fa fa-check-circle me-1"/>Vì Sao Phù Hợp Với Bạn?
+                    </div>
+                    <p class="mb-0 text-dark small lh-base" t-field="product.beautymatch_short_fit_reason"/>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>

@@ -1,0 +1,1069 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ======================================================== -->
+    <!-- 2. THEO VẤN ĐỀ DA PAGE (/theo-van-de-da)                -->
+    <!-- ======================================================== -->
+    <template id="page_theo_van_de_da" name="Theo Vấn Đề Da - BeautyMatch">
+        <t t-call="website.layout">
+            <div id="wrap" class="bm-section py-5">
+                <div class="container">
+                    <!-- Tiêu đề trang -->
+                    <div class="text-center mb-5">
+                        <span class="bm-badge bm-badge-primary mb-2">Khám phá theo nhu cầu</span>
+                        <h1 class="fw-bold text-dark mb-3">Mua Sắm Theo Vấn Đề Da</h1>
+                        <p class="text-muted mx-auto" style="max-width: 600px;">
+                            Bắt đầu từ tình trạng da thực tế của bạn để tìm sản phẩm có hoạt chất phù hợp, an toàn và hiệu quả nhất.
+                        </p>
+                    </div>
+
+                    <!-- Lưới 4 thẻ vấn đề da chính -->
+                    <div class="row g-4">
+                        <t t-foreach="concerns" t-as="item">
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <div class="bm-card h-100 d-flex flex-column justify-content-between p-3">
+                                    <div>
+                                        <t t-set="concern_img" t-value="item.get('img') or ('/beautymatch/static/src/img/concern_%s.webp' % ('acne' if item.get('id') == 'acne_oil' else ('dry' if item.get('id') == 'dryness' else ('sensitive' if item.get('id') == 'sensitivity' else 'dull'))))"/>
+                                        <div class="mb-3 overflow-hidden rounded-3 text-center" style="height: 150px;">
+                                            <img t-att-src="concern_img" t-att-alt="item['title']" class="img-fluid w-100 h-100" style="object-fit: cover;"/>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                            <span class="bm-badge bm-badge-concern">
+                                                <t t-out="item['badge']"/>
+                                            </span>
+                                            <i t-attf-class="#{item['icon']} fs-4 text-purple opacity-75"/>
+                                        </div>
+                                        <h3 class="h5 fw-bold text-dark mb-2">
+                                            <t t-out="item['title']"/>
+                                        </h3>
+                                        <p class="text-muted small mb-4">
+                                            <t t-out="item.get('description') or item.get('desc')"/>
+                                        </p>
+                                    </div>
+                                    <a t-att-href="item['link']" class="bm-button-primary text-center text-decoration-none">
+                                        Xem sản phẩm phù hợp <i class="fa fa-arrow-right ms-1"/>
+                                    </a>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+
+                    <!-- Callout hướng dẫn thêm -->
+                    <div class="mt-5 p-4 rounded-4 bg-white text-center shadow-sm mx-auto" style="max-width: 720px;">
+                        <h5 class="fw-bold text-dark mb-2">Chưa chắc chắn về loại da hoặc vấn đề của mình?</h5>
+                        <p class="text-muted small mb-3">
+                            Hãy thử làm bài Beauty Quiz ngắn để nhận gợi ý theo tình trạng da và ngân sách của bạn.
+                        </p>
+                        <a href="/beauty-quiz" class="bm-button-secondary text-decoration-none">
+                            Làm Beauty Quiz ngay <i class="fa fa-magic ms-1"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- ======================================================== -->
+    <!-- 3. BEAUTY QUIZ PAGE (/beauty-quiz)                       -->
+    <!-- ======================================================== -->
+    <template id="page_beauty_quiz" name="Beauty Quiz - BeautyMatch">
+        <t t-call="website.layout">
+            <div id="wrap" class="bm-section py-5">
+                <div class="container" style="max-width: 860px;">
+                    <!-- Header -->
+                    <div class="text-center mb-5">
+                        <span class="bm-badge bm-badge-primary mb-2">Cá nhân hóa lựa chọn</span>
+                        <h1 class="fw-bold text-dark mb-3">Beauty Quiz</h1>
+                        <p class="text-muted mx-auto" style="max-width: 620px;">
+                            Trả lời 4 câu hỏi ngắn về loại da, vấn đề da, routine và ngân sách để nhận gợi ý phù hợp hơn, giúp tiết kiệm thời gian và tối ưu hiệu quả routine.
+                        </p>
+                    </div>
+
+                    <!-- Form câu hỏi -->
+                    <form action="/beauty-quiz" method="post" class="bm-card p-4 p-md-5 mb-5">
+                        <input type="hidden" name="submitted" value="1"/>
+
+                        <!-- Câu hỏi 1 -->
+                        <div class="mb-4 pb-3 border-bottom">
+                            <label class="fw-bold text-dark mb-2 d-block">
+                                1. Loại da của bạn là gì?
+                            </label>
+                            <div class="row g-2">
+                                <div class="col-6 col-md-4">
+                                    <label class="bm-quiz-option w-100">
+                                        <input type="radio" name="skin_type" value="oily" t-att-checked="'checked' if selected_skin_type == 'oily' else None" required="required"/>
+                                        <span>Da dầu</span>
+                                    </label>
+                                </div>
+                                <div class="col-6 col-md-4">
+                                    <label class="bm-quiz-option w-100">
+                                        <input type="radio" name="skin_type" value="dry" t-att-checked="'checked' if selected_skin_type == 'dry' else None"/>
+                                        <span>Da khô</span>
+                                    </label>
+                                </div>
+                                <div class="col-6 col-md-4">
+                                    <label class="bm-quiz-option w-100">
+                                        <input type="radio" name="skin_type" value="combination" t-att-checked="'checked' if selected_skin_type == 'combination' else None"/>
+                                        <span>Da hỗn hợp</span>
+                                    </label>
+                                </div>
+                                <div class="col-6 col-md-4">
+                                    <label class="bm-quiz-option w-100">
+                                        <input type="radio" name="skin_type" value="sensitive" t-att-checked="'checked' if selected_skin_type == 'sensitive' else None"/>
+                                        <span>Da nhạy cảm</span>
+                                    </label>
+                                </div>
+                                <div class="col-6 col-md-4">
+                                    <label class="bm-quiz-option w-100">
+                                        <input type="radio" name="skin_type" value="unknown" t-att-checked="'checked' if selected_skin_type == 'unknown' else None"/>
+                                        <span>Chưa rõ</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Câu hỏi 2 -->
+                        <div class="mb-4 pb-3 border-bottom">
+                            <label class="fw-bold text-dark mb-2 d-block">
+                                2. Vấn đề da bạn đang quan tâm nhất?
+                            </label>
+                            <div class="row g-2">
+                                <div class="col-6 col-md-3">
+                                    <label class="bm-quiz-option w-100">
+                                        <input type="radio" name="concern" value="acne_oil" t-att-checked="'checked' if selected_concern == 'acne_oil' else None" required="required"/>
+                                        <span>Dầu &amp; mụn</span>
+                                    </label>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <label class="bm-quiz-option w-100">
+                                        <input type="radio" name="concern" value="dryness" t-att-checked="'checked' if selected_concern == 'dryness' else None"/>
+                                        <span>Khô da</span>
+                                    </label>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <label class="bm-quiz-option w-100">
+                                        <input type="radio" name="concern" value="sensitivity" t-att-checked="'checked' if selected_concern == 'sensitivity' else None"/>
+                                        <span>Nhạy cảm</span>
+                                    </label>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <label class="bm-quiz-option w-100">
+                                        <input type="radio" name="concern" value="dullness" t-att-checked="'checked' if selected_concern == 'dullness' else None"/>
+                                        <span>Xỉn màu</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Câu hỏi 3 -->
+                        <div class="mb-4 pb-3 border-bottom">
+                            <label class="fw-bold text-dark mb-2 d-block">
+                                3. Bạn muốn routine như thế nào?
+                            </label>
+                            <div class="row g-2">
+                                <div class="col-12 col-md-6">
+                                    <label class="bm-quiz-option w-100">
+                                        <input type="radio" name="routine_type" value="minimal" t-att-checked="'checked' if selected_routine_type == 'minimal' else None" required="required"/>
+                                        <span>Tối giản (Làm sạch - Dưỡng ẩm - Chống nắng)</span>
+                                    </label>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <label class="bm-quiz-option w-100">
+                                        <input type="radio" name="routine_type" value="full" t-att-checked="'checked' if selected_routine_type == 'full' else None"/>
+                                        <span>Đầy đủ (Bổ sung Toner, Serum đặc trị)</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Câu hỏi 4 -->
+                        <div class="mb-4">
+                            <label class="fw-bold text-dark mb-2 d-block">
+                                4. Ngân sách dự kiến cho mỗi sản phẩm?
+                            </label>
+                            <div class="row g-2">
+                                <div class="col-12 col-md-4">
+                                    <label class="bm-quiz-option w-100">
+                                        <input type="radio" name="budget" value="budget" t-att-checked="'checked' if selected_budget == 'budget' else None" required="required"/>
+                                        <span>Dưới 500.000đ (Tiết kiệm)</span>
+                                    </label>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <label class="bm-quiz-option w-100">
+                                        <input type="radio" name="budget" value="mid" t-att-checked="'checked' if selected_budget == 'mid' else None"/>
+                                        <span>500.000đ – 1.000.000đ (Tầm trung)</span>
+                                    </label>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <label class="bm-quiz-option w-100">
+                                        <input type="radio" name="budget" value="premium" t-att-checked="'checked' if selected_budget == 'premium' else None"/>
+                                        <span>Trên 1.000.000đ (Cao cấp)</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center pt-2">
+                            <button type="submit" class="bm-button-primary px-5 py-3 fs-6">
+                                Xem Gợi Ý Phù Hợp <i class="fa fa-sparkles ms-1"/>
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Kết quả đề xuất (khi đã submit) -->
+                    <t t-if="has_submitted">
+                        <div id="quiz-results" class="bm-results-section mt-5">
+                            <div class="text-center mb-4">
+                                <span class="bm-badge bm-badge-primary mb-2">Kết quả phân tích</span>
+                                <h3 class="fw-bold text-dark">Gợi Ý Dành Riêng Cho Bạn</h3>
+                            </div>
+
+                            <t t-if="recommended_products">
+                                <div class="row g-3">
+                                    <t t-foreach="recommended_products" t-as="p">
+                                        <div class="col-12 col-md-6">
+                                            <div class="bm-card p-3 d-flex flex-column justify-content-between h-100">
+                                                <div class="d-flex align-items-start gap-3">
+                                                    <img t-att-src="'/web/image/product.template/%s/image_256' % p.id" alt="" class="rounded-3" style="width: 80px; height: 80px; object-fit: cover;"/>
+                                                    <div class="flex-grow-1">
+                                                        <div class="d-flex flex-wrap gap-1 mb-1">
+                                                            <span t-if="p.beautymatch_skin_type" class="bm-badge bm-badge-skin py-0 px-2 small">
+                                                                <span t-field="p.beautymatch_skin_type"/>
+                                                            </span>
+                                                            <span t-if="p.beautymatch_routine_step" class="bm-badge bm-badge-step py-0 px-2 small">
+                                                                <span t-field="p.beautymatch_routine_step"/>
+                                                            </span>
+                                                        </div>
+                                                        <h5 class="h6 fw-bold mb-1">
+                                                            <a t-att-href="p.website_url" class="text-dark text-decoration-none">
+                                                                <t t-out="p.name"/>
+                                                            </a>
+                                                        </h5>
+                                                        <div class="text-purple fw-semibold small mb-2">
+                                                            <span t-field="p.list_price" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div t-if="p.beautymatch_short_fit_reason" class="bm-fit-reason mt-2 p-2 rounded-2 small">
+                                                    <span class="fw-semibold"><i class="fa fa-check me-1"/>Vì sao phù hợp:</span>
+                                                    <span t-field="p.beautymatch_short_fit_reason"/>
+                                                </div>
+                                                <div class="mt-3 text-end">
+                                                    <a t-att-href="p.website_url" class="bm-button-secondary text-decoration-none py-1 px-3 small">
+                                                        Xem chi tiết <i class="fa fa-angle-right ms-1"/>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+                            </t>
+                            <t t-else="">
+                                <div class="bm-card p-4 text-center">
+                                    <i class="fa fa-info-circle text-muted fs-3 mb-2"/>
+                                    <p class="text-muted mb-3">BeautyMatch chưa có đủ sản phẩm phù hợp với lựa chọn này.</p>
+                                    <a href="/shop" class="bm-button-primary text-decoration-none">
+                                        Khám phá toàn bộ cửa hàng
+                                    </a>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- ======================================================== -->
+    <!-- 4. ROUTINE GUIDE PAGE (/routine)                         -->
+    <!-- ======================================================== -->
+    <template id="page_routine" name="Skincare Routine Guide - BeautyMatch">
+        <t t-call="website.layout">
+            <div id="wrap" class="bm-section py-5">
+                <div class="container">
+                    <!-- Header -->
+                    <div class="text-center mb-5">
+                        <span class="bm-badge bm-badge-primary mb-2">Kiến thức chăm sóc da</span>
+                        <h1 class="fw-bold text-dark mb-3">Hướng Dẫn Skincare Routine Chuẩn Khoa Học</h1>
+                        <p class="text-muted mx-auto" style="max-width: 650px;">
+                            Hiểu rõ vai trò của từng bước giúp bạn xây dựng thói quen chăm sóc da nhất quán, hiệu quả và tối ưu chi phí.
+                        </p>
+                    </div>
+
+                    <!-- Phần 1: Routine Buổi Sáng -->
+                    <div class="mb-5">
+                        <div class="d-flex align-items-center mb-4">
+                            <span class="bm-badge bm-badge-time fs-6 py-2 px-3 me-3">
+                                <i class="fa fa-sun-o me-1"/> ROUTINE BUỔI SÁNG (Bảo vệ &amp; Duy trì)
+                            </span>
+                        </div>
+                        <div class="row g-3">
+                            <t t-foreach="morning_routine" t-as="step">
+                                <div class="col-12 col-md-6 col-lg">
+                                    <div class="bm-card bm-routine-step p-3 h-100 d-flex flex-column justify-content-between">
+                                        <div>
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <span class="badge rounded-pill bg-light text-purple fw-bold px-2 py-1">
+                                                    Bước <t t-out="step['step_number']"/>
+                                                </span>
+                                                <i t-attf-class="#{step['icon']} text-muted"/>
+                                            </div>
+                                            <h3 class="h6 fw-bold text-dark mb-2">
+                                                <t t-out="step['title']"/>
+                                            </h3>
+                                            <p class="text-muted small mb-3">
+                                                <t t-out="step['why']"/>
+                                            </p>
+                                        </div>
+                                        <div class="pt-2 border-top">
+                                            <a t-att-href="step['link']" class="text-purple small fw-medium text-decoration-none">
+                                                Khám phá <t t-out="step['category_name']"/> &gt;
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+
+                    <!-- Phần 2: Routine Buổi Tối -->
+                    <div class="mb-5">
+                        <div class="d-flex align-items-center mb-4">
+                            <span class="bm-badge bm-badge-time fs-6 py-2 px-3 me-3">
+                                <i class="fa fa-moon-o me-1"/> ROUTINE BUỔI TỐI (Tái tạo &amp; Phục hồi)
+                            </span>
+                        </div>
+                        <div class="row g-3">
+                            <t t-foreach="evening_routine" t-as="step">
+                                <div class="col-12 col-md-6 col-lg-3">
+                                    <div class="bm-card bm-routine-step p-3 h-100 d-flex flex-column justify-content-between">
+                                        <div>
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <span class="badge rounded-pill bg-light text-purple fw-bold px-2 py-1">
+                                                    Bước <t t-out="step['step_number']"/>
+                                                </span>
+                                                <i t-attf-class="#{step['icon']} text-muted"/>
+                                            </div>
+                                            <h3 class="h6 fw-bold text-dark mb-2">
+                                                <t t-out="step['title']"/>
+                                            </h3>
+                                            <p class="text-muted small mb-3">
+                                                <t t-out="step['why']"/>
+                                            </p>
+                                        </div>
+                                        <div class="pt-2 border-top">
+                                            <a t-att-href="step['link']" class="text-purple small fw-medium text-decoration-none">
+                                                Khám phá <t t-out="step['category_name']"/> &gt;
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+
+                    <!-- CTA sang Shop -->
+                    <div class="text-center pt-3">
+                        <a href="/shop" class="bm-button-primary px-4 py-3 text-decoration-none">
+                            Xem tất cả sản phẩm theo Routine <i class="fa fa-shopping-bag ms-1"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- ======================================================== -->
+    <!-- 5. BRANDS PAGE (/brands)                                 -->
+    <!-- ======================================================== -->
+    <template id="page_brands" name="Thương Hiệu - BeautyMatch">
+        <t t-call="website.layout">
+            <div id="wrap" class="bm-section py-5">
+                <div class="container" style="max-width: 960px;">
+                    <!-- Header -->
+                    <div class="text-center mb-5">
+                        <span class="bm-badge bm-badge-primary mb-2">Đối tác uy tín</span>
+                        <h1 class="fw-bold text-dark mb-3">Thương Hiệu Đồng Hành</h1>
+                        <p class="text-muted mx-auto" style="max-width: 600px;">
+                            BeautyMatch cam kết chỉ hợp tác với các thương hiệu minh bạch về thành phần, chuẩn nguồn gốc và an toàn cho người dùng.
+                        </p>
+                    </div>
+
+                    <t t-if="brands">
+                        <div class="row g-4">
+                            <t t-foreach="brands" t-as="b">
+                                <div class="col-6 col-md-4 col-lg-3">
+                                    <div class="bm-card p-4 text-center h-100 d-flex flex-column justify-content-center">
+                                        <h3 class="h5 fw-bold text-dark mb-2">
+                                            <t t-out="b['name']"/>
+                                        </h3>
+                                        <a t-att-href="b['link']" class="text-purple small text-decoration-none mt-2">
+                                            Xem sản phẩm &gt;
+                                        </a>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <div class="bm-card p-5 text-center">
+                            <i class="fa fa-handshake-o fs-1 text-purple mb-3 opacity-50"/>
+                            <h4 class="fw-bold text-dark mb-2">Danh sách thương hiệu đang được cập nhật</h4>
+                            <p class="text-muted mb-4 mx-auto" style="max-width: 500px;">
+                                Chúng tôi đang tuyển chọn và cập nhật hồ sơ các đối tác thương hiệu phân phối chính hãng. Quý khách có thể khám phá sản phẩm qua cửa hàng hoặc theo vấn đề da.
+                            </p>
+                            <div class="d-flex justify-content-center gap-2">
+                                <a href="/shop" class="bm-button-primary text-decoration-none">
+                                    Khám phá Cửa hàng
+                                </a>
+                                <a href="/theo-van-de-da" class="bm-button-secondary text-decoration-none">
+                                    Xem theo vấn đề da
+                                </a>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- ======================================================== -->
+    <!-- 6. BEAUTYMATCH HOMEPAGE TEMPLATE (/)                     -->
+    <!-- ======================================================== -->
+    <template id="homepage" name="BeautyMatch Homepage">
+        <t t-call="website.layout">
+            <t t-set="additional_title">BeautyMatch - Find Your Perfect Skincare Match</t>
+            <div id="wrap" class="bm-homepage">
+
+                <!-- 1. HERO SECTION -->
+                <section class="bm-hero-section py-5 py-lg-6">
+                    <div class="container py-lg-4">
+                        <div class="row align-items-center g-5">
+                            <div class="col-lg-6 text-center text-lg-start">
+                                <span class="bm-badge bm-badge-primary mb-3">
+                                    <i class="fa fa-sparkles me-1"/> Beauty &amp; Personal Care
+                                </span>
+                                <h1 class="display-4 fw-bold text-dark mb-3 bm-hero-title">
+                                    Find your perfect skincare match
+                                </h1>
+                                <p class="lead text-muted mb-4 pe-lg-4">
+                                    Tìm skincare phù hợp hơn với loại da, vấn đề da và ngân sách của bạn.
+                                </p>
+                                <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
+                                    <a href="/beauty-quiz" class="bm-button-primary px-4 py-3 fs-6 text-decoration-none">
+                                        <i class="fa fa-magic me-2"/>Làm Beauty Quiz
+                                    </a>
+                                    <a href="/shop" class="bm-button-secondary px-4 py-3 fs-6 text-decoration-none">
+                                        <i class="fa fa-shopping-bag me-2"/>Khám phá sản phẩm
+                                    </a>
+                                </div>
+                                <div class="mt-4 pt-2 d-flex flex-wrap gap-4 justify-content-center justify-content-lg-start small text-muted">
+                                    <span><i class="fa fa-check text-purple me-1"/> Hỗ trợ ra quyết định</span>
+                                    <span><i class="fa fa-check text-purple me-1"/> Minh bạch thành phần</span>
+                                    <span><i class="fa fa-check text-purple me-1"/> Tối ưu chi phí</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="position-relative mx-auto text-center" style="max-width: 540px;">
+                                    <img src="/beautymatch/static/src/img/beautymatch_hero.webp" alt="BeautyMatch Skincare Campaign" class="img-fluid rounded-4 shadow-lg w-100" style="max-height: 420px; object-fit: cover; border: 2px solid rgba(205, 183, 221, 0.4);"/>
+                                    <div class="bm-routine-preview-box p-3 rounded-3 shadow position-absolute bottom-0 start-50 translate-middle-x mb-n3 w-90 d-none d-sm-block text-start" style="background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(8px); border-left: 4px solid #8F6FA8; max-width: 440px;">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <span class="fw-semibold text-purple small"><i class="fa fa-sparkles me-1"/> Routine Cá Nhân Hóa</span>
+                                            <span class="bm-badge bm-badge-skin py-0 px-2" style="font-size: 0.72rem;">Độ phù hợp 98%</span>
+                                        </div>
+                                        <div class="small fw-medium text-dark" style="font-size: 0.8rem;">
+                                            Sáng: Làm sạch &gt; Serum &gt; Chống nắng | Tối: Làm sạch sâu &gt; Phục hồi
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. SHOP BY CONCERN SECTION -->
+                <section class="bm-section-py py-5 bg-white">
+                    <div class="container py-lg-3">
+                        <div class="text-center mb-5">
+                            <span class="bm-badge bm-badge-concern mb-2">Khám phá theo nhu cầu</span>
+                            <h2 class="fw-bold text-dark mb-2">Bạn đang quan tâm điều gì?</h2>
+                            <p class="text-muted mx-auto" style="max-width: 600px;">
+                                Bắt đầu từ nhu cầu của làn da và thu hẹp lựa chọn nhanh hơn.
+                            </p>
+                        </div>
+
+                        <div class="row g-4">
+                            <!-- Card 1 -->
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <a href="/theo-van-de-da" class="text-decoration-none">
+                                    <div class="bm-card p-3 h-100 d-flex flex-column justify-content-between">
+                                        <div>
+                                            <div class="mb-3 overflow-hidden rounded-3 text-center" style="height: 150px;">
+                                                <img src="/beautymatch/static/src/img/concern_acne.webp" alt="Da dầu &amp; mụn" class="img-fluid w-100 h-100" style="object-fit: cover;"/>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                                <span class="bm-badge bm-badge-concern">Kiểm soát nhờn</span>
+                                                <i class="fa fa-tint text-purple opacity-75"/>
+                                            </div>
+                                            <h3 class="h5 fw-bold text-dark mb-2">Da dầu &amp; mụn</h3>
+                                            <p class="text-muted small mb-3">
+                                                Kiểm soát bã nhờn, làm sạch sâu và tìm kiếm các lựa chọn phù hợp cho làn da dễ nổi mụn.
+                                            </p>
+                                        </div>
+                                        <div class="text-purple fw-semibold small mt-2">
+                                            Khám phá sản phẩm <i class="fa fa-arrow-right ms-1"/>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <!-- Card 2 -->
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <a href="/theo-van-de-da" class="text-decoration-none">
+                                    <div class="bm-card p-3 h-100 d-flex flex-column justify-content-between">
+                                        <div>
+                                            <div class="mb-3 overflow-hidden rounded-3 text-center" style="height: 150px;">
+                                                <img src="/beautymatch/static/src/img/concern_dry.webp" alt="Da khô" class="img-fluid w-100 h-100" style="object-fit: cover;"/>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                                <span class="bm-badge bm-badge-concern">Cấp ẩm đa tầng</span>
+                                                <i class="fa fa-snowflake-o text-purple opacity-75"/>
+                                            </div>
+                                            <h3 class="h5 fw-bold text-dark mb-2">Da khô</h3>
+                                            <p class="text-muted small mb-3">
+                                                Khám phá các sản phẩm tập trung vào cấp ẩm đa tầng và củng cố hàng rào ẩm tự nhiên.
+                                            </p>
+                                        </div>
+                                        <div class="text-purple fw-semibold small mt-2">
+                                            Khám phá sản phẩm <i class="fa fa-arrow-right ms-1"/>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <!-- Card 3 -->
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <a href="/theo-van-de-da" class="text-decoration-none">
+                                    <div class="bm-card p-3 h-100 d-flex flex-column justify-content-between">
+                                        <div>
+                                            <div class="mb-3 overflow-hidden rounded-3 text-center" style="height: 150px;">
+                                                <img src="/beautymatch/static/src/img/concern_sensitive.webp" alt="Da nhạy cảm" class="img-fluid w-100 h-100" style="object-fit: cover;"/>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                                <span class="bm-badge bm-badge-concern">Dịu nhẹ phục hồi</span>
+                                                <i class="fa fa-shield text-purple opacity-75"/>
+                                            </div>
+                                            <h3 class="h5 fw-bold text-dark mb-2">Da nhạy cảm</h3>
+                                            <p class="text-muted small mb-3">
+                                                Ưu tiên các công thức dịu nhẹ, tối giản bảng thành phần để giảm thiểu nguy cơ kích ứng.
+                                            </p>
+                                        </div>
+                                        <div class="text-purple fw-semibold small mt-2">
+                                            Khám phá sản phẩm <i class="fa fa-arrow-right ms-1"/>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <!-- Card 4 -->
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <a href="/theo-van-de-da" class="text-decoration-none">
+                                    <div class="bm-card p-3 h-100 d-flex flex-column justify-content-between">
+                                        <div>
+                                            <div class="mb-3 overflow-hidden rounded-3 text-center" style="height: 150px;">
+                                                <img src="/beautymatch/static/src/img/concern_dull.webp" alt="Làm sáng" class="img-fluid w-100 h-100" style="object-fit: cover;"/>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                                <span class="bm-badge bm-badge-concern">Rạng rỡ đều màu</span>
+                                                <i class="fa fa-sun-o text-purple opacity-75"/>
+                                            </div>
+                                            <h3 class="h5 fw-bold text-dark mb-2">Làm sáng</h3>
+                                            <p class="text-muted small mb-3">
+                                                Khám phá các sản phẩm hướng đến nhu cầu cải thiện vẻ ngoài xỉn màu và không đều màu.
+                                            </p>
+                                        </div>
+                                        <div class="text-purple fw-semibold small mt-2">
+                                            Khám phá sản phẩm <i class="fa fa-arrow-right ms-1"/>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. BEAUTY QUIZ HIGHLIGHT SECTION -->
+                <section class="bm-section-py py-5" style="background-color: #F8F4FA;">
+                    <div class="container py-lg-4">
+                        <div class="bm-card p-4 p-md-5 mx-auto" style="max-width: 980px;">
+                            <div class="text-center mb-4">
+                                <span class="bm-badge bm-badge-primary mb-2">Trắc nghiệm da thông minh</span>
+                                <h2 class="fw-bold text-dark mb-2">Không biết bắt đầu từ đâu?</h2>
+                                <p class="text-muted mx-auto" style="max-width: 640px;">
+                                    Trả lời 4 câu hỏi ngắn về loại da, vấn đề da, routine và ngân sách để nhận gợi ý phù hợp hơn.
+                                </p>
+                            </div>
+
+                            <!-- Flow 4 bước -->
+                            <div class="row g-3 text-center my-4">
+                                <div class="col-6 col-md-3">
+                                    <div class="bm-flow-step p-3 rounded-4 h-100">
+                                        <div class="bm-flow-num mb-2">01</div>
+                                        <h4 class="h6 fw-bold text-dark mb-1">Loại da</h4>
+                                        <small class="text-muted">Dầu, Khô, Hỗn hợp, Nhạy cảm</small>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="bm-flow-step p-3 rounded-4 h-100">
+                                        <div class="bm-flow-num mb-2">02</div>
+                                        <h4 class="h6 fw-bold text-dark mb-1">Vấn đề da</h4>
+                                        <small class="text-muted">Mụn, Khô, Xỉn màu, Lỗ chân lông</small>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="bm-flow-step p-3 rounded-4 h-100">
+                                        <div class="bm-flow-num mb-2">03</div>
+                                        <h4 class="h6 fw-bold text-dark mb-1">Routine</h4>
+                                        <small class="text-muted">Tối giản hoặc Đầy đủ</small>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="bm-flow-step p-3 rounded-4 h-100">
+                                        <div class="bm-flow-num mb-2">04</div>
+                                        <h4 class="h6 fw-bold text-dark mb-1">Ngân sách</h4>
+                                        <small class="text-muted">Tiết kiệm, Tầm trung, Cao cấp</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center pt-3">
+                                <a href="/beauty-quiz" class="bm-button-primary px-5 py-3 fs-6 text-decoration-none shadow-sm">
+                                    Bắt đầu Beauty Quiz <i class="fa fa-arrow-right ms-2"/>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. FEATURED PRODUCTS SECTION -->
+                <section class="bm-section-py py-5 bg-white">
+                    <div class="container py-lg-3">
+                        <div class="text-center mb-5">
+                            <span class="bm-badge bm-badge-primary mb-2">Lựa chọn ưu tiên</span>
+                            <h2 class="fw-bold text-dark mb-2">Sản phẩm nổi bật</h2>
+                            <p class="text-muted mx-auto" style="max-width: 620px;">
+                                Những lựa chọn được BeautyMatch ưu tiên hiển thị dựa trên nhu cầu chăm sóc da phổ biến.
+                            </p>
+                        </div>
+
+                        <!-- Truy vấn sản phẩm nổi bật an toàn: ưu tiên biến từ controller, nếu không có thì query trực tiếp -->
+                        <t t-set="products_to_show" t-value="featured_products if featured_products is not None else request.env['product.template'].sudo().search([('website_published', '=', True), ('sale_ok', '=', True), ('beautymatch_is_featured', '=', True)], limit=4, order='sequence, id desc')"/>
+
+                        <t t-if="products_to_show">
+                            <div class="row g-4">
+                                <t t-foreach="products_to_show" t-as="p">
+                                    <div class="col-12 col-sm-6 col-lg-3">
+                                        <div class="bm-card h-100 d-flex flex-column justify-content-between p-3">
+                                            <div>
+                                                <div class="position-relative mb-3 overflow-hidden rounded-3 text-center bg-light">
+                                                    <a t-att-href="p.website_url">
+                                                        <img t-att-src="'/web/image/product.template/%s/image_512' % p.id" alt="" class="img-fluid" style="height: 220px; object-fit: contain;"/>
+                                                    </a>
+                                                </div>
+                                                <div class="d-flex flex-wrap gap-1 mb-2">
+                                                    <span t-if="p.beautymatch_skin_type" class="bm-badge bm-badge-skin py-0 px-2 small">
+                                                        <span t-field="p.beautymatch_skin_type"/>
+                                                    </span>
+                                                    <span t-if="p.beautymatch_skin_concern" class="bm-badge bm-badge-concern py-0 px-2 small">
+                                                        <span t-field="p.beautymatch_skin_concern"/>
+                                                    </span>
+                                                </div>
+                                                <small t-if="p.beautymatch_brand" class="text-muted d-block mb-1 text-uppercase fw-semibold" style="font-size: 0.72rem; letter-spacing: 0.5px;">
+                                                    <t t-out="p.beautymatch_brand"/>
+                                                </small>
+                                                <h3 class="h6 fw-bold mb-2">
+                                                    <a t-att-href="p.website_url" class="text-dark text-decoration-none">
+                                                        <t t-out="p.name"/>
+                                                    </a>
+                                                </h3>
+                                                <div class="text-purple fw-bold mb-3">
+                                                    <span t-field="p.list_price" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                                                </div>
+                                            </div>
+                                            <div class="pt-2 border-top">
+                                                <a t-att-href="p.website_url" class="bm-button-secondary w-100 text-center text-decoration-none py-2 small">
+                                                    Xem sản phẩm <i class="fa fa-angle-right ms-1"/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="bm-card p-5 text-center mx-auto" style="max-width: 640px;">
+                                <i class="fa fa-leaf text-purple fs-2 mb-3 opacity-50"/>
+                                <h4 class="h5 fw-bold text-dark mb-2">Danh mục sản phẩm đang được chuẩn bị</h4>
+                                <p class="text-muted small mb-4">
+                                    Các sản phẩm nổi bật sẽ sớm xuất hiện tại đây khi quản trị viên đánh dấu sản phẩm nổi bật trong kho hàng.
+                                </p>
+                                <a href="/shop" class="bm-button-primary text-decoration-none">
+                                    Khám phá toàn bộ Cửa hàng
+                                </a>
+                            </div>
+                        </t>
+                    </div>
+                </section>
+
+                <!-- 5. ROUTINE BUILDER SECTION -->
+                <section class="bm-section-py py-5" style="background-color: #FAF8FC;">
+                    <div class="container py-lg-3">
+                        <div class="text-center mb-5">
+                            <span class="bm-badge bm-badge-step mb-2">Chu trình chăm sóc da</span>
+                            <h2 class="fw-bold text-dark mb-2">Xây dựng routine phù hợp với bạn</h2>
+                            <p class="text-muted mx-auto" style="max-width: 620px;">
+                                Hiểu rõ từng bước trong chu trình chăm sóc da và tìm sản phẩm phù hợp cho từng bước.
+                            </p>
+                        </div>
+
+                        <!-- 5 bước routine chuẩn -->
+                        <div class="row g-3">
+                            <div class="col-12 col-md col-lg">
+                                <div class="bm-card p-3 h-100 text-center">
+                                    <div class="badge rounded-pill bg-light text-purple fw-bold mb-2">Bước 1</div>
+                                    <div class="fs-4 text-purple mb-2"><i class="fa fa-shower"/></div>
+                                    <h4 class="h6 fw-bold text-dark mb-1">Làm sạch</h4>
+                                    <p class="text-muted small mb-0">Loại bỏ dầu thừa, bụi bẩn và kem chống nắng</p>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md col-lg">
+                                <div class="bm-card p-3 h-100 text-center">
+                                    <div class="badge rounded-pill bg-light text-purple fw-bold mb-2">Bước 2</div>
+                                    <div class="fs-4 text-purple mb-2"><i class="fa fa-tint"/></div>
+                                    <h4 class="h6 fw-bold text-dark mb-1">Cân bằng</h4>
+                                    <p class="text-muted small mb-0">Cân bằng lại độ pH và cấp ẩm nền cho da</p>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md col-lg">
+                                <div class="bm-card p-3 h-100 text-center">
+                                    <div class="badge rounded-pill bg-light text-purple fw-bold mb-2">Bước 3</div>
+                                    <div class="fs-4 text-purple mb-2"><i class="fa fa-flask"/></div>
+                                    <h4 class="h6 fw-bold text-dark mb-1">Serum</h4>
+                                    <p class="text-muted small mb-0">Tinh chất đặc trị giải quyết vấn đề chuyên sâu</p>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md col-lg">
+                                <div class="bm-card p-3 h-100 text-center">
+                                    <div class="badge rounded-pill bg-light text-purple fw-bold mb-2">Bước 4</div>
+                                    <div class="fs-4 text-purple mb-2"><i class="fa fa-magic"/></div>
+                                    <h4 class="h6 fw-bold text-dark mb-1">Dưỡng ẩm</h4>
+                                    <p class="text-muted small mb-0">Khóa ẩm và nuôi dưỡng màng bảo vệ da</p>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md col-lg">
+                                <div class="bm-card p-3 h-100 text-center">
+                                    <div class="badge rounded-pill bg-light text-purple fw-bold mb-2">Bước 5</div>
+                                    <div class="fs-4 text-purple mb-2"><i class="fa fa-sun-o"/></div>
+                                    <h4 class="h6 fw-bold text-dark mb-1">Chống nắng</h4>
+                                    <p class="text-muted small mb-0">Bảo vệ da toàn diện trước tia UVA và UVB</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4 pt-2">
+                            <a href="/routine" class="bm-button-primary px-4 py-3 text-decoration-none">
+                                Khám phá Routine chi tiết <i class="fa fa-angle-right ms-2"/>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 6. INGREDIENT DISCOVERY SECTION -->
+                <section class="bm-section-py py-5 bg-white">
+                    <div class="container py-lg-3">
+                        <div class="text-center mb-5">
+                            <span class="bm-badge bm-badge-primary mb-2">Minh bạch hoạt chất</span>
+                            <h2 class="fw-bold text-dark mb-2">Thành phần nổi bật</h2>
+                            <p class="text-muted mx-auto" style="max-width: 600px;">
+                                Khám phá các hoạt chất quen thuộc để hiểu cách chúng hoạt động trên làn da của bạn.
+                            </p>
+                        </div>
+
+                        <div class="row g-4">
+                            <!-- Niacinamide -->
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <div class="bm-card p-4 h-100 d-flex flex-column justify-content-between">
+                                    <div>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="bm-badge bm-badge-primary">Vitamin B3</span>
+                                            <i class="fa fa-check-circle text-purple"/>
+                                        </div>
+                                        <h3 class="h5 fw-bold text-dark mb-2">Niacinamide</h3>
+                                        <p class="text-muted small mb-3">
+                                            Hỗ trợ điều tiết bã nhờn, làm dịu da và củng cố hàng rào bảo vệ, giúp bề mặt da thông thoáng và mịn màng hơn.
+                                        </p>
+                                    </div>
+                                    <div class="small text-muted pt-2 border-top">
+                                        Phù hợp: <strong>Da dầu, da mụn</strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Hyaluronic Acid -->
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <div class="bm-card p-4 h-100 d-flex flex-column justify-content-between">
+                                    <div>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="bm-badge bm-badge-primary">Cấp nước</span>
+                                            <i class="fa fa-check-circle text-purple"/>
+                                        </div>
+                                        <h3 class="h5 fw-bold text-dark mb-2">Hyaluronic Acid</h3>
+                                        <p class="text-muted small mb-3">
+                                            Khả năng ngậm nước vượt trội, hỗ trợ cấp ẩm đa tầng giúp làn da duy trì vẻ căng mọng, đàn hồi và tươi trẻ.
+                                        </p>
+                                    </div>
+                                    <div class="small text-muted pt-2 border-top">
+                                        Phù hợp: <strong>Mọi loại da, da khô thiếu ẩm</strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Vitamin C -->
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <div class="bm-card p-4 h-100 d-flex flex-column justify-content-between">
+                                    <div>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="bm-badge bm-badge-primary">Chống oxy hóa</span>
+                                            <i class="fa fa-check-circle text-purple"/>
+                                        </div>
+                                        <h3 class="h5 fw-bold text-dark mb-2">Vitamin C</h3>
+                                        <p class="text-muted small mb-3">
+                                            Hợp chất chống oxy hóa tự nhiên, hỗ trợ cải thiện làn da xỉn màu và hỗ trợ làm đều màu sắc tố da an toàn.
+                                        </p>
+                                    </div>
+                                    <div class="small text-muted pt-2 border-top">
+                                        Phù hợp: <strong>Da xỉn màu, vết thâm sau mụn</strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Ceramide -->
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <div class="bm-card p-4 h-100 d-flex flex-column justify-content-between">
+                                    <div>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="bm-badge bm-badge-primary">Khóa ẩm</span>
+                                            <i class="fa fa-check-circle text-purple"/>
+                                        </div>
+                                        <h3 class="h5 fw-bold text-dark mb-2">Ceramide</h3>
+                                        <p class="text-muted small mb-3">
+                                            Thành phần lipid thiết yếu cấu tạo nên lớp màng bảo vệ, ngăn ngừa thoát nước qua biểu bì và hạn chế khô căng.
+                                        </p>
+                                    </div>
+                                    <div class="small text-muted pt-2 border-top">
+                                        Phù hợp: <strong>Da khô, da nhạy cảm, phục hồi</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 7. WHY BEAUTYMATCH SECTION -->
+                <section class="bm-section-py py-5" style="background-color: #F8F5FA;">
+                    <div class="container py-lg-3">
+                        <div class="text-center mb-5">
+                            <span class="bm-badge bm-badge-primary mb-2">Định vị thương hiệu</span>
+                            <h2 class="fw-bold text-dark mb-2">Vì sao chọn BeautyMatch?</h2>
+                            <p class="text-muted mx-auto" style="max-width: 620px;">
+                                Chúng tôi tập trung giải quyết bài toán chọn đúng sản phẩm giữa hàng nghìn lựa chọn mỹ phẩm trên thị trường.
+                            </p>
+                        </div>
+
+                        <div class="row g-4">
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <div class="bm-card p-4 h-100 text-center">
+                                    <div class="bm-card-icon-wrapper mx-auto mb-3">
+                                        <i class="fa fa-user-circle-o fs-4 text-purple"/>
+                                    </div>
+                                    <h3 class="h6 fw-bold text-dark mb-2">Gợi ý theo nhu cầu cá nhân</h3>
+                                    <p class="text-muted small mb-0">
+                                        Thu hẹp sản phẩm theo đúng loại da, vấn đề thực tế và ngân sách, không chạy theo trào lưu chung.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <div class="bm-card p-4 h-100 text-center">
+                                    <div class="bm-card-icon-wrapper mx-auto mb-3">
+                                        <i class="fa fa-list-alt fs-4 text-purple"/>
+                                    </div>
+                                    <h3 class="h6 fw-bold text-dark mb-2">Thông tin sản phẩm rõ ràng</h3>
+                                    <p class="text-muted small mb-0">
+                                        Minh bạch thành phần, nguồn gốc xuất xứ và giải thích ngắn gọn vì sao sản phẩm phù hợp với bạn.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <div class="bm-card p-4 h-100 text-center">
+                                    <div class="bm-card-icon-wrapper mx-auto mb-3">
+                                        <i class="fa fa-tasks fs-4 text-purple"/>
+                                    </div>
+                                    <h3 class="h6 fw-bold text-dark mb-2">Hỗ trợ xây dựng routine</h3>
+                                    <p class="text-muted small mb-0">
+                                        Định vị chính xác từng sản phẩm nằm ở bước nào trong chu trình sáng &amp; tối để tránh chồng chéo.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <div class="bm-card p-4 h-100 text-center">
+                                    <div class="bm-card-icon-wrapper mx-auto mb-3">
+                                        <i class="fa fa-compress fs-4 text-purple"/>
+                                    </div>
+                                    <h3 class="h6 fw-bold text-dark mb-2">Thu hẹp lựa chọn dễ dàng</h3>
+                                    <p class="text-muted small mb-0">
+                                        Giảm thiểu quá tải quyết định, rút ngắn thời gian mua sắm và tiết kiệm chi phí thử nghiệm sai lầm.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 8. FINAL CTA SECTION -->
+                <section class="bm-final-cta-section py-5 text-center text-white" style="background: linear-gradient(135deg, #6E4C7E 0%, #8F6FA8 100%);">
+                    <div class="container py-lg-4">
+                        <h2 class="display-6 fw-bold text-white mb-3">Sẵn sàng tìm skincare phù hợp với bạn?</h2>
+                        <p class="lead opacity-90 mb-4 mx-auto" style="max-width: 580px;">
+                            Bắt đầu Beauty Quiz và khám phá lựa chọn phù hợp hơn với nhu cầu của làn da.
+                        </p>
+                        <div class="d-flex flex-wrap gap-3 justify-content-center">
+                            <a href="/beauty-quiz" class="btn btn-light text-purple fw-bold px-4 py-3 rounded-pill shadow-sm">
+                                Bắt đầu Beauty Quiz <i class="fa fa-magic ms-1"/>
+                            </a>
+                            <a href="/shop" class="btn btn-outline-light fw-bold px-4 py-3 rounded-pill">
+                                Xem sản phẩm <i class="fa fa-shopping-bag ms-1"/>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 9. FOOTER SECTION -->
+                <footer class="bm-footer-section py-5 bg-white border-top">
+                    <div class="container">
+                        <div class="row g-4 justify-content-between mb-4">
+                            <div class="col-12 col-lg-4">
+                                <h3 class="h4 fw-bold text-purple mb-2">BeautyMatch</h3>
+                                <p class="text-muted small mb-3">
+                                    BeautyMatch giúp bạn khám phá sản phẩm chăm sóc da phù hợp hơn dựa trên loại da, vấn đề da và ngân sách.
+                                </p>
+                                <div class="small text-muted">
+                                    Đề tài Thương mại điện tử B2C Skincare
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-3 col-lg-2">
+                                <h4 class="h6 fw-bold text-dark mb-3">Khám phá</h4>
+                                <ul class="list-unstyled small mb-0">
+                                    <li class="mb-2"><a href="/shop" class="text-muted text-decoration-none">Cửa hàng</a></li>
+                                    <li class="mb-2"><a href="/theo-van-de-da" class="text-muted text-decoration-none">Theo vấn đề da</a></li>
+                                    <li class="mb-2"><a href="/beauty-quiz" class="text-muted text-decoration-none">Beauty Quiz</a></li>
+                                    <li class="mb-2"><a href="/routine" class="text-muted text-decoration-none">Routine</a></li>
+                                    <li class="mb-2"><a href="/brands" class="text-muted text-decoration-none">Thương hiệu</a></li>
+                                    <li class="mb-2"><a href="/blog" class="text-muted text-decoration-none">Blog</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-6 col-md-3 col-lg-2">
+                                <h4 class="h6 fw-bold text-dark mb-3">Chính sách</h4>
+                                <ul class="list-unstyled small mb-0">
+                                    <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Thanh toán</a></li>
+                                    <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Giao hàng</a></li>
+                                    <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Đổi trả &amp; hoàn tiền</a></li>
+                                    <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Chính sách bảo mật</a></li>
+                                    <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Điều khoản sử dụng</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <h4 class="h6 fw-bold text-dark mb-3">Cam kết BeautyMatch</h4>
+                                <p class="text-muted small mb-2">
+                                    100% sản phẩm có thông tin xuất xứ rõ ràng, bảng thành phần minh bạch và hướng dẫn sử dụng chi tiết.
+                                </p>
+                                <span class="bm-badge bm-badge-primary">B2C Personalized Skincare</span>
+                            </div>
+                        </div>
+
+                        <div class="pt-3 border-top d-flex flex-wrap justify-content-between align-items-center small text-muted">
+                            <div>© 2026 BeautyMatch. All rights reserved.</div>
+                            <div>Nền tảng thương mại điện tử mỹ phẩm cá nhân hóa</div>
+                        </div>
+                    </div>
+                </footer>
+
+            </div>
+        </t>
+    </template>
+
+    <!-- Đồng bộ website.homepage_page trỏ đến view beautymatch.homepage -->
+    <record id="website.homepage_page" model="website.page">
+        <field name="view_id" ref="beautymatch.homepage"/>
+        <field name="website_meta_title">BeautyMatch - Find Your Perfect Skincare Match</field>
+        <field name="website_meta_description">Tìm skincare phù hợp hơn với loại da, vấn đề da và ngân sách của bạn cùng BeautyMatch.</field>
+    </record>
+
+    <!-- ======================================================== -->
+    <!-- BEAUTYMATCH ORDER CONFIRMATION                           -->
+    <!-- Hiển thị mã đơn, tổng thanh toán, phương thức giao hàng, -->
+    <!-- phương thức thanh toán & hướng dẫn COD / Chuyển khoản    -->
+    <!-- ======================================================== -->
+    <template id="beautymatch_order_confirmation" inherit_id="website_sale.confirmation">
+        <xpath expr="//div[@id='order_name']" position="replace">
+            <div id="order_name" class="bm-card p-4 mb-4 border" style="background-color: #FAFAFC; border-radius: 16px;">
+                <h4 class="fw-bold mb-3" style="color: #6E4C7E;">
+                    <i class="fa fa-check-circle me-2"/>Cảm ơn bạn đã đặt hàng tại BeautyMatch
+                </h4>
+                <div class="row g-3">
+                    <div class="col-12 col-sm-6">
+                        <span class="text-muted d-block small">Mã đơn hàng:</span>
+                        <strong class="fs-6" style="color: #2B2430;" t-out="order.name"/>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <span class="text-muted d-block small">Tổng thanh toán:</span>
+                        <strong class="fs-6" style="color: #6E4C7E;" t-out="order.amount_total" t-options="{'widget': 'monetary', 'display_currency': order.currency_id}"/>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <span class="text-muted d-block small">Phương thức giao hàng:</span>
+                        <strong class="fs-6" style="color: #2B2430;" t-out="order.carrier_id.name or 'Giao hàng tiêu chuẩn'"/>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <span class="text-muted d-block small">Phương thức thanh toán:</span>
+                        <strong class="fs-6" style="color: #2B2430;" t-out="tx_sudo and (tx_sudo.payment_method_id.name or tx_sudo.provider_id.name) or 'Thanh toán trực tiếp'"/>
+                    </div>
+                </div>
+
+                <div class="mt-3 pt-3 border-top">
+                    <t t-if="tx_sudo and tx_sudo.provider_id.custom_mode == 'cash_on_delivery'">
+                        <div class="alert alert-info mb-0 d-flex align-items-center gap-2" style="border-radius: 12px; background-color: #F3ECF8; border-color: #8F6FA8; color: #2B2430;">
+                            <i class="fa fa-money fs-5 text-purple"/>
+                            <div>
+                                <strong>Bạn thanh toán khi nhận hàng.</strong>
+                                <div class="small text-muted">Nhân viên giao hàng sẽ liên hệ với bạn trước khi giao sản phẩm.</div>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-elif="tx_sudo and tx_sudo.provider_id.custom_mode == 'wire_transfer'">
+                        <div class="alert alert-info mb-0" style="border-radius: 12px; background-color: #F3ECF8; border-color: #8F6FA8; color: #2B2430;">
+                            <h6 class="fw-bold mb-2" style="color: #6E4C7E;"><i class="fa fa-university me-2"/>Vui lòng chuyển khoản theo thông tin bên dưới:</h6>
+                            <ul class="list-unstyled mb-2" style="line-height: 1.8;">
+                                <li><strong>Ngân hàng:</strong> BeautyMatch Demo Bank</li>
+                                <li><strong>Chủ tài khoản:</strong> BEAUTYMATCH</li>
+                                <li><strong>Số tài khoản:</strong> 0000000000</li>
+                                <li><strong>Số tiền:</strong> <strong style="color: #6E4C7E;" t-out="order.amount_total" t-options="{'widget': 'monetary', 'display_currency': order.currency_id}"/></li>
+                                <li><strong>Nội dung:</strong> <span class="badge" style="background-color: #6E4C7E; color: #ffffff; font-size: 0.9rem;">BM <t t-out="order.name"/></span></li>
+                            </ul>
+                            <small class="text-muted fst-italic">* Lưu ý: Đây là tài khoản demo phục vụ mục đích kiểm thử/học tập, vui lòng không chuyển tiền thật.</small>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>

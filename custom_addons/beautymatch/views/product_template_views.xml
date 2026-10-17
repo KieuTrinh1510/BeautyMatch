@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_template_form_view_beautymatch" model="ir.ui.view">
+        <field name="name">product.template.form.beautymatch</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="BeautyMatch" name="beautymatch_tab">
+                    <group>
+                        <group string="Phù hợp với làn da" name="bm_group_skin_fit">
+                            <field name="beautymatch_skin_type"/>
+                            <field name="beautymatch_skin_concern"/>
+                            <field name="beautymatch_budget_level"/>
+                        </group>
+                        <group string="Routine" name="bm_group_routine">
+                            <field name="beautymatch_routine_step"/>
+                            <field name="beautymatch_usage_time"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Thông tin sản phẩm" name="bm_group_product_info">
+                            <field name="beautymatch_brand"/>
+                            <field name="beautymatch_key_ingredients"/>
+                            <field name="beautymatch_origin"/>
+                            <field name="beautymatch_volume"/>
+                        </group>
+                        <group string="Decision Support" name="bm_group_decision_support">
+                            <field name="beautymatch_short_fit_reason" placeholder="Ví dụ: Công thức dạng gel mỏng nhẹ, chứa B5 giúp phục hồi da sau mụn mà không gây bít tắc lỗ chân lông."/>
+                            <field name="beautymatch_is_featured"/>
+                            <field name="beautymatch_is_quiz_recommended"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

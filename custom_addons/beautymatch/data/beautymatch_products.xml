@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- ======================================================== -->
+    <!-- 1. SỮA RỬA MẶT (CLEANSER) - 3 SẢN PHẨM                   -->
+    <!-- ======================================================== -->
+
+    <!-- 1.1 CeraVe Foaming Facial Cleanser (Có Biến Thể Dung Tích: 236ml & 473ml) -->
+    <record id="product_template_cerave_cleanser" model="product.template">
+        <field name="image_1920" type="base64" file="beautymatch/static/src/img/products/cerave_foaming_cleanser.webp"/>
+
+        <field name="name">CeraVe Foaming Facial Cleanser</field>
+        <field name="beautymatch_brand">CeraVe</field>
+        <field name="default_code">CV-FFC-236</field>
+        <field name="list_price">370000.0</field>
+        <field name="categ_id" ref="cat_skincare_cleanser"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_cleanser')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">oily</field>
+        <field name="beautymatch_skin_concern">acne_oil</field>
+        <field name="beautymatch_routine_step">cleanser</field>
+        <field name="beautymatch_usage_time">both</field>
+        <field name="beautymatch_origin">Mỹ</field>
+        <field name="beautymatch_volume">236ml</field>
+        <field name="beautymatch_budget_level">mid</field>
+        <field name="beautymatch_key_ingredients">Ceramide 1, 3, 6-II, Niacinamide, Hyaluronic Acid</field>
+        <field name="beautymatch_short_fit_reason">Công thức tạo bọt dịu nhẹ giúp làm sạch sâu bã nhờn dư thừa và bụi bẩn mà vẫn duy trì màng bảo vệ tự nhiên của da nhờ 3 loại Ceramide thiết yếu.</field>
+        <field name="beautymatch_is_featured" eval="True"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
+
+    <!-- Cấu hình thuộc tính Dung tích cho CeraVe Cleanser -->
+    <record id="product_cerave_cleanser_volume_line" model="product.template.attribute.line">
+        <field name="product_tmpl_id" ref="product_template_cerave_cleanser"/>
+        <field name="attribute_id" ref="product_attribute_volume"/>
+        <field name="value_ids" eval="[(6, 0, [ref('product_attribute_value_volume_236ml'), ref('product_attribute_value_volume_473ml')])]"/>
+    </record>
+
+    <!-- 1.2 La Roche-Posay Effaclar Purifying Foaming Gel -->
+    <record id="product_template_lrp_effaclar" model="product.template">
+        <field name="image_1920" type="base64" file="beautymatch/static/src/img/products/lrp_effaclar_gel.webp"/>
+
+        <field name="name">La Roche-Posay Effaclar Purifying Foaming Gel</field>
+        <field name="beautymatch_brand">La Roche-Posay</field>
+        <field name="default_code">LRP-EFF-200</field>
+        <field name="list_price">395000.0</field>
+        <field name="categ_id" ref="cat_skincare_cleanser"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_cleanser')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">oily</field>
+        <field name="beautymatch_skin_concern">acne_oil</field>
+        <field name="beautymatch_routine_step">cleanser</field>
+        <field name="beautymatch_usage_time">both</field>
+        <field name="beautymatch_origin">Pháp</field>
+        <field name="beautymatch_volume">200ml</field>
+        <field name="beautymatch_budget_level">mid</field>
+        <field name="beautymatch_key_ingredients">Nước khoáng La Roche-Posay, Zinc PCA</field>
+        <field name="beautymatch_short_fit_reason">Chứa kẽm PCA hỗ trợ thanh lọc bã nhờn và làm sạch bề mặt da dầu mụn dịu nhẹ, không gây khô căng sau khi rửa mặt.</field>
+        <field name="beautymatch_is_featured" eval="False"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
+
+    <!-- 1.3 Cetaphil Gentle Skin Cleanser -->
+    <record id="product_template_cetaphil_cleanser" model="product.template">
+        <field name="image_1920" type="base64" file="beautymatch/static/src/img/products/cetaphil_gentle_cleanser.webp"/>
+
+        <field name="name">Cetaphil Gentle Skin Cleanser</field>
+        <field name="beautymatch_brand">Cetaphil</field>
+        <field name="default_code">CET-GSC-236</field>
+        <field name="list_price">330000.0</field>
+        <field name="categ_id" ref="cat_skincare_cleanser"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_cleanser')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">sensitive</field>
+        <field name="beautymatch_skin_concern">sensitivity</field>
+        <field name="beautymatch_routine_step">cleanser</field>
+        <field name="beautymatch_usage_time">both</field>
+        <field name="beautymatch_origin">Canada</field>
+        <field name="beautymatch_volume">236ml</field>
+        <field name="beautymatch_budget_level">mid</field>
+        <field name="beautymatch_key_ingredients">Glycerin, Niacinamide, Panthenol B5</field>
+        <field name="beautymatch_short_fit_reason">Công thức không xà phòng lành tính, pH chuẩn sinh lý giúp làm sạch nhẹ nhàng và duy trì độ ẩm tự nhiên cho làn da nhạy cảm.</field>
+        <field name="beautymatch_is_featured" eval="False"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
+
+    <!-- ======================================================== -->
+    <!-- 2. TONER - 3 SẢN PHẨM                                    -->
+    <!-- ======================================================== -->
+
+    <!-- 2.1 Hada Labo Gokujyun Hyaluronic Lotion -->
+    <record id="product_template_hadalabo_lotion" model="product.template">
+        <field name="image_1920" type="base64" file="beautymatch/static/src/img/products/hada_labo_lotion.webp"/>
+
+        <field name="name">Hada Labo Gokujyun Hyaluronic Lotion</field>
+        <field name="beautymatch_brand">Hada Labo</field>
+        <field name="default_code">HL-GHL-170</field>
+        <field name="list_price">220000.0</field>
+        <field name="categ_id" ref="cat_skincare_toner"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_toner')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">dry</field>
+        <field name="beautymatch_skin_concern">dryness</field>
+        <field name="beautymatch_routine_step">toner</field>
+        <field name="beautymatch_usage_time">both</field>
+        <field name="beautymatch_origin">Nhật Bản</field>
+        <field name="beautymatch_volume">170ml</field>
+        <field name="beautymatch_budget_level">budget</field>
+        <field name="beautymatch_key_ingredients">Hyaluronic Acid, Super HA, Nano HA</field>
+        <field name="beautymatch_short_fit_reason">Hệ dưỡng ẩm Hyaluronic Acid đa phân tử giúp cấp nước tức thì, làm dịu cảm giác thô ráp và chuẩn bị da hấp thu dưỡng chất tốt hơn.</field>
+        <field name="beautymatch_is_featured" eval="False"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
+
+    <!-- 2.2 Klairs Supple Preparation Unscented Toner -->
+    <record id="product_template_klairs_toner" model="product.template">
+        <field name="image_1920" type="base64" file="beautymatch/static/src/img/products/klairs_toner.webp"/>
+
+        <field name="name">Klairs Supple Preparation Unscented Toner</field>
+        <field name="beautymatch_brand">Klairs</field>
+        <field name="default_code">KL-SPU-180</field>
+        <field name="list_price">340000.0</field>
+        <field name="categ_id" ref="cat_skincare_toner"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_toner')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">sensitive</field>
+        <field name="beautymatch_skin_concern">sensitivity</field>
+        <field name="beautymatch_routine_step">toner</field>
+        <field name="beautymatch_usage_time">both</field>
+        <field name="beautymatch_origin">Hàn Quốc</field>
+        <field name="beautymatch_volume">180ml</field>
+        <field name="beautymatch_budget_level">mid</field>
+        <field name="beautymatch_key_ingredients">Beta-Glucan, Hyaluronic Acid, Chiết xuất rau má</field>
+        <field name="beautymatch_short_fit_reason">Phiên bản không mùi và không tinh dầu, giàu Beta-Glucan và rau má giúp cân bằng độ pH và làm dịu vùng da nhạy cảm dễ kích ứng.</field>
+        <field name="beautymatch_is_featured" eval="False"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
+
+    <!-- 2.3 Some By Mi AHA BHA PHA 30 Days Miracle Toner -->
+    <record id="product_template_somebymi_toner" model="product.template">
+        <field name="image_1920" type="base64" file="beautymatch/static/src/img/products/some_by_mi_toner.webp"/>
+
+        <field name="name">Some By Mi AHA BHA PHA 30 Days Miracle Toner</field>
+        <field name="beautymatch_brand">Some By Mi</field>
+        <field name="default_code">SBM-MIR-150</field>
+        <field name="list_price">310000.0</field>
+        <field name="categ_id" ref="cat_skincare_toner"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_toner')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">oily</field>
+        <field name="beautymatch_skin_concern">acne_oil</field>
+        <field name="beautymatch_routine_step">toner</field>
+        <field name="beautymatch_usage_time">pm</field>
+        <field name="beautymatch_origin">Hàn Quốc</field>
+        <field name="beautymatch_volume">150ml</field>
+        <field name="beautymatch_budget_level">mid</field>
+        <field name="beautymatch_key_ingredients">AHA, BHA, PHA, Chiết xuất tràm trà</field>
+        <field name="beautymatch_short_fit_reason">Kết hợp 3 loại acid tẩy tế bào chết hóa học dịu nhẹ cùng tràm trà giúp làm sạch da chết bề mặt và thông thoáng lỗ chân lông vào buổi tối.</field>
+        <field name="beautymatch_is_featured" eval="False"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
+
+    <!-- ======================================================== -->
+    <!-- 3. SERUM - 3 SẢN PHẨM                                    -->
+    <!-- ======================================================== -->
+
+    <!-- 3.1 The Ordinary Niacinamide 10% + Zinc 1% -->
+    <record id="product_template_to_niacinamide" model="product.template">
+        <field name="name">The Ordinary Niacinamide 10% + Zinc 1%</field>
+        <field name="beautymatch_brand">The Ordinary</field>
+        <field name="default_code">TO-NIA-030</field>
+        <field name="list_price">210000.0</field>
+        <field name="categ_id" ref="cat_skincare_serum"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_serum')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">oily</field>
+        <field name="beautymatch_skin_concern">acne_oil</field>
+        <field name="beautymatch_routine_step">serum</field>
+        <field name="beautymatch_usage_time">both</field>
+        <field name="beautymatch_origin">Canada</field>
+        <field name="beautymatch_volume">30ml</field>
+        <field name="beautymatch_budget_level">budget</field>
+        <field name="beautymatch_key_ingredients">Niacinamide 10%, Zinc PCA 1%</field>
+        <field name="beautymatch_short_fit_reason">Nồng độ Niacinamide 10% kết hợp Kẽm 1% hỗ trợ điều tiết bã nhờn bề mặt, cải thiện độ mịn màng và diện mạo lỗ chân lông với mức giá phải chăng.</field>
+        <field name="beautymatch_is_featured" eval="True"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
+
+    <!-- 3.2 Vichy Mineral 89 -->
+    <record id="product_template_vichy_mineral89" model="product.template">
+        <field name="image_1920" type="base64" file="beautymatch/static/src/img/products/vichy_mineral_89.webp"/>
+
+        <field name="name">Vichy Mineral 89</field>
+        <field name="beautymatch_brand">Vichy</field>
+        <field name="default_code">VIC-M89-050</field>
+        <field name="list_price">790000.0</field>
+        <field name="categ_id" ref="cat_skincare_serum"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_serum')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">dry</field>
+        <field name="beautymatch_skin_concern">dryness</field>
+        <field name="beautymatch_routine_step">serum</field>
+        <field name="beautymatch_usage_time">both</field>
+        <field name="beautymatch_origin">Pháp</field>
+        <field name="beautymatch_volume">50ml</field>
+        <field name="beautymatch_budget_level">premium</field>
+        <field name="beautymatch_key_ingredients">89% Nước khoáng núi lửa Vichy, Hyaluronic Acid</field>
+        <field name="beautymatch_short_fit_reason">Chứa 89% nước khoáng núi lửa cô đặc kết hợp Hyaluronic Acid giúp củng cố màng ẩm, cung cấp độ ẩm sâu và làm da căng mịn.</field>
+        <field name="beautymatch_is_featured" eval="False"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
+
+    <!-- 3.3 Melano CC Vitamin C Essence -->
+    <record id="product_template_melanocc_essence" model="product.template">
+        <field name="name">Melano CC Vitamin C Essence</field>
+        <field name="beautymatch_brand">Rohto</field>
+        <field name="default_code">ROH-MCC-020</field>
+        <field name="list_price">320000.0</field>
+        <field name="categ_id" ref="cat_skincare_serum"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_serum')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">all</field>
+        <field name="beautymatch_skin_concern">dullness</field>
+        <field name="beautymatch_routine_step">serum</field>
+        <field name="beautymatch_usage_time">both</field>
+        <field name="beautymatch_origin">Nhật Bản</field>
+        <field name="beautymatch_volume">20ml</field>
+        <field name="beautymatch_budget_level">mid</field>
+        <field name="beautymatch_key_ingredients">Pure Vitamin C (Ascorbic Acid), Vitamin E</field>
+        <field name="beautymatch_short_fit_reason">Tinh chất Vitamin C tinh khiết kết hợp Vitamin E giúp chống oxy hóa, hỗ trợ làm sáng và đều màu vùng da xỉn màu do tác động môi trường.</field>
+        <field name="beautymatch_is_featured" eval="False"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
+
+    <!-- ======================================================== -->
+    <!-- 4. KEM DƯỠNG (MOISTURIZER) - 3 SẢN PHẨM                  -->
+    <!-- ======================================================== -->
+
+    <!-- 4.1 CeraVe Moisturizing Cream -->
+    <record id="product_template_cerave_cream" model="product.template">
+        <field name="image_1920" type="base64" file="beautymatch/static/src/img/products/cerave_moisturizing_cream.webp"/>
+
+        <field name="name">CeraVe Moisturizing Cream</field>
+        <field name="beautymatch_brand">CeraVe</field>
+        <field name="default_code">CV-MC-340</field>
+        <field name="list_price">420000.0</field>
+        <field name="categ_id" ref="cat_skincare_moisturizer"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_moisturizer')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">dry</field>
+        <field name="beautymatch_skin_concern">barrier</field>
+        <field name="beautymatch_routine_step">moisturizer</field>
+        <field name="beautymatch_usage_time">both</field>
+        <field name="beautymatch_origin">Mỹ</field>
+        <field name="beautymatch_volume">340g</field>
+        <field name="beautymatch_budget_level">mid</field>
+        <field name="beautymatch_key_ingredients">3 loại Ceramide thiết yếu, Hyaluronic Acid, MVE Technology</field>
+        <field name="beautymatch_short_fit_reason">Công nghệ MVE giải phóng liên tục dưỡng chất cùng 3 loại Ceramide giúp tăng cường hàng rào bảo vệ và giữ ẩm suốt cả ngày cho da khô.</field>
+        <field name="beautymatch_is_featured" eval="True"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
+
+    <!-- 4.2 La Roche-Posay Cicaplast Baume B5+ -->
+    <record id="product_template_lrp_cicaplast" model="product.template">
+        <field name="name">La Roche-Posay Cicaplast Baume B5+</field>
+        <field name="beautymatch_brand">La Roche-Posay</field>
+        <field name="default_code">LRP-B5P-040</field>
+        <field name="list_price">380000.0</field>
+        <field name="categ_id" ref="cat_skincare_moisturizer"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_moisturizer')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">sensitive</field>
+        <field name="beautymatch_skin_concern">barrier</field>
+        <field name="beautymatch_routine_step">moisturizer</field>
+        <field name="beautymatch_usage_time">both</field>
+        <field name="beautymatch_origin">Pháp</field>
+        <field name="beautymatch_volume">40ml</field>
+        <field name="beautymatch_budget_level">mid</field>
+        <field name="beautymatch_key_ingredients">Panthenol 5% (Vitamin B5), Madecassoside, Tribioma</field>
+        <field name="beautymatch_short_fit_reason">Chứa Panthenol 5% cùng Madecassoside giúp làm dịu cảm giác khô rát, hỗ trợ nuôi dưỡng và phục hồi hàng rào ẩm cho da nhạy cảm.</field>
+        <field name="beautymatch_is_featured" eval="False"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
+
+    <!-- 4.3 Neutrogena Hydro Boost Water Gel -->
+    <record id="product_template_neutrogena_gel" model="product.template">
+        <field name="name">Neutrogena Hydro Boost Water Gel</field>
+        <field name="beautymatch_brand">Neutrogena</field>
+        <field name="default_code">NTG-HBW-050</field>
+        <field name="list_price">360000.0</field>
+        <field name="categ_id" ref="cat_skincare_moisturizer"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_moisturizer')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">combination</field>
+        <field name="beautymatch_skin_concern">dryness</field>
+        <field name="beautymatch_routine_step">moisturizer</field>
+        <field name="beautymatch_usage_time">both</field>
+        <field name="beautymatch_origin">Mỹ</field>
+        <field name="beautymatch_volume">50g</field>
+        <field name="beautymatch_budget_level">mid</field>
+        <field name="beautymatch_key_ingredients">Hyaluronic Acid tinh khiết, Chiết xuất Olive</field>
+        <field name="beautymatch_short_fit_reason">Dạng gel nước thẩm thấu nhanh, cấp ẩm tức thì mà không gây nhờn dính, rất lý tưởng cho làn da hỗn hợp cần bổ sung nước.</field>
+        <field name="beautymatch_is_featured" eval="False"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
+
+    <!-- ======================================================== -->
+    <!-- 5. CHỐNG NẮNG (SUNSCREEN) - 3 SẢN PHẨM                   -->
+    <!-- ======================================================== -->
+
+    <!-- 5.1 Anessa Perfect UV Sunscreen Skincare Milk -->
+    <record id="product_template_anessa_sunscreen" model="product.template">
+        <field name="image_1920" type="base64" file="beautymatch/static/src/img/products/anessa_uv.webp"/>
+
+        <field name="name">Anessa Perfect UV Sunscreen Skincare Milk</field>
+        <field name="beautymatch_brand">Anessa</field>
+        <field name="default_code">ANE-PUV-060</field>
+        <field name="list_price">680000.0</field>
+        <field name="categ_id" ref="cat_skincare_sunscreen"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_sunscreen')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">all</field>
+        <field name="beautymatch_skin_concern">dullness</field>
+        <field name="beautymatch_routine_step">sunscreen</field>
+        <field name="beautymatch_usage_time">am</field>
+        <field name="beautymatch_origin">Nhật Bản</field>
+        <field name="beautymatch_volume">60ml</field>
+        <field name="beautymatch_budget_level">premium</field>
+        <field name="beautymatch_key_ingredients">Auto Booster Technology, Chiết xuất trà xanh, Super HA</field>
+        <field name="beautymatch_short_fit_reason">Khả năng bảo vệ trước tia UV bền bỉ với công nghệ chống trôi, đồng thời chứa chiết xuất trà xanh giúp chống oxy hóa và giữ da sáng mịn.</field>
+        <field name="beautymatch_is_featured" eval="True"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
+
+    <!-- 5.2 La Roche-Posay Anthelios UVMune 400 -->
+    <record id="product_template_lrp_anthelios" model="product.template">
+        <field name="image_1920" type="base64" file="beautymatch/static/src/img/products/anthelios_uvmune.webp"/>
+
+        <field name="name">La Roche-Posay Anthelios UVMune 400</field>
+        <field name="beautymatch_brand">La Roche-Posay</field>
+        <field name="default_code">LRP-ANT-050</field>
+        <field name="list_price">495000.0</field>
+        <field name="categ_id" ref="cat_skincare_sunscreen"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_sunscreen')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">sensitive</field>
+        <field name="beautymatch_skin_concern">sensitivity</field>
+        <field name="beautymatch_routine_step">sunscreen</field>
+        <field name="beautymatch_usage_time">am</field>
+        <field name="beautymatch_origin">Pháp</field>
+        <field name="beautymatch_volume">50ml</field>
+        <field name="beautymatch_budget_level">premium</field>
+        <field name="beautymatch_key_ingredients">Màng lọc Mexoryl 400, Nước khoáng La Roche-Posay</field>
+        <field name="beautymatch_short_fit_reason">Màng lọc Mexoryl 400 bảo vệ da tối ưu trước phổ tia UVA dài, kết cấu mỏng nhẹ vô hình và dịu êm cho cả vùng da quanh mắt.</field>
+        <field name="beautymatch_is_featured" eval="False"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
+
+    <!-- 5.3 Skin Aqua UV Super Moisture Gel -->
+    <record id="product_template_skinaqua_sunscreen" model="product.template">
+        <field name="name">Skin Aqua UV Super Moisture Gel</field>
+        <field name="beautymatch_brand">Skin Aqua</field>
+        <field name="default_code">SA-UVM-110</field>
+        <field name="list_price">220000.0</field>
+        <field name="categ_id" ref="cat_skincare_sunscreen"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_sunscreen')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">all</field>
+        <field name="beautymatch_skin_concern">dryness</field>
+        <field name="beautymatch_routine_step">sunscreen</field>
+        <field name="beautymatch_usage_time">am</field>
+        <field name="beautymatch_origin">Nhật Bản</field>
+        <field name="beautymatch_volume">110g</field>
+        <field name="beautymatch_budget_level">budget</field>
+        <field name="beautymatch_key_ingredients">Super HA, Sodium Hyaluronate, Amino Acid, Collagen</field>
+        <field name="beautymatch_short_fit_reason">Dạng gel mọng nước dễ tán, thấm nhanh cho lớp nền ẩm mượt nhẹ tênh mà không gây nhờn rít, kinh tế cho việc bảo vệ da mỗi ngày.</field>
+        <field name="beautymatch_is_featured" eval="False"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
+</odoo>

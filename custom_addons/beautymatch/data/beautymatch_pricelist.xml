@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Bảng giá BeautyMatch Việt Nam (VND) -->
+    <record id="pricelist_beautymatch_vn" model="product.pricelist">
+        <field name="name">BeautyMatch Việt Nam</field>
+        <field name="currency_id" ref="base.VND"/>
+        <field name="selectable" eval="True"/>
+        <field name="sequence">1</field>
+        <field name="active" eval="True"/>
+        <field name="website_id" ref="website.default_website"/>
+    </record>
+</odoo>
