@@ -15,7 +15,7 @@
         <!-- 1.2 Main Menu: Replace generic navbar with BeautyMatch structured navigation & dropdowns -->
         <xpath expr="//t[@t-call='website.navbar_nav']" position="replace">
             <t t-set="curr_path" t-value="request.httprequest.path"/>
-            <ul class="navbar-nav align-items-center bm-main-navbar">
+            <ul class="navbar-nav mx-auto align-items-center bm-main-navbar">
                 <!-- 1. Trang chủ -->
                 <li class="nav-item">
                     <a href="/" t-attf-class="nav-link bm-nav-link #{'active' if curr_path == '/' else ''}">Trang chủ</a>
