@@ -63,6 +63,7 @@ Tính năng chính:
         'web.assets_frontend': [
             'beautymatch/static/src/scss/beautymatch.scss',
             'beautymatch/static/src/js/compare.js',
+            'beautymatch/static/src/js/wishlist.js',
         ],
     },
     'installable': True,

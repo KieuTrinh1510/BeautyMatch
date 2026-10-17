@@ -772,3 +772,84 @@ class BeautyMatchCompareController(http.Controller):
         return request.redirect('/shop')
 
 
+class BeautyMatchWishlistController(http.Controller):
+    """Xử lý yêu thích và bỏ yêu thích sản phẩm 2 chiều (Toggle Wishlist)"""
+
+    @http.route('/shop/wishlist/toggle', type='jsonrpc', auth='public', website=True)
+    def shop_wishlist_toggle(self, product_id=None, product_template_id=None, **kw):
+        """Bật / Tắt yêu thích sản phẩm (Thêm nếu chưa có, Bỏ nếu đã có)"""
+        product = None
+        if product_id:
+            product = request.env['product.product'].sudo().browse(int(product_id))
+        elif product_template_id:
+            tmpl = request.env['product.template'].sudo().browse(int(product_template_id))
+            if tmpl.exists():
+                var_id = tmpl._get_first_possible_variant_id()
+                if var_id:
+                    product = request.env['product.product'].sudo().browse(var_id)
+
+        if not product or not product.exists():
+            return {'error': 'Sản phẩm không tồn tại'}
+
+        Wishlist = request.env['product.wishlist'].sudo()
+        is_public = request.website.is_public_user()
+        partner_id = False if is_public else request.env.user.partner_id.id
+
+        current_wishes = Wishlist.current()
+        # Tìm các wish khớp với product variant hoặc template
+        existing_wishes = current_wishes.filtered(
+            lambda w: w.product_id.id == product.id or (w.product_id.product_tmpl_id.id == product.product_tmpl_id.id)
+        )
+
+        if existing_wishes:
+            # 1. ĐÃ CÓ TRONG WISHLIST -> BỎ YÊU THÍCH (Remove)
+            for w in existing_wishes:
+                if is_public:
+                    wish_ids = request.session.get('wishlist_ids') or []
+                    if w.id in wish_ids:
+                        wish_ids = [wid for wid in wish_ids if wid != w.id]
+                        request.session['wishlist_ids'] = wish_ids
+                        request.session.touch()
+                w.sudo().unlink()
+            action = 'removed'
+        else:
+            # 2. CHƯA CÓ TRONG WISHLIST -> THÊM YÊU THÍCH (Add)
+            price = product.list_price or 0.0
+            try:
+                combo_info = product._get_combination_info_variant()
+                if combo_info and 'price' in combo_info:
+                    price = combo_info['price']
+            except Exception:
+                pass
+
+            pricelist = request.pricelist or request.website.sudo().pricelist_id
+            pricelist_id = pricelist.id if pricelist else False
+            currency_id = request.website.currency_id.id
+
+            new_wish = Wishlist._add_to_wishlist(
+                pricelist_id,
+                currency_id,
+                request.website.id,
+                price,
+                product.id,
+                partner_id
+            )
+            if is_public and new_wish:
+                curr_ids = list(request.session.get('wishlist_ids') or [])
+                if new_wish.id not in curr_ids:
+                    curr_ids.append(new_wish.id)
+                request.session['wishlist_ids'] = curr_ids
+                request.session.touch()
+            action = 'added'
+
+        total_count = len(Wishlist.current())
+        return {
+            'action': action,
+            'count': total_count,
+            'product_id': product.id,
+            'product_tmpl_id': product.product_tmpl_id.id,
+            'product_name': product.name,
+        }
+
+
+

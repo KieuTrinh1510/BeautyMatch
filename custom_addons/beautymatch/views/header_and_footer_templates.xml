@@ -146,6 +146,13 @@
         </xpath>
     </template>
 
+    <!-- 1.9 Giữ icon Wishlist luôn hiển thị trên thanh Header -->
+    <template id="beautymatch_header_wishlist_link" inherit_id="website_sale_wishlist.header_wishlist_link" name="BeautyMatch Always Visible Wishlist Link" priority="30">
+        <xpath expr="//li[contains(@t-attf-class, 'o_wsale_my_wish')]" position="attributes">
+            <attribute name="t-attf-class">o_wsale_my_wish bm-header-wishlist-item #{_item_class}</attribute>
+        </xpath>
+    </template>
+
     <!-- ======================================================== -->
     <!-- 2. BEAUTYMATCH MOBILE HEADER (Inherits template_header_mobile) -->
     <!-- ======================================================== -->
