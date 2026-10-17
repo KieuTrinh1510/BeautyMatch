@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ======================================================== -->
+    <!-- 1. FLOATING COMPARE BAR IN WEBSITE LAYOUT                -->
+    <!-- ======================================================== -->
+    <template id="beautymatch_compare_bar" inherit_id="website.layout" name="BeautyMatch Floating Compare Bar">
+        <xpath expr="//footer" position="after">
+            <!-- Toast thông báo tối đa 3 sản phẩm -->
+            <div id="bm_compare_toast" class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 9999; display: none;">
+                <div class="toast show bg-danger text-white border-0 rounded-4 shadow-lg p-2" role="alert">
+                    <div class="d-flex align-items-center">
+                        <i class="fa fa-exclamation-triangle fa-lg me-2 ms-2"/>
+                        <div class="toast-body fw-medium py-2">
+                            Bạn chỉ có thể so sánh tối đa 3 sản phẩm.
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" onclick="document.getElementById('bm_compare_toast').style.display='none'"></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thanh Compare cố định dưới chân màn hình -->
+            <div id="bm_floating_compare_bar" class="bm-floating-compare-bar position-fixed bottom-0 start-0 end-0 bg-white border-top shadow-lg py-2 px-3" style="z-index: 1040; display: none; transition: transform 0.3s ease;">
+                <div class="container d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge rounded-circle p-2 d-flex align-items-center justify-content-center" style="background-color: #F3ECF8; color: #6E4C7E; width: 36px; height: 36px;">
+                                <i class="fa fa-exchange"/>
+                            </span>
+                            <div>
+                                <strong class="d-block text-dark small">So sánh sản phẩm</strong>
+                                <small class="text-muted" id="bm_compare_count_label">0/3 sản phẩm đã chọn</small>
+                            </div>
+                        </div>
+
+                        <!-- Danh sách sản phẩm mini -->
+                        <div class="d-flex align-items-center gap-2 flex-wrap" id="bm_compare_items_container">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-2">
+                        <button type="button" class="btn btn-sm btn-link text-muted text-decoration-none py-1 px-2" id="bm_compare_clear_btn">
+                            <i class="fa fa-trash-o me-1"/>Xóa tất cả
+                        </button>
+                        <a href="/compare" class="btn btn-sm text-white rounded-pill px-4 py-2 shadow-sm fw-semibold" style="background-color: #6E4C7E;" id="bm_compare_go_btn">
+                            So sánh ngay <i class="fa fa-arrow-right ms-1"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- ======================================================== -->
+    <!-- 2. ROUTE /compare - BẢNG SO SÁNH SẢN PHẨM CHI TIẾT        -->
+    <!-- ======================================================== -->
+    <template id="page_compare" name="So Sánh Sản Phẩm BeautyMatch">
+        <t t-call="website.layout">
+            <div id="wrap" class="bm-compare-page py-5" style="background-color: #FAF7FB; min-height: 80vh;">
+                <div class="container">
+                    
+                    <!-- Header -->
+                    <div class="text-center mb-5">
+                        <span class="badge rounded-pill px-3 py-2 text-uppercase fw-semibold mb-2" style="background-color: #F3ECF8; color: #6E4C7E; letter-spacing: 1px; font-size: 0.8rem;">Decision Support</span>
+                        <h1 class="fw-bold mb-3" style="color: #2B2430;">So Sánh Sản Phẩm</h1>
+                        <p class="text-muted fs-6 mx-auto" style="max-width: 650px;">
+                            Đặt các sản phẩm lên cùng một hệ quy chiếu khoa học để dễ dàng tìm ra sản phẩm phù hợp nhất với loại da, vấn đề da và nhu cầu của bạn.
+                        </p>
+                    </div>
+
+                    <!-- Trường hợp 0 sản phẩm (Empty State) -->
+                    <t t-if="not products">
+                        <div class="bg-white p-5 rounded-4 shadow-sm text-center my-4 mx-auto" style="max-width: 600px;">
+                            <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 72px; height: 72px; background-color: #F3ECF8; color: #6E4C7E; font-size: 2rem;">
+                                <i class="fa fa-exchange"/>
+                            </div>
+                            <h4 class="fw-bold text-dark mb-2">Chưa có sản phẩm nào để so sánh</h4>
+                            <p class="text-muted small mb-4" style="line-height: 1.7;">
+                                Hãy bấm vào biểu tượng <strong>[⇄ So sánh]</strong> trên thẻ sản phẩm ở Cửa hàng hoặc trang Chi tiết sản phẩm để chọn từ 2 đến 3 sản phẩm cần đối chiếu.
+                            </p>
+                            <a href="/shop" class="btn text-white px-4 py-2 rounded-pill shadow-sm fw-semibold" style="background-color: #6E4C7E;">
+                                <i class="fa fa-shopping-bag me-1"/> Khám phá Cửa hàng ngay
+                            </a>
+                        </div>
+                    </t>
+
+                    <!-- Trường hợp có từ 1 đến 3 sản phẩm -->
+                    <t t-else="">
+                        <!-- Thanh công cụ điều khiển -->
+                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-4 bg-white p-3 rounded-4 shadow-sm">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="fw-semibold text-dark">Đang so sánh:</span>
+                                <span class="badge rounded-pill px-3 py-1" style="background-color: #F3ECF8; color: #6E4C7E; font-size: 0.85rem;">
+                                    <t t-out="len(products)"/> / 3 sản phẩm
+                                </span>
+                            </div>
+                            <div class="d-flex align-items-center gap-2">
+                                <a t-if="len(products) &lt; 3" href="/shop" class="btn btn-sm btn-outline-primary rounded-pill px-3 py-1">
+                                    <i class="fa fa-plus me-1"/> Thêm sản phẩm khác
+                                </a>
+                                <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-3 py-1 js_bm_compare_clear_all">
+                                    <i class="fa fa-trash-o me-1"/> Xóa tất cả
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Container bảng so sánh (Hỗ trợ scroll ngang trên mobile) -->
+                        <div class="bm-compare-table-wrapper bg-white rounded-4 shadow-sm overflow-hidden p-2 p-md-4 mb-4 border">
+                            <div class="table-responsive">
+                                <table class="table table-bordered align-middle mb-0 bm-compare-table">
+                                    <colgroup>
+                                        <col style="width: 20%; min-width: 160px;"/>
+                                        <t t-foreach="products" t-as="p">
+                                            <col t-attf-style="width: #{int(80 / max(len(products), 1))}%; min-width: 220px;"/>
+                                        </t>
+                                        <t t-if="len(products) &lt; 3">
+                                            <col style="width: 25%; min-width: 200px;"/>
+                                        </t>
+                                    </colgroup>
+
+                                    <!-- 1. HÀNG ẢNH & THAO TÁC -->
+                                    <thead>
+                                        <tr class="table-light">
+                                            <th class="p-3 text-muted fw-semibold">Thông tin</th>
+                                            <t t-foreach="products" t-as="p">
+                                                <th class="p-3 text-center position-relative">
+                                                    <button type="button"
+                                                            class="btn btn-sm btn-outline-danger rounded-circle position-absolute top-0 end-0 m-2 js_bm_compare_remove_btn"
+                                                            t-att-data-product-id="p.id"
+                                                            title="Bỏ khỏi so sánh"
+                                                            style="width: 28px; height: 28px; padding: 0; display: inline-flex; align-items: center; justify-content: center;">
+                                                        <i class="fa fa-times"/>
+                                                    </button>
+                                                    <a t-att-href="'/shop/%s' % slug(p)" class="d-inline-block mb-2">
+                                                        <img t-att-src="website.image_url(p, 'image_1920', '300x300')"
+                                                             class="img-fluid rounded-3 border"
+                                                             style="max-height: 160px; object-fit: contain; background: white;"
+                                                             t-att-alt="p.name"/>
+                                                    </a>
+                                                </th>
+                                            </t>
+                                            <!-- Cột thêm sản phẩm nếu &lt; 3 -->
+                                            <th t-if="len(products) &lt; 3" class="p-3 text-center align-middle" style="background-color: #FAF7FB;">
+                                                <a href="/shop" class="d-flex flex-column align-items-center justify-content-center text-decoration-none text-muted p-4 border border-dashed rounded-3 h-100">
+                                                    <i class="fa fa-plus-circle fa-2x mb-2 text-primary"/>
+                                                    <span class="small fw-semibold text-primary">+ Thêm sản phẩm thứ <t t-out="len(products) + 1"/></span>
+                                                </a>
+                                            </th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <!-- 2. TÊN SẢN PHẨM -->
+                                        <tr>
+                                            <td class="fw-bold text-dark p-3">Tên sản phẩm</td>
+                                            <t t-foreach="products" t-as="p">
+                                                <td class="p-3 text-center">
+                                                    <a t-att-href="'/shop/%s' % slug(p)" class="fw-bold text-dark text-decoration-none hover-purple d-block" style="font-size: 0.95rem;">
+                                                        <t t-out="p.name"/>
+                                                    </a>
+                                                </td>
+                                            </t>
+                                            <td t-if="len(products) &lt; 3" class="bg-light"/>
+                                        </tr>
+
+                                        <!-- 3. THƯƠNG HIỆU -->
+                                        <tr t-attf-class="#{diffs.get('brand') and 'bm-diff-row' or ''}">
+                                            <td class="fw-bold text-dark p-3">
+                                                Thương hiệu
+                                                <span t-if="diffs.get('brand')" class="badge rounded-pill bg-light border text-purple small ms-1">Khác biệt</span>
+                                            </td>
+                                            <t t-foreach="products" t-as="p">
+                                                <td class="p-3 text-center">
+                                                    <span class="badge rounded-pill px-3 py-1 fw-bold text-uppercase" style="background-color: #F3ECF8; color: #6E4C7E;">
+                                                        <t t-out="p.beautymatch_brand or 'BeautyMatch'"/>
+                                                    </span>
+                                                </td>
+                                            </t>
+                                            <td t-if="len(products) &lt; 3" class="bg-light"/>
+                                        </tr>
+
+                                        <!-- 4. GIÁ NIÊM YẾT -->
+                                        <tr t-attf-class="#{diffs.get('price') and 'bm-diff-row' or ''}">
+                                            <td class="fw-bold text-dark p-3">
+                                                Giá bán
+                                                <span t-if="diffs.get('price')" class="badge rounded-pill bg-light border text-purple small ms-1">Khác biệt</span>
+                                            </td>
+                                            <t t-foreach="products" t-as="p">
+                                                <td class="p-3 text-center">
+                                                    <t t-set="p_prices" t-value="get_product_prices(p)"/>
+                                                    <span class="fw-bold fs-5 text-dark"
+                                                          t-out="p_prices['price_reduce']"
+                                                          t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                                                </td>
+                                            </t>
+                                            <td t-if="len(products) &lt; 3" class="bg-light"/>
+                                        </tr>
+
+                                        <!-- 5. DUNG TÍCH / VARIANT -->
+                                        <tr t-attf-class="#{diffs.get('volume') and 'bm-diff-row' or ''}">
+                                            <td class="fw-bold text-dark p-3">Dung tích / Phân loại</td>
+                                            <t t-foreach="products" t-as="p">
+                                                <td class="p-3 text-center small text-muted">
+                                                    <t t-out="p.beautymatch_volume or 'Tiêu chuẩn'"/>
+                                                </td>
+                                            </t>
+                                            <td t-if="len(products) &lt; 3" class="bg-light"/>
+                                        </tr>
+
+                                        <!-- 6. LOẠI DA PHÙ HỢP -->
+                                        <tr t-attf-class="#{diffs.get('skin_type') and 'bm-diff-row' or ''}">
+                                            <td class="fw-bold text-dark p-3">
+                                                Loại da phù hợp
+                                                <span t-if="diffs.get('skin_type')" class="badge rounded-pill bg-light border text-purple small ms-1">Khác biệt</span>
+                                            </td>
+                                            <t t-foreach="products" t-as="p">
+                                                <td class="p-3 text-center">
+                                                    <span class="badge rounded-pill px-3 py-2 fw-semibold" style="background-color: #E8DDF2; color: #6E4C7E;">
+                                                        <t t-if="p.beautymatch_skin_type">
+                                                            <t t-out="dict(p._fields['beautymatch_skin_type'].selection).get(p.beautymatch_skin_type)"/>
+                                                        </t>
+                                                        <t t-else="">Mọi loại da</t>
+                                                    </span>
+                                                </td>
+                                            </t>
+                                            <td t-if="len(products) &lt; 3" class="bg-light"/>
+                                        </tr>
+
+                                        <!-- 7. VẤN ĐỀ DA MỤC TIÊU -->
+                                        <tr t-attf-class="#{diffs.get('skin_concern') and 'bm-diff-row' or ''}">
+                                            <td class="fw-bold text-dark p-3">
+                                                Vấn đề da mục tiêu
+                                                <span t-if="diffs.get('skin_concern')" class="badge rounded-pill bg-light border text-purple small ms-1">Khác biệt</span>
+                                            </td>
+                                            <t t-foreach="products" t-as="p">
+                                                <td class="p-3 text-center">
+                                                    <span class="badge rounded-pill px-3 py-2 fw-semibold bg-light text-dark border">
+                                                        <t t-if="p.beautymatch_skin_concern">
+                                                            <t t-out="dict(p._fields['beautymatch_skin_concern'].selection).get(p.beautymatch_skin_concern)"/>
+                                                        </t>
+                                                        <t t-else="">Chăm sóc toàn diện</t>
+                                                    </span>
+                                                </td>
+                                            </t>
+                                            <td t-if="len(products) &lt; 3" class="bg-light"/>
+                                        </tr>
+
+                                        <!-- 8. HOẠT CHẤT CHÍNH -->
+                                        <tr t-attf-class="#{diffs.get('key_ingredients') and 'bm-diff-row' or ''}">
+                                            <td class="fw-bold text-dark p-3">Hoạt chất chính</td>
+                                            <t t-foreach="products" t-as="p">
+                                                <td class="p-3 text-center">
+                                                    <div class="d-flex flex-wrap gap-1 justify-content-center">
+                                                        <t t-if="p.beautymatch_key_ingredients">
+                                                            <t t-foreach="p.beautymatch_key_ingredients.split(',')" t-as="ingr">
+                                                                <span class="badge rounded-pill bg-light text-dark border small">
+                                                                    <t t-out="ingr.strip()"/>
+                                                                </span>
+                                                            </t>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <span class="text-muted small">Công thức y khoa</span>
+                                                        </t>
+                                                    </div>
+                                                </td>
+                                            </t>
+                                            <td t-if="len(products) &lt; 3" class="bg-light"/>
+                                        </tr>
+
+                                        <!-- 9. BƯỚC ROUTINE -->
+                                        <tr t-attf-class="#{diffs.get('routine_step') and 'bm-diff-row' or ''}">
+                                            <td class="fw-bold text-dark p-3">
+                                                Bước Routine
+                                                <span t-if="diffs.get('routine_step')" class="badge rounded-pill bg-light border text-purple small ms-1">Khác biệt</span>
+                                            </td>
+                                            <t t-foreach="products" t-as="p">
+                                                <td class="p-3 text-center">
+                                                    <span class="fw-semibold text-primary">
+                                                        <i class="fa fa-list-ol me-1"/>
+                                                        <t t-if="p.beautymatch_routine_step">
+                                                            <t t-out="dict(p._fields['beautymatch_routine_step'].selection).get(p.beautymatch_routine_step)"/>
+                                                        </t>
+                                                        <t t-else="">Hàng ngày</t>
+                                                    </span>
+                                                </td>
+                                            </t>
+                                            <td t-if="len(products) &lt; 3" class="bg-light"/>
+                                        </tr>
+
+                                        <!-- 10. THỜI ĐIỂM SỬ DỤNG -->
+                                        <tr t-attf-class="#{diffs.get('usage_time') and 'bm-diff-row' or ''}">
+                                            <td class="fw-bold text-dark p-3">Thời điểm sử dụng</td>
+                                            <t t-foreach="products" t-as="p">
+                                                <td class="p-3 text-center small text-muted">
+                                                    <i class="fa fa-clock-o me-1"/>
+                                                    <t t-if="p.beautymatch_usage_time">
+                                                        <t t-out="dict(p._fields['beautymatch_usage_time'].selection).get(p.beautymatch_usage_time)"/>
+                                                    </t>
+                                                    <t t-else="">Sáng &amp; Tối</t>
+                                                </td>
+                                            </t>
+                                            <td t-if="len(products) &lt; 3" class="bg-light"/>
+                                        </tr>
+
+                                        <!-- 11. PHÂN KHÚC GIÁ -->
+                                        <tr t-attf-class="#{diffs.get('budget_level') and 'bm-diff-row' or ''}">
+                                            <td class="fw-bold text-dark p-3">Phân khúc giá</td>
+                                            <t t-foreach="products" t-as="p">
+                                                <td class="p-3 text-center small">
+                                                    <t t-if="p.beautymatch_budget_level">
+                                                        <t t-out="dict(p._fields['beautymatch_budget_level'].selection).get(p.beautymatch_budget_level)"/>
+                                                    </t>
+                                                    <t t-else="">Tầm trung</t>
+                                                </td>
+                                            </t>
+                                            <td t-if="len(products) &lt; 3" class="bg-light"/>
+                                        </tr>
+
+                                        <!-- 12. TỒN KHO -->
+                                        <tr>
+                                            <td class="fw-bold text-dark p-3">Tình trạng kho</td>
+                                            <t t-foreach="products" t-as="p">
+                                                <td class="p-3 text-center">
+                                                    <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1 rounded-pill small">
+                                                        <i class="fa fa-check-circle me-1"/>Còn hàng
+                                                    </span>
+                                                </td>
+                                            </t>
+                                            <td t-if="len(products) &lt; 3" class="bg-light"/>
+                                        </tr>
+
+                                        <!-- 13. RATING -->
+                                        <tr>
+                                            <td class="fw-bold text-dark p-3">Đánh giá</td>
+                                            <t t-foreach="products" t-as="p">
+                                                <td class="p-3 text-center">
+                                                    <div class="d-flex align-items-center justify-content-center gap-1">
+                                                        <t t-call="portal_rating.rating_widget_stars_static">
+                                                            <t t-set="rating_avg" t-value="p.sudo().rating_avg or 5.0"/>
+                                                            <t t-set="rating_count" t-value="p.rating_count or 1"/>
+                                                        </t>
+                                                        <span class="text-muted small ms-1">(<t t-out="p.rating_count or 1"/>)</span>
+                                                    </div>
+                                                </td>
+                                            </t>
+                                            <td t-if="len(products) &lt; 3" class="bg-light"/>
+                                        </tr>
+
+                                        <!-- 14. VÌ SAO PHÙ HỢP? (Decision Support) -->
+                                        <tr>
+                                            <td class="fw-bold text-dark p-3">Vì sao phù hợp?</td>
+                                            <t t-foreach="products" t-as="p">
+                                                <td class="p-3 small text-muted text-start" style="line-height: 1.6;">
+                                                    <t t-if="p.beautymatch_short_fit_reason">
+                                                        <t t-out="p.beautymatch_short_fit_reason"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        Công thức chuẩn y khoa kiểm nghiệm lành tính cho làn da.
+                                                    </t>
+                                                </td>
+                                            </t>
+                                            <td t-if="len(products) &lt; 3" class="bg-light"/>
+                                        </tr>
+
+                                        <!-- 15. PHÙ HỢP HƠN NẾU BẠN... (Smart Recommendation) -->
+                                        <tr style="background-color: #F8F4FA;">
+                                            <td class="fw-bold p-3" style="color: #6E4C7E;">
+                                                <i class="fa fa-lightbulb-o me-1"/>
+                                                Phù hợp hơn nếu bạn...
+                                            </td>
+                                            <t t-foreach="products" t-as="p">
+                                                <td class="p-3 small text-start" style="line-height: 1.6;">
+                                                    <div class="p-3 rounded-3 bg-white border h-100">
+                                                        <strong class="d-block mb-1" style="color: #6E4C7E;">Nên ưu tiên chọn nếu:</strong>
+                                                        <span class="text-muted" t-out="fit_advices.get(p.id)"/>
+                                                    </div>
+                                                </td>
+                                            </t>
+                                            <td t-if="len(products) &lt; 3" class="bg-light"/>
+                                        </tr>
+
+                                        <!-- 16. HÀNH ĐỘNG CUỐI BẢNG -->
+                                        <tr>
+                                            <td class="p-3 fw-bold text-dark">Thao tác</td>
+                                            <t t-foreach="products" t-as="p">
+                                                <td class="p-3 text-center">
+                                                    <div class="d-flex flex-column gap-2 justify-content-center">
+                                                        <button type="button"
+                                                                class="btn btn-sm text-white rounded-pill px-3 py-2 fw-semibold shadow-sm js_bm_quick_add_cart"
+                                                                style="background-color: #6E4C7E;"
+                                                                t-att-data-product-id="p._get_first_possible_variant_id()"
+                                                                t-att-data-product-template-id="p.id">
+                                                            <i class="fa fa-shopping-cart me-1"/> Thêm vào giỏ
+                                                        </button>
+                                                        <a t-att-href="'/shop/%s' % slug(p)" class="btn btn-sm btn-outline-secondary rounded-pill px-3 py-1">
+                                                            Xem chi tiết →
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </t>
+                                            <td t-if="len(products) &lt; 3" class="bg-light"/>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Gợi ý chân trang so sánh -->
+                        <div class="text-center text-muted small">
+                            <i class="fa fa-info-circle me-1 text-primary"/>
+                            Các thông số kỹ thuật, hoạt chất và đề xuất so sánh được trích xuất trực tiếp từ cơ sở dữ liệu phân loại khoa học của BeautyMatch.
+                        </div>
+                    </t>
+
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

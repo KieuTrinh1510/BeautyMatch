@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="0">
+
+    <!-- ======================================================== -->
+    <!-- 1. BLOG RECORD: KIẾN THỨC SKINCARE                       -->
+    <!-- ======================================================== -->
+    <record id="beautymatch_blog_skincare" model="blog.blog">
+        <field name="name">Kiến thức Skincare</field>
+        <field name="subtitle">Hiểu làn da để lựa chọn sản phẩm phù hợp hơn.</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <!-- ======================================================== -->
+    <!-- 2. 6 BLOG TAGS / CATEGORIES                              -->
+    <!-- ======================================================== -->
+    <record id="beautymatch_tag_skincare_basics" model="blog.tag">
+        <field name="name">Cơ bản về skincare</field>
+    </record>
+
+    <record id="beautymatch_tag_skin_types" model="blog.tag">
+        <field name="name">Loại da</field>
+    </record>
+
+    <record id="beautymatch_tag_skin_concerns" model="blog.tag">
+        <field name="name">Vấn đề da</field>
+    </record>
+
+    <record id="beautymatch_tag_ingredients" model="blog.tag">
+        <field name="name">Thành phần</field>
+    </record>
+
+    <record id="beautymatch_tag_routine" model="blog.tag">
+        <field name="name">Routine</field>
+    </record>
+
+    <record id="beautymatch_tag_sunscreen" model="blog.tag">
+        <field name="name">Chống nắng</field>
+    </record>
+
+    <!-- ======================================================== -->
+    <!-- 3. 6 BÀI VIẾT SKINCARE CHUẨN KHOA HỌC                   -->
+    <!-- ======================================================== -->
+
+    <!-- BÀI 1: Cách xác định loại da của bạn -->
+    <record id="blog_post_skin_types" model="blog.post">
+        <field name="blog_id" ref="beautymatch_blog_skincare"/>
+        <field name="name">Cách xác định loại da của bạn</field>
+        <field name="subtitle">Hướng dẫn 2 phương pháp đơn giản tại nhà giúp bạn nhận diện chính xác làn da thuộc nhóm dầu, khô, hỗn hợp hay nhạy cảm.</field>
+        <field name="tag_ids" eval="[(6, 0, [ref('beautymatch_tag_skin_types'), ref('beautymatch_tag_skincare_basics')])]"/>
+        <field name="is_published" eval="True"/>
+        <field name="published_date">2026-10-15 08:00:00</field>
+        <field name="cover_properties">{"background-image": "url('/beautymatch/static/src/img/blog_skin_types.webp')", "resize_class": "o_record_has_cover o_half_screen_height", "opacity": "0.2"}</field>
+        <field name="content"><![CDATA[
+<div class="bm-blog-post-body">
+    <p class="lead" style="color: #6E4C7E; font-weight: 500;">
+        Việc xác định đúng loại da là nền tảng quan trọng nhất trước khi bắt đầu bất kỳ chu trình chăm sóc da nào. Dùng sai sản phẩm không chỉ lãng phí ngân sách mà còn có thể khiến da gặp tình trạng bít tắc hoặc kích ứng ngoài ý muốn.
+    </p>
+
+    <h3 class="fw-bold mt-4 mb-3" style="color: #2B2430;">1. Hai phương pháp kiểm tra loại da tại nhà</h3>
+    
+    <div class="p-3 rounded-4 mb-3" style="background-color: #FAF7FB; border-left: 4px solid #8F6FA8;">
+        <h5 class="fw-bold text-dark mb-2">Phương pháp 1: Quan sát da mộc sau khi rửa mặt</h5>
+        <p class="mb-0 text-muted small" style="line-height: 1.7;">
+            Rửa mặt sạch bằng sữa rửa mặt dịu nhẹ, dùng khăn mềm thấm khô và <strong>không thoa bất kỳ loại toner hay kem dưỡng nào</strong> trong vòng 30 - 45 phút. Sau đó quan sát biểu hiện trên bề mặt da.
+        </p>
+    </div>
+
+    <div class="p-3 rounded-4 mb-4" style="background-color: #FAF7FB; border-left: 4px solid #8F6FA8;">
+        <h5 class="fw-bold text-dark mb-2">Phương pháp 2: Sử dụng giấy thấm dầu</h5>
+        <p class="mb-0 text-muted small" style="line-height: 1.7;">
+            Dùng 5 mẩu giấy thấm dầu nhỏ dán nhẹ lên trán, mũi, cằm và hai bên má sau 2-3 giờ sinh hoạt bình thường. Lượng dầu dính trên giấy sẽ giúp xác định sự phân bổ bã nhờn giữa vùng chữ T và chữ U.
+        </p>
+    </div>
+
+    <h3 class="fw-bold mt-4 mb-3" style="color: #2B2430;">2. Đặc điểm nhận diện 4 nhóm da chính</h3>
+    <div class="table-responsive mb-4">
+        <table class="table table-bordered align-middle">
+            <thead style="background-color: #F3ECF8; color: #6E4C7E;">
+                <tr>
+                    <th style="width: 25%;">Loại da</th>
+                    <th style="width: 45%;">Biểu hiện nhận biết</th>
+                    <th style="width: 30%;">Nhu cầu cốt lõi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="fw-bold">Da dầu (Oily)</td>
+                    <td class="text-muted small">Bóng nhờn toàn mặt sau 30 phút, lỗ chân lông to, dễ nổi mụn.</td>
+                    <td class="small">Làm sạch sâu, kiềm dầu, cấp nước mỏng nhẹ.</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Da khô (Dry)</td>
+                    <td class="text-muted small">Cảm giác căng rát, bề mặt thô ráp, có thể bong tróc nhẹ quanh khóe mũi.</td>
+                    <td class="small">Cấp ẩm tầng sâu, củng cố màng lipid bảo vệ.</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Da hỗn hợp (Combination)</td>
+                    <td class="text-muted small">Đổ dầu vùng chữ T (trán, mũi, cằm) nhưng hai bên má lại bình thường hoặc khô.</td>
+                    <td class="small">Cân bằng độ ẩm, chăm sóc vùng chuyên biệt.</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Da nhạy cảm (Sensitive)</td>
+                    <td class="text-muted small">Dễ ửng đỏ, châm chích khi đổi thời tiết hoặc tiếp xúc sản phẩm mới.</td>
+                    <td class="small">Làm dịu, tối giản bảng thành phần, phục hồi.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h3 class="fw-bold mt-4 mb-3" style="color: #2B2430;">3. Phân biệt: Da khô bẩm sinh và Da thiếu nước tạm thời</h3>
+    <p class="text-muted" style="line-height: 1.8;">
+        Nhiều người có làn da đổ dầu nhưng bên dưới lại cảm thấy căng rát. Đây là tình trạng <em>da thiếu nước (Dehydrated Skin)</em>, cơ thể phản ứng bằng cách tiết thêm bã nhờn để ngăn hơi ẩm bay hơi. Nhận biết đúng tình trạng này sẽ giúp bạn chọn đúng sản phẩm cấp nước thay vì chỉ tập trung hút dầu quá mức.
+    </p>
+
+    <!-- Disclaimer y tế -->
+    <div class="p-3 rounded-4 my-4" style="background-color: #F8F9FA; border-left: 4px solid #8F6FA8;">
+        <div class="d-flex align-items-center gap-2 text-muted small">
+            <i class="fa fa-info-circle text-primary fa-lg"/>
+            <span><strong>Lưu ý:</strong> Nội dung mang tính tham khảo và không thay thế tư vấn y khoa. Vui lòng tham khảo ý kiến chuyên gia da liễu khi gặp các tình trạng bệnh lý phức tạp.</span>
+        </div>
+    </div>
+
+    <!-- CTA chuyển đổi -->
+    <div class="p-4 rounded-4 shadow-sm text-center my-4" style="background: linear-gradient(135deg, #F3ECF8 0%, #FFFFFF 100%); border: 1px solid #CDB7DD;">
+        <h5 class="fw-bold mb-2" style="color: #6E4C7E;">Bạn đã biết loại da của mình chưa?</h5>
+        <p class="text-muted small mb-3">Làm bài trắc nghiệm nhanh 1 phút hoặc lọc sản phẩm chính xác theo loại da của bạn.</p>
+        <div class="d-flex justify-content-center gap-2 flex-wrap">
+            <a href="/beauty-quiz" class="btn text-white px-4 py-2 rounded-pill shadow-sm fw-semibold" style="background-color: #6E4C7E;">
+                <i class="fa fa-magic me-1"/> Làm Beauty Quiz ngay
+            </a>
+            <a href="/shop" class="btn btn-outline-secondary px-4 py-2 rounded-pill fw-semibold">
+                Khám phá sản phẩm theo loại da →
+            </a>
+        </div>
+    </div>
+</div>
+]]></field>
+    </record>
+
+    <!-- BÀI 2: Da dầu có cần dưỡng ẩm không? -->
+    <record id="blog_post_oily_skin_moisture" model="blog.post">
+        <field name="blog_id" ref="beautymatch_blog_skincare"/>
+        <field name="name">Da dầu có cần dưỡng ẩm không?</field>
+        <field name="subtitle">Giải mã cơ chế da thiếu nước đổ dầu và cách lựa chọn kem dưỡng ẩm mỏng nhẹ, kiềm dầu không gây bít tắc lỗ chân lông.</field>
+        <field name="tag_ids" eval="[(6, 0, [ref('beautymatch_tag_skin_types'), ref('beautymatch_tag_skin_concerns')])]"/>
+        <field name="is_published" eval="True"/>
+        <field name="published_date">2026-10-15 09:30:00</field>
+        <field name="cover_properties">{"background-image": "url('/beautymatch/static/src/img/blog_oily_skin.webp')", "resize_class": "o_record_has_cover o_half_screen_height", "opacity": "0.2"}</field>
+        <field name="content"><![CDATA[
+<div class="bm-blog-post-body">
+    <p class="lead" style="color: #6E4C7E; font-weight: 500;">
+        "Mặt lúc nào cũng bóng nhẫy như chảo dầu thì tại sao lại cần bôi thêm kem dưỡng?" – Đây là một trong những hiểu lầm phổ biến nhất khiến tình trạng mụn và bóng dầu kéo dài không dứt.
+    </p>
+
+    <h3 class="fw-bold mt-4 mb-3" style="color: #2B2430;">1. Cơ chế da tiết dầu khi thiếu nước</h3>
+    <p class="text-muted" style="line-height: 1.8;">
+        Độ ẩm của da bao gồm hai yếu tố: <strong>Lượng nước (Hydration)</strong> và <strong>Lượng dầu (Oil/Lipid)</strong>. Da dầu là loại da sản sinh nhiều bã nhờn, nhưng hoàn toàn có thể bị thiếu hụt lượng nước bên trong biểu bì. Khi bề mặt thiếu ẩm do thời tiết hoặc do dùng sữa rửa mặt có chất tẩy rửa mạnh, tuyến bã nhờn sẽ nhận tín hiệu báo động và tăng tiết dầu gấp đôi để tạo lớp màng ngăn bốc hơi nước. Kết quả là da vừa bóng nhờn bên ngoài vừa khô căng bên trong.
+    </p>
+
+    <h3 class="fw-bold mt-4 mb-3" style="color: #2B2430;">2. Tiêu chí chọn kem dưỡng chuẩn cho da dầu mụn</h3>
+    <ul class="text-muted d-flex flex-column gap-2" style="line-height: 1.8;">
+        <li><strong>Kết cấu dạng Gel hoặc Gel-Cream:</strong> Thấm nhanh trong 30 giây, không để lại cảm giác dính dớp hay nặng mặt.</li>
+        <li><strong>Ghi nhãn Oil-Free và Non-Comedogenic:</strong> Công thức không chứa dầu khoáng nặng và không gây bít tắc lỗ chân lông sinh mụn.</li>
+        <li><strong>Chứa chất hút ẩm tự nhiên:</strong> Ưu tiên các hoạt chất như <em>Hyaluronic Acid, Glycerin, Panthenol (B5)</em> giúp ngậm nước sâu.</li>
+        <li><strong>Bổ sung chất kiềm dầu dịu nhẹ:</strong> Niacinamide 2-5% hoặc Zinc PCA giúp điều tiết bã nhờn và hỗ trợ kháng khuẩn.</li>
+    </ul>
+
+    <!-- Disclaimer y tế -->
+    <div class="p-3 rounded-4 my-4" style="background-color: #F8F9FA; border-left: 4px solid #8F6FA8;">
+        <div class="d-flex align-items-center gap-2 text-muted small">
+            <i class="fa fa-info-circle text-primary fa-lg"/>
+            <span><strong>Lưu ý:</strong> Nội dung mang tính tham khảo và không thay thế tư vấn y khoa. Vui lòng tham khảo ý kiến chuyên gia da liễu khi gặp các tình trạng bệnh lý phức tạp.</span>
+        </div>
+    </div>
+
+    <!-- CTA chuyển đổi -->
+    <div class="p-4 rounded-4 shadow-sm text-center my-4" style="background: linear-gradient(135deg, #F3ECF8 0%, #FFFFFF 100%); border: 1px solid #CDB7DD;">
+        <h5 class="fw-bold mb-2" style="color: #6E4C7E;">Tìm kem dưỡng chân ái cho da dầu</h5>
+        <p class="text-muted small mb-3">Xem ngay danh sách kem dưỡng dạng gel mỏng nhẹ, kiềm dầu tốt được cộng đồng đánh giá cao tại BeautyMatch.</p>
+        <a href="/shop?skin_type=oily" class="btn text-white px-4 py-2 rounded-pill shadow-sm fw-semibold" style="background-color: #6E4C7E;">
+            <i class="fa fa-shopping-bag me-1"/> Khám phá kem dưỡng cho da dầu →
+        </a>
+    </div>
+</div>
+]]></field>
+    </record>
+
+    <!-- BÀI 3: Niacinamide là gì và phù hợp với ai? -->
+    <record id="blog_post_niacinamide_guide" model="blog.post">
+        <field name="blog_id" ref="beautymatch_blog_skincare"/>
+        <field name="name">Niacinamide là gì và phù hợp với ai?</field>
+        <field name="subtitle">Tìm hiểu hoạt chất vàng trong làng skincare giúp kiểm soát dầu, thu nhỏ lỗ chân lông và làm đều màu da an toàn.</field>
+        <field name="tag_ids" eval="[(6, 0, [ref('beautymatch_tag_ingredients'), ref('beautymatch_tag_skin_concerns')])]"/>
+        <field name="is_published" eval="True"/>
+        <field name="published_date">2026-10-15 11:00:00</field>
+        <field name="cover_properties">{"background-image": "url('/beautymatch/static/src/img/blog_niacinamide.webp')", "resize_class": "o_record_has_cover o_half_screen_height", "opacity": "0.2"}</field>
+        <field name="content"><![CDATA[
+<div class="bm-blog-post-body">
+    <p class="lead" style="color: #6E4C7E; font-weight: 500;">
+        Niacinamide (Vitamin B3) là một trong những thành phần đa năng hiếm hoi được cả bác sĩ da liễu lẫn người tiêu dùng tin dùng nhờ tính ổn định cao và khả năng giải quyết nhiều vấn đề da cùng lúc.
+    </p>
+
+    <h3 class="fw-bold mt-4 mb-3" style="color: #2B2430;">1. 4 công dụng nổi bật của Niacinamide</h3>
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <div class="p-3 rounded-4 bg-light h-100">
+                <div class="fw-bold text-dark mb-1"><i class="fa fa-tint text-primary me-2"/>Kiểm soát bã nhờn &amp; Lỗ chân lông</div>
+                <small class="text-muted">Cân bằng hoạt động tuyến dầu, giúp lỗ chân lông trông gọn gàng và hạn chế hình thành mụn đầu đen.</small>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="p-3 rounded-4 bg-light h-100">
+                <div class="fw-bold text-dark mb-1"><i class="fa fa-shield text-success me-2"/>Củng cố hàng rào Ceramide</div>
+                <small class="text-muted">Kích thích tổng hợp lipid tự nhiên, giảm hiện tượng mất nước qua biểu bì và tăng sức đề kháng cho da.</small>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="p-3 rounded-4 bg-light h-100">
+                <div class="fw-bold text-dark mb-1"><i class="fa fa-sun-o text-warning me-2"/>Làm sáng &amp; Mờ thâm mụn</div>
+                <small class="text-muted">Ức chế quá trình vận chuyển hạt sắc tố melanin lên tế bào sừng, cải thiện vùng da không đều màu.</small>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="p-3 rounded-4 bg-light h-100">
+                <div class="fw-bold text-dark mb-1"><i class="fa fa-heartbeat text-danger me-2"/>Giảm đỏ &amp; Chống oxy hóa</div>
+                <small class="text-muted">Hỗ trợ làm dịu các nốt mẩn đỏ và bảo vệ da trước tác động của gốc tự do từ môi trường ô nhiễm.</small>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="fw-bold mt-4 mb-3" style="color: #2B2430;">2. Lựa chọn nồng độ Niacinamide phù hợp</h3>
+    <ul class="text-muted d-flex flex-column gap-2" style="line-height: 1.8;">
+        <li><strong>Nồng độ 2% - 5%:</strong> Phù hợp cho người mới bắt đầu hoặc da nhạy cảm. Đem lại hiệu quả cấp ẩm, củng cố hàng rào bảo vệ da an toàn.</li>
+        <li><strong>Nồng độ 10%:</strong> Phù hợp cho da dầu, mụn thâm sau mụn và da có lỗ chân lông to (như The Ordinary Niacinamide 10% + Zinc 1%).</li>
+    </ul>
+
+    <!-- Disclaimer y tế -->
+    <div class="p-3 rounded-4 my-4" style="background-color: #F8F9FA; border-left: 4px solid #8F6FA8;">
+        <div class="d-flex align-items-center gap-2 text-muted small">
+            <i class="fa fa-info-circle text-primary fa-lg"/>
+            <span><strong>Lưu ý:</strong> Nội dung mang tính tham khảo và không thay thế tư vấn y khoa. Vui lòng tham khảo ý kiến chuyên gia da liễu khi gặp các tình trạng bệnh lý phức tạp.</span>
+        </div>
+    </div>
+
+    <!-- CTA chuyển đổi -->
+    <div class="p-4 rounded-4 shadow-sm text-center my-4" style="background: linear-gradient(135deg, #F3ECF8 0%, #FFFFFF 100%); border: 1px solid #CDB7DD;">
+        <h5 class="fw-bold mb-2" style="color: #6E4C7E;">Khám phá các sản phẩm chứa Niacinamide</h5>
+        <p class="text-muted small mb-3">Lọc nhanh các sản phẩm serum và kem dưỡng chứa hoạt chất Niacinamide chính hãng tại BeautyMatch.</p>
+        <a href="/shop?ingredient=niacinamide" class="btn text-white px-4 py-2 rounded-pill shadow-sm fw-semibold" style="background-color: #6E4C7E;">
+            <i class="fa fa-flask me-1"/> Xem sản phẩm chứa Niacinamide →
+        </a>
+    </div>
+</div>
+]]></field>
+    </record>
+
+    <!-- BÀI 4: Routine skincare cơ bản cho người mới bắt đầu -->
+    <record id="blog_post_routine_basics" model="blog.post">
+        <field name="blog_id" ref="beautymatch_blog_skincare"/>
+        <field name="name">Routine skincare cơ bản cho người mới bắt đầu</field>
+        <field name="subtitle">Xây dựng quy trình chăm sóc da tối giản chuẩn 3 bước: Làm sạch - Dưỡng ẩm - Bảo vệ, giúp da khỏe bền vững.</field>
+        <field name="tag_ids" eval="[(6, 0, [ref('beautymatch_tag_routine'), ref('beautymatch_tag_skincare_basics')])]"/>
+        <field name="is_published" eval="True"/>
+        <field name="published_date">2026-10-16 08:30:00</field>
+        <field name="cover_properties">{"background-image": "url('/beautymatch/static/src/img/blog_routine_basics.webp')", "resize_class": "o_record_has_cover o_half_screen_height", "opacity": "0.2"}</field>
+        <field name="content"><![CDATA[
+<div class="bm-blog-post-body">
+    <p class="lead" style="color: #6E4C7E; font-weight: 500;">
+        Giữa hàng trăm loại serum, toner và treatment phức tạp, người mới bắt đầu rất dễ bị "choáng ngợp". Bí quyết cho một làn da khỏe không nằm ở số lượng lọ mỹ phẩm trên bàn, mà ở sự kiên trì với 3 bước nền tảng cốt lõi.
+    </p>
+
+    <h3 class="fw-bold mt-4 mb-3" style="color: #2B2430;">1. Tam giác vàng: 3 bước không thể thiếu</h3>
+    
+    <div class="d-flex flex-column gap-3 mb-4">
+        <div class="d-flex align-items-start gap-3 p-3 rounded-4 bg-light">
+            <span class="badge rounded-circle p-2 text-white flex-shrink-0" style="background-color: #8F6FA8; width: 36px; height: 36px;">1</span>
+            <div>
+                <strong class="d-block text-dark">Bước 1: Làm sạch (Cleansing)</strong>
+                <small class="text-muted">Loại bỏ dầu thừa, bụi mịn và vi khuẩn tích tụ. Chọn sữa rửa mặt có độ pH cân bằng 5.5 để bảo vệ màng acid mantle của da.</small>
+            </div>
+        </div>
+        <div class="d-flex align-items-start gap-3 p-3 rounded-4 bg-light">
+            <span class="badge rounded-circle p-2 text-white flex-shrink-0" style="background-color: #8F6FA8; width: 36px; height: 36px;">2</span>
+            <div>
+                <strong class="d-block text-dark">Bước 2: Cấp ẩm &amp; Phục hồi (Moisturizing)</strong>
+                <small class="text-muted">Duy trì độ ẩm thiết yếu và sửa chữa hàng rào bảo vệ da. Tùy theo loại da mà bạn chọn dạng sữa, gel hay kem đặc.</small>
+            </div>
+        </div>
+        <div class="d-flex align-items-start gap-3 p-3 rounded-4 bg-light">
+            <span class="badge rounded-circle p-2 text-white flex-shrink-0" style="background-color: #8F6FA8; width: 36px; height: 36px;">3</span>
+            <div>
+                <strong class="d-block text-dark">Bước 3: Chống nắng ban ngày (Protecting)</strong>
+                <small class="text-muted">Bảo vệ thành quả dưỡng da trước tia UVA/UVB gây lão hóa sớm và sạm nám. Thoa đều mỗi sáng trước khi ra ngoài.</small>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="fw-bold mt-4 mb-3" style="color: #2B2430;">2. Routine sáng và tối khác nhau thế nào?</h3>
+    <ul class="text-muted d-flex flex-column gap-2" style="line-height: 1.8;">
+        <li><strong>Buổi sáng (Tập trung Bảo vệ):</strong> Sữa rửa mặt nhẹ nhàng → Kem dưỡng ẩm mỏng → Kem chống nắng SPF 50+.</li>
+        <li><strong>Buổi tối (Tập trung Phục hồi &amp; Tái tạo):</strong> Tẩy trang → Sữa rửa mặt → Toner/Serum phục hồi → Kem dưỡng khóa ẩm ban đêm.</li>
+    </ul>
+
+    <!-- Disclaimer y tế -->
+    <div class="p-3 rounded-4 my-4" style="background-color: #F8F9FA; border-left: 4px solid #8F6FA8;">
+        <div class="d-flex align-items-center gap-2 text-muted small">
+            <i class="fa fa-info-circle text-primary fa-lg"/>
+            <span><strong>Lưu ý:</strong> Nội dung mang tính tham khảo và không thay thế tư vấn y khoa. Vui lòng tham khảo ý kiến chuyên gia da liễu khi gặp các tình trạng bệnh lý phức tạp.</span>
+        </div>
+    </div>
+
+    <!-- CTA chuyển đổi -->
+    <div class="p-4 rounded-4 shadow-sm text-center my-4" style="background: linear-gradient(135deg, #F3ECF8 0%, #FFFFFF 100%); border: 1px solid #CDB7DD;">
+        <h5 class="fw-bold mb-2" style="color: #6E4C7E;">Cần hướng dẫn chi tiết quy trình Routine?</h5>
+        <p class="text-muted small mb-3">Xem ngay cẩm nang hướng dẫn đầy đủ các bước trong Routine buổi sáng và buổi tối tại BeautyMatch.</p>
+        <a href="/routine" class="btn text-white px-4 py-2 rounded-pill shadow-sm fw-semibold" style="background-color: #6E4C7E;">
+            <i class="fa fa-list-ol me-1"/> Xem hướng dẫn Routine chi tiết →
+        </a>
+    </div>
+</div>
+]]></field>
+    </record>
+
+    <!-- BÀI 5: Cách lựa chọn kem chống nắng phù hợp -->
+    <record id="blog_post_sunscreen_guide" model="blog.post">
+        <field name="blog_id" ref="beautymatch_blog_skincare"/>
+        <field name="name">Cách lựa chọn kem chống nắng phù hợp</field>
+        <field name="subtitle">Phân biệt chống nắng vật lý và hóa học, chỉ số SPF/PA lý tưởng và gợi ý kết cấu phù hợp cho từng loại da.</field>
+        <field name="tag_ids" eval="[(6, 0, [ref('beautymatch_tag_sunscreen'), ref('beautymatch_tag_skin_types')])]"/>
+        <field name="is_published" eval="True"/>
+        <field name="published_date">2026-10-16 14:00:00</field>
+        <field name="cover_properties">{"background-image": "url('/beautymatch/static/src/img/blog_sunscreen.webp')", "resize_class": "o_record_has_cover o_half_screen_height", "opacity": "0.2"}</field>
+        <field name="content"><![CDATA[
+<div class="bm-blog-post-body">
+    <p class="lead" style="color: #6E4C7E; font-weight: 500;">
+        Bạn có thể đầu tư hàng triệu đồng cho serum đắt tiền, nhưng nếu bỏ quên kem chống nắng, mọi nỗ lực dưỡng da đều có nguy cơ trở về số không do tác động phá hủy collagen từ tia cực tím.
+    </p>
+
+    <h3 class="fw-bold mt-4 mb-3" style="color: #2B2430;">1. So sánh: Chống nắng vật lý và Chống nắng hóa học</h3>
+    <div class="table-responsive mb-4">
+        <table class="table table-bordered align-middle">
+            <thead style="background-color: #F3ECF8; color: #6E4C7E;">
+                <tr>
+                    <th style="width: 25%;">Đặc điểm</th>
+                    <th style="width: 37%;">Chống nắng vật lý (Khoáng)</th>
+                    <th style="width: 38%;">Chống nắng hóa học</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="fw-bold">Cơ chế</td>
+                    <td class="text-muted small">Tạo lớp màng phản xạ tia UV như chiếc gương.</td>
+                    <td class="text-muted small">Hấp thụ tia UV và chuyển hóa thành nhiệt lượng vô hại.</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Thành phần chính</td>
+                    <td class="small">Zinc Oxide, Titanium Dioxide.</td>
+                    <td class="small">Avobenzone, Mexoryl, Tinosorb, Octocrylene.</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Ưu điểm</td>
+                    <td class="small text-success">Lành tính, ít cay mắt, bảo vệ tức thì sau thoa.</td>
+                    <td class="small text-primary">Kết cấu vô hình, tiệp màu da, không để lại vệt trắng.</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Phù hợp nhất với</td>
+                    <td class="small">Da nhạy cảm, phụ nữ mang thai, da sau điều trị.</td>
+                    <td class="small">Da dầu, người thích lớp finish tệp da tự nhiên.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h3 class="fw-bold mt-4 mb-3" style="color: #2B2430;">2. Chỉ số bao nhiêu là đủ cho thời tiết Việt Nam?</h3>
+    <p class="text-muted" style="line-height: 1.8;">
+        Trong điều kiện nắng gắt tại vùng nhiệt đới, chỉ số tối ưu được khuyến nghị là <strong>SPF 50+</strong> (ngăn ngừa 98% tia UVB gây bỏng rát) và <strong>PA++++</strong> (khả năng lọc tia UVA gây lão hóa và sạm nám trên 95%).
+    </p>
+
+    <!-- Disclaimer y tế -->
+    <div class="p-3 rounded-4 my-4" style="background-color: #F8F9FA; border-left: 4px solid #8F6FA8;">
+        <div class="d-flex align-items-center gap-2 text-muted small">
+            <i class="fa fa-info-circle text-primary fa-lg"/>
+            <span><strong>Lưu ý:</strong> Nội dung mang tính tham khảo và không thay thế tư vấn y khoa. Vui lòng tham khảo ý kiến chuyên gia da liễu khi gặp các tình trạng bệnh lý phức tạp.</span>
+        </div>
+    </div>
+
+    <!-- CTA chuyển đổi -->
+    <div class="p-4 rounded-4 shadow-sm text-center my-4" style="background: linear-gradient(135deg, #F3ECF8 0%, #FFFFFF 100%); border: 1px solid #CDB7DD;">
+        <h5 class="fw-bold mb-2" style="color: #6E4C7E;">Chọn kem chống nắng chân ái cho làn da</h5>
+        <p class="text-muted small mb-3">Khám phá các sản phẩm chống nắng vật lý và hóa học chính hãng (Anessa, La Roche-Posay, Skin Aqua) tại BeautyMatch.</p>
+        <a href="/shop/category/chong-nang-58" class="btn text-white px-4 py-2 rounded-pill shadow-sm fw-semibold" style="background-color: #6E4C7E;">
+            <i class="fa fa-sun-o me-1"/> Khám phá danh mục Chống nắng →
+        </a>
+    </div>
+</div>
+]]></field>
+    </record>
+
+    <!-- BÀI 6: Da nhạy cảm nên chú ý thành phần nào? -->
+    <record id="blog_post_sensitive_skin_ingredients" model="blog.post">
+        <field name="blog_id" ref="beautymatch_blog_skincare"/>
+        <field name="name">Da nhạy cảm nên chú ý thành phần nào?</field>
+        <field name="subtitle">Những hoạt chất làm dịu phục hồi da tổn thương (Centella, Ceramide, B5) và những thành phần cần thận trọng khi lựa chọn.</field>
+        <field name="tag_ids" eval="[(6, 0, [ref('beautymatch_tag_ingredients'), ref('beautymatch_tag_skin_types')])]"/>
+        <field name="is_published" eval="True"/>
+        <field name="published_date">2026-10-16 16:30:00</field>
+        <field name="cover_properties">{"background-image": "url('/beautymatch/static/src/img/blog_sensitive_skin.webp')", "resize_class": "o_record_has_cover o_half_screen_height", "opacity": "0.2"}</field>
+        <field name="content"><![CDATA[
+<div class="bm-blog-post-body">
+    <p class="lead" style="color: #6E4C7E; font-weight: 500;">
+        Làn da nhạy cảm có hàng rào bảo vệ mỏng manh hơn người bình thường, dễ dàng phản ứng dữ dội với các tác nhân lạ. "Đọc vị" bảng thành phần mỹ phẩm là kỹ năng sống còn giúp bạn chọn đúng sản phẩm êm dịu cho da.
+    </p>
+
+    <h3 class="fw-bold mt-4 mb-3" style="color: #2B2430;">1. Bộ tứ thành phần "vàng" làm dịu và phục hồi</h3>
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <div class="p-3 rounded-4 bg-light h-100 border">
+                <div class="fw-bold text-dark mb-1"><i class="fa fa-check-circle text-success me-2"/>Panthenol (Vitamin B5)</div>
+                <small class="text-muted">Kích thích tái tạo tế bào, làm dịu tức thì các vết đỏ rát và hỗ trợ lành thương hiệu quả.</small>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="p-3 rounded-4 bg-light h-100 border">
+                <div class="fw-bold text-dark mb-1"><i class="fa fa-check-circle text-success me-2"/>Ceramides (1, 3, 6-II)</div>
+                <small class="text-muted">Đóng vai trò như "chất vữa" gắn kết các tế bào da, vá lại các vết nứt trên hàng rào ẩm tự nhiên.</small>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="p-3 rounded-4 bg-light h-100 border">
+                <div class="fw-bold text-dark mb-1"><i class="fa fa-check-circle text-success me-2"/>Chiết xuất Rau má (Centella Asiatica)</div>
+                <small class="text-muted">Giàu hoạt chất Madecassoside giúp kháng viêm tự nhiên, giảm sưng và hạ nhiệt độ bề mặt da.</small>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="p-3 rounded-4 bg-light h-100 border">
+                <div class="fw-bold text-dark mb-1"><i class="fa fa-check-circle text-success me-2"/>Nước khoáng nhiệt (Thermal Spring Water)</div>
+                <small class="text-muted">Chứa các khoáng chất vi lượng quý (Selenium, Kẽm, Magiê) giúp cân bằng hệ vi sinh microbiome của da.</small>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="fw-bold mt-4 mb-3" style="color: #2B2430;">2. Những thành phần cần thận trọng khi lựa chọn</h3>
+    <ul class="text-muted d-flex flex-column gap-2" style="line-height: 1.8;">
+        <li><strong>Hương liệu nhân tạo (Fragrance/Parfum):</strong> Tác nhân hàng đầu gây viêm da tiếp xúc dị ứng. Ưu tiên sản phẩm ghi nhãn <em>Fragrance-Free</em>.</li>
+        <li><strong>Cồn khô nồng độ cao (Alcohol Denat, SD Alcohol):</strong> Làm bay hơi nhanh độ ẩm tự nhiên, khiến da khô căng và dễ kích ứng.</li>
+        <li><strong>Chất tẩy rửa Sulfate mạnh (SLS):</strong> Bào mòn lớp màng bảo vệ da, nên chuyển sang chất làm sạch gốc dừa hoặc amino acid.</li>
+    </ul>
+
+    <!-- Disclaimer y tế -->
+    <div class="p-3 rounded-4 my-4" style="background-color: #F8F9FA; border-left: 4px solid #8F6FA8;">
+        <div class="d-flex align-items-center gap-2 text-muted small">
+            <i class="fa fa-info-circle text-primary fa-lg"/>
+            <span><strong>Lưu ý:</strong> Nội dung mang tính tham khảo và không thay thế tư vấn y khoa. Vui lòng tham khảo ý kiến chuyên gia da liễu khi gặp các tình trạng bệnh lý phức tạp.</span>
+        </div>
+    </div>
+
+    <!-- CTA chuyển đổi -->
+    <div class="p-4 rounded-4 shadow-sm text-center my-4" style="background: linear-gradient(135deg, #F3ECF8 0%, #FFFFFF 100%); border: 1px solid #CDB7DD;">
+        <h5 class="fw-bold mb-2" style="color: #6E4C7E;">Chăm sóc dịu nhẹ cho làn da nhạy cảm</h5>
+        <p class="text-muted small mb-3">Khám phá các dòng sản phẩm làm dịu da (La Roche-Posay Cicaplast, Cetaphil, Klairs) tại BeautyMatch.</p>
+        <a href="/shop?concern=sensitivity" class="btn text-white px-4 py-2 rounded-pill shadow-sm fw-semibold" style="background-color: #6E4C7E;">
+            <i class="fa fa-shield me-1"/> Xem sản phẩm cho da nhạy cảm →
+        </a>
+    </div>
+</div>
+]]></field>
+    </record>
+
+</odoo>

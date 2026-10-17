@@ -618,3 +618,157 @@ class BeautyMatchTrustController(http.Controller):
             'default_phone': default_phone,
         })
 
+
+class BeautyMatchCompareController(http.Controller):
+    """Bộ điều khiển tính năng So Sánh Sản Phẩm BeautyMatch (/compare).
+    - Lưu danh sách so sánh trong session (hỗ trợ cả khách vãng lai và thành viên).
+    - Giới hạn tối đa 3 sản phẩm.
+    - Highlight khác biệt và gợi ý 'Phù hợp hơn nếu bạn...' chuẩn khoa học.
+    """
+
+    def _get_compare_product_ids(self):
+        ids = request.session.get('bm_compare_product_ids') or []
+        valid_ids = []
+        for x in ids:
+            try:
+                valid_ids.append(int(x))
+            except (ValueError, TypeError):
+                pass
+        return valid_ids[:3]
+
+    def _set_compare_product_ids(self, ids):
+        request.session['bm_compare_product_ids'] = ids[:3]
+
+    def _get_compare_data(self):
+        product_ids = self._get_compare_product_ids()
+        products = request.env['product.template'].sudo().browse(product_ids).filtered(
+            lambda p: p.exists() and p.website_published
+        )
+        if len(products.ids) != len(product_ids):
+            self._set_compare_product_ids(products.ids)
+            product_ids = products.ids
+
+        website = request.website
+        products_prices = products._get_sales_prices(website) if hasattr(products, '_get_sales_prices') else {}
+
+        items = []
+        for p in products:
+            p_price = products_prices.get(p.id, {}).get('price_reduce', p.list_price)
+            items.append({
+                'id': p.id,
+                'name': p.name,
+                'image_url': f'/web/image/product.template/{p.id}/image_1920/200x200',
+                'brand': p.beautymatch_brand or 'BeautyMatch',
+                'price': p_price,
+            })
+        return {
+            'count': len(product_ids),
+            'product_ids': product_ids,
+            'products': items,
+        }
+
+    @http.route('/shop/compare/get', type='jsonrpc', auth='public', website=True)
+    def compare_get(self, **kw):
+        return self._get_compare_data()
+
+    @http.route('/shop/compare/toggle', type='jsonrpc', auth='public', website=True)
+    def compare_toggle(self, product_id, **kw):
+        try:
+            p_id = int(product_id)
+        except (ValueError, TypeError):
+            return {'status': 'error', 'message': 'Invalid product ID'}
+
+        curr_ids = self._get_compare_product_ids()
+        if p_id in curr_ids:
+            curr_ids.remove(p_id)
+            self._set_compare_product_ids(curr_ids)
+            data = self._get_compare_data()
+            data['status'] = 'removed'
+            return data
+
+        if len(curr_ids) >= 3:
+            data = self._get_compare_data()
+            data['status'] = 'limit_exceeded'
+            data['message'] = 'Bạn chỉ có thể so sánh tối đa 3 sản phẩm.'
+            return data
+
+        curr_ids.append(p_id)
+        self._set_compare_product_ids(curr_ids)
+        data = self._get_compare_data()
+        data['status'] = 'added'
+        return data
+
+    @http.route('/shop/compare/remove', type='jsonrpc', auth='public', website=True)
+    def compare_remove(self, product_id, **kw):
+        try:
+            p_id = int(product_id)
+        except (ValueError, TypeError):
+            return self._get_compare_data()
+
+        curr_ids = self._get_compare_product_ids()
+        if p_id in curr_ids:
+            curr_ids.remove(p_id)
+            self._set_compare_product_ids(curr_ids)
+        return self._get_compare_data()
+
+    @http.route('/shop/compare/clear', type='jsonrpc', auth='public', website=True)
+    def compare_clear(self, **kw):
+        self._set_compare_product_ids([])
+        return self._get_compare_data()
+
+    @http.route('/compare', type='http', auth='public', website=True, sitemap=True)
+    def compare_page(self, **kw):
+        product_ids = self._get_compare_product_ids()
+        products = request.env['product.template'].sudo().browse(product_ids).filtered(
+            lambda p: p.exists() and p.website_published
+        )
+        website = request.website
+        products_prices = products._get_sales_prices(website) if hasattr(products, '_get_sales_prices') else {}
+
+        # 1. Tính toán các dòng có sự khác biệt (Differences Highlight)
+        diffs = {}
+        if len(products) > 1:
+            diffs['brand'] = len(set(p.beautymatch_brand or '' for p in products)) > 1
+            diffs['price'] = len(set(products_prices.get(p.id, {}).get('price_reduce', p.list_price) for p in products)) > 1
+            diffs['volume'] = len(set(p.beautymatch_volume or '' for p in products)) > 1
+            diffs['skin_type'] = len(set(p.beautymatch_skin_type or '' for p in products)) > 1
+            diffs['skin_concern'] = len(set(p.beautymatch_skin_concern or '' for p in products)) > 1
+            diffs['key_ingredients'] = len(set(p.beautymatch_key_ingredients or '' for p in products)) > 1
+            diffs['routine_step'] = len(set(p.beautymatch_routine_step or '' for p in products)) > 1
+            diffs['usage_time'] = len(set(p.beautymatch_usage_time or '' for p in products)) > 1
+            diffs['budget_level'] = len(set(p.beautymatch_budget_level or '' for p in products)) > 1
+
+        # 2. Gợi ý 'Phù hợp hơn nếu bạn...' (Dựa trên BeautyMatch fields, không thiên vị hay tự nhận tốt nhất)
+        fit_advices = {}
+        for p in products:
+            skin_type_dict = dict(p._fields['beautymatch_skin_type'].selection) if 'beautymatch_skin_type' in p._fields else {}
+            concern_dict = dict(p._fields['beautymatch_skin_concern'].selection) if 'beautymatch_skin_concern' in p._fields else {}
+            step_dict = dict(p._fields['beautymatch_routine_step'].selection) if 'beautymatch_routine_step' in p._fields else {}
+            time_dict = dict(p._fields['beautymatch_usage_time'].selection) if 'beautymatch_usage_time' in p._fields else {}
+
+            st = skin_type_dict.get(p.beautymatch_skin_type, "mọi loại da")
+            sc = concern_dict.get(p.beautymatch_skin_concern, "chăm sóc da hàng ngày")
+            rs = step_dict.get(p.beautymatch_routine_step, "chu trình chăm sóc")
+            ut = time_dict.get(p.beautymatch_usage_time, "sáng và tối")
+
+            fit_advices[p.id] = (
+                f"Làn da của bạn thuộc nhóm {st.lower()}, đang gặp vấn đề {sc.lower()} "
+                f"và cần một sản phẩm bước {rs.lower()} dùng vào buổi {ut.lower()}."
+            )
+
+        return request.render('beautymatch.page_compare', {
+            'products': products,
+            'diffs': diffs,
+            'fit_advices': fit_advices,
+            'get_product_prices': lambda p: products_prices.get(p.id, {'price_reduce': p.list_price}),
+        })
+
+    @http.route('/shop/category/sunscreen', type='http', auth='public', website=True)
+    def redirect_sunscreen_category(self, **kw):
+        """Điều hướng thông minh danh mục chống nắng mà không cần hard-code id"""
+        categ = request.env.ref('beautymatch.public_category_sunscreen', raise_if_not_found=False)
+        if categ:
+            return request.redirect(f'/shop/category/{request.env["ir.http"]._slug(categ)}')
+        return request.redirect('/shop')
+
+

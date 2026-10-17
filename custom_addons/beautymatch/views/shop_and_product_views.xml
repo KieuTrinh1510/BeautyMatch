@@ -246,6 +246,14 @@
                         </button>
                     </t>
 
+                    <!-- Compare Button (Toggle) -->
+                    <button type="button"
+                            class="btn bm-card-compare-btn js_bm_compare_toggle shadow-sm"
+                            t-att-data-product-id="product.id"
+                            title="So sánh sản phẩm">
+                        <i class="fa fa-exchange"/>
+                    </button>
+
                     <!-- Skin Type Badge -->
                     <div t-if="product.beautymatch_skin_type" class="bm-card-skin-badge">
                         <span class="badge bm-badge-skin">
@@ -284,7 +292,7 @@
                         </t>
                     </div>
 
-                    <!-- Giá và Nút Xem Sản Phẩm -->
+                    <!-- Giá và Nút Thao Tác (Xem & Thêm vào giỏ) -->
                     <div class="bm-card-footer mt-auto pt-2 border-top d-flex align-items-center justify-content-between">
                         <div class="bm-card-price">
                             <t t-set="template_price_vals" t-value="get_product_prices(product)"/>
@@ -292,9 +300,19 @@
                                   t-out="template_price_vals['price_reduce']"
                                   t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
                         </div>
-                        <a t-att-href="product_href" class="btn btn-sm bm-button-view">
-                            Xem sản phẩm <i class="fa fa-chevron-right ms-1 small"/>
-                        </a>
+                        <div class="d-flex align-items-center gap-1">
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-primary rounded-circle js_bm_quick_add_cart"
+                                    t-att-data-product-id="product._get_first_possible_variant_id()"
+                                    t-att-data-product-template-id="product.id"
+                                    title="Thêm vào giỏ"
+                                    style="width: 32px; height: 32px; padding: 0; display: inline-flex; align-items: center; justify-content: center;">
+                                <i class="fa fa-shopping-cart"/>
+                            </button>
+                            <a t-att-href="product_href" class="btn btn-sm bm-button-view">
+                                Xem sản phẩm <i class="fa fa-chevron-right ms-1 small"/>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -302,11 +320,7 @@
     </template>
 
     <!-- ======================================================== -->
-    <!-- 5. PRODUCT DETAIL PAGE ENHANCEMENT (LAB 6)               -->
-    <!-- Phần đầu: Gallery, Brand, Tên, Giá, Rating, Variant,     -->
-    <!-- Tồn kho, Quantity, Add to Cart, Buy Now, Wishlist        -->
-    <!-- Decision Support: Phù hợp với bạn khi, Vì sao phù hợp    -->
-    <!-- Reviews: Rating trung bình, số đánh giá, list reviews    -->
+    <!-- 5. PRODUCT DETAIL PAGE ENHANCEMENT                       -->
     <!-- ======================================================== -->
 
     <!-- 5.1 Thêm Brand trên tên sản phẩm và Rating star jump link -->
@@ -328,7 +342,7 @@
                     <i class="fa fa-check-circle me-1"/>Còn hàng (Sẵn sàng giao nhanh)
                 </span>
                 <span class="badge bg-light text-muted border px-2 py-1 rounded-pill small">
-                    <i class="fa fa-truck me-1"/>Miễn phí đổi trả 7 ngày
+                    <i class="fa fa-shield me-1"/>Hỗ trợ đổi trả 48h
                 </span>
                 <span t-if="product.beautymatch_origin" class="badge bg-light text-muted border px-2 py-1 rounded-pill small">
                     <i class="fa fa-globe me-1"/>Xuất xứ: <t t-out="product.beautymatch_origin"/>
@@ -433,6 +447,51 @@
                         <i class="fa fa-check-circle me-1"/>Vì Sao Phù Hợp Với Bạn?
                     </div>
                     <p class="mb-0 text-dark small lh-base" t-field="product.beautymatch_short_fit_reason"/>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- 5.4 Nút So sánh trên trang Product Detail (Bên cạnh Wishlist) -->
+    <template id="beautymatch_product_compare_button" inherit_id="website_sale.cta_wrapper" name="BeautyMatch Product Detail Compare Button" priority="25">
+        <xpath expr="//div[@id='product_option_block']" position="inside">
+            <button type="button"
+                    class="btn btn-outline-primary text-nowrap js_bm_compare_toggle d-inline-flex align-items-center justify-content-center gap-2"
+                    t-att-data-product-id="product.id"
+                    title="So sánh sản phẩm">
+                <i class="fa fa-exchange"/>
+                <span class="bm-compare-btn-text">So sánh</span>
+            </button>
+        </xpath>
+    </template>
+
+    <!-- 5.5 Đồng bộ chính sách giao hàng và đổi trả thật trên Product Detail -->
+    <template id="beautymatch_product_terms_and_conditions" inherit_id="website_sale.product_terms_and_conditions" name="BeautyMatch Synchronized Policy Box">
+        <xpath expr="//small" position="replace">
+            <div class="bm-detail-policy-card mt-3 p-3 rounded-3 bg-light border">
+                <div class="d-flex align-items-start gap-2 mb-2">
+                    <i class="fa fa-truck mt-1" style="color: #6E4C7E; font-size: 1.1rem;"/>
+                    <div class="small" style="line-height: 1.5;">
+                        <strong class="d-block text-dark">Giao hàng tiêu chuẩn: 30.000đ</strong>
+                        <span class="text-muted">Miễn phí vận chuyển với đơn từ 500.000đ sau khuyến mãi</span>
+                        <div>
+                            <a href="/shipping-policy" class="fw-semibold text-decoration-none small" style="color: #6E4C7E;">
+                                Xem chính sách giao hàng →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex align-items-start gap-2 pt-2 border-top">
+                    <i class="fa fa-refresh mt-1" style="color: #6E4C7E; font-size: 1.1rem;"/>
+                    <div class="small" style="line-height: 1.5;">
+                        <strong class="d-block text-dark">Chính sách đổi trả minh bạch</strong>
+                        <span class="text-muted">Hỗ trợ đổi trả trong 48h khi có video mở hộp</span>
+                        <div>
+                            <a href="/return-policy" class="fw-semibold text-decoration-none small" style="color: #6E4C7E;">
+                                Xem chính sách đổi trả →
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </xpath>

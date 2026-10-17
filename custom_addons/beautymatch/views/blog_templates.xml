@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ======================================================== -->
+    <!-- 1. BẬT HIỂN THỊ DẠNG THẺ (CARDS DESIGN) CHO BLOG         -->
+    <!-- ======================================================== -->
+    <record id="website_blog.opt_blog_cards_design" model="ir.ui.view">
+        <field name="active" eval="True"/>
+    </record>
+
+    <!-- ======================================================== -->
+    <!-- 2. CUSTOM HERO & TAGS CHO TRANG BLOG (/blog)             -->
+    <!-- Kế thừa website_blog.opt_blog_cover_post                 -->
+    <!-- ======================================================== -->
+    <template id="beautymatch_blog_hero_banner" inherit_id="website_blog.opt_blog_cover_post" name="BeautyMatch Blog Hero Banner">
+        <xpath expr="//div[hasclass('container')]" position="replace">
+            <div class="bm-blog-hero text-center py-5 mb-4" style="background: linear-gradient(135deg, #F3ECF8 0%, #FAF7FB 100%); border-bottom: 1px solid #CDB7DD;">
+                <div class="container" style="max-width: 860px;">
+                    <span class="badge rounded-pill px-3 py-2 text-uppercase fw-semibold mb-2" style="background-color: #E8DDF2; color: #6E4C7E; letter-spacing: 1px; font-size: 0.8rem;">BeautyMatch Knowledge</span>
+                    <h1 class="fw-bold mb-3" style="color: #2B2430; font-size: 2.2rem;">KIẾN THỨC SKINCARE</h1>
+                    <p class="text-muted fs-6 mx-auto mb-4" style="line-height: 1.7; max-width: 620px;">
+                        "Hiểu làn da để lựa chọn sản phẩm phù hợp hơn."
+                    </p>
+                    
+                    <!-- 6 Tags danh mục BeautyMatch Skincare -->
+                    <div class="d-flex flex-wrap justify-content-center gap-2">
+                        <a href="/blog" t-attf-class="badge rounded-pill px-3 py-2 text-decoration-none fw-semibold border #{'text-white' if not tag and not active_tag_ids else 'bg-white text-dark hover-purple'}" t-attf-style="#{'background-color: #6E4C7E !important;' if not tag and not active_tag_ids else ''}">
+                            <i class="fa fa-th-large me-1 small"/> Tất cả
+                        </a>
+                        <t t-set="skincare_tags" t-value="request.env['blog.tag'].sudo().search([('name', 'in', ['Cơ bản về skincare', 'Loại da', 'Vấn đề da', 'Thành phần', 'Routine', 'Chống nắng'])])"/>
+                        <t t-foreach="skincare_tags" t-as="stag">
+                            <t t-set="is_active_t" t-value="tag and (stag.name in str(tag) or (active_tag_ids and stag.id in active_tag_ids))"/>
+                            <a t-att-href="'/blog/tag/%s' % slug(stag)"
+                               t-attf-class="badge rounded-pill px-3 py-2 text-decoration-none fw-semibold border #{'text-white' if is_active_t else 'bg-white text-dark hover-purple'}"
+                               t-attf-style="#{'background-color: #6E4C7E !important;' if is_active_t else ''}">
+                                <t t-out="stag.name"/>
+                            </a>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>
