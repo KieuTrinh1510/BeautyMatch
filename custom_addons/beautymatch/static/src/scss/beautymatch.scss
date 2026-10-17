@@ -1208,3 +1208,91 @@ header#top {
     border-radius: 12px;
 }
 
+// 12. Wishlist Page Beautification
+.wishlist-section {
+    .o_wishlist_products_header h1 {
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-weight: 700;
+        color: $bm-deep-purple;
+    }
+
+    .o_wish_rm {
+        width: 32px;
+        height: 32px;
+        border-radius: 50% !important;
+        background: rgba(255, 255, 255, 0.95) !important;
+        border: 1px solid #ECE3F2 !important;
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        color: #718096 !important;
+        padding: 0 !important;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 8px rgba(110, 76, 126, 0.1);
+
+        &:hover {
+            background: #FEE2E2 !important;
+            color: #DC2626 !important;
+            border-color: #FECACA !important;
+            transform: scale(1.1);
+        }
+    }
+
+    .o_wsale_product_action_row {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .o_wish_add {
+        background: linear-gradient(135deg, $bm-deep-purple 0%, $bm-primary 100%) !important;
+        border: none !important;
+        color: #FFFFFF !important;
+        font-size: 0.82rem !important;
+        font-weight: 600 !important;
+        padding: 6px 14px !important;
+        border-radius: 50px !important;
+        white-space: nowrap !important;
+        box-shadow: 0 2px 8px rgba(110, 76, 126, 0.25) !important;
+        transition: all 0.2s ease !important;
+
+        &:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(110, 76, 126, 0.35) !important;
+            opacity: 0.95;
+        }
+    }
+
+    .o_add_to_compare {
+        border-radius: 50% !important;
+        width: 32px;
+        height: 32px;
+        padding: 0 !important;
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #ECE3F2 !important;
+        background: #FFFFFF !important;
+        color: #718096 !important;
+        transition: all 0.15s ease;
+
+        &:hover {
+            color: $bm-deep-purple !important;
+            border-color: $bm-secondary-lilac !important;
+            background: #FAF8FC !important;
+            transform: scale(1.05);
+        }
+    }
+
+    .o_wish_price {
+        font-weight: 700;
+        color: #1F2937;
+        font-size: 0.95rem;
+
+        del {
+            font-size: 0.8rem;
+            color: #9CA3AF;
+        }
+    }
+}
+

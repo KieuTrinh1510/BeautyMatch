@@ -215,11 +215,18 @@
     <!-- ======================================================== -->
     <template id="beautymatch_products_item" inherit_id="website_sale.products_item" name="BeautyMatch Clean Product Card">
         <xpath expr="//form" position="replace">
-            <form t-attf-class="oe_product_cart bm-product-card h-100 d-flex flex-column bg-white"
+            <form t-attf-class="oe_product_cart bm-product-card h-100 d-flex flex-column bg-white position-relative"
                   t-att-data-publish="product.website_published and 'on' or 'off'"
                   role="article"
                   t-att-aria-label="product.name">
                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                <!-- Extra actions (Nút xóa khỏi Wishlist o_wish_rm khi đang ở trang Wishlist) -->
+                <t t-if="extra_actions">
+                    <div class="position-absolute top-0 end-0 m-2 z-3">
+                        <t t-out="extra_actions"/>
+                    </div>
+                </t>
 
                 <!-- 1. Ảnh sản phẩm + Nút Wishlist + Skin Type Badge -->
                 <div class="bm-card-image-wrap position-relative text-center overflow-hidden">
@@ -229,9 +236,9 @@
                               class="d-flex justify-content-center align-items-center w-100 h-100"/>
                     </a>
 
-                    <!-- Wishlist Button (Native website_sale_wishlist) -->
+                    <!-- Wishlist Button (Chỉ hiển thị khi có wishlist và KHÔNG ở trang Wishlist) -->
                     <t t-set="isWishlistAvailable" t-value="products_in_wishlist is not None"/>
-                    <t t-if="isWishlistAvailable">
+                    <t t-if="isWishlistAvailable and not extra_actions">
                         <t t-set="in_wish" t-value="product in products_in_wishlist"/>
                         <t t-set="product_variant_id" t-value="in_wish or product._get_first_possible_variant_id()"/>
                         <button t-if="product_variant_id"
@@ -246,8 +253,9 @@
                         </button>
                     </t>
 
-                    <!-- Compare Button (Toggle) -->
-                    <button type="button"
+                    <!-- Compare Button (Toggle) - chỉ hiển thị ngoài trang wishlist -->
+                    <button t-if="not extra_actions"
+                            type="button"
                             class="btn bm-card-compare-btn js_bm_compare_toggle shadow-sm"
                             t-att-data-product-id="product.id"
                             title="So sánh sản phẩm">
@@ -295,23 +303,33 @@
                     <!-- Giá và Nút Thao Tác (Xem & Thêm vào giỏ) -->
                     <div class="bm-card-footer mt-auto pt-2 border-top d-flex align-items-center justify-content-between">
                         <div class="bm-card-price">
-                            <t t-set="template_price_vals" t-value="get_product_prices(product)"/>
-                            <span class="fw-bold text-dark fs-6"
-                                  t-out="template_price_vals['price_reduce']"
-                                  t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                            <t t-if="product_price">
+                                <t t-out="product_price"/>
+                            </t>
+                            <t t-else="">
+                                <t t-set="template_price_vals" t-value="get_product_prices(product) if get_product_prices else {'price_reduce': combination_info['price'] if combination_info else product.list_price}"/>
+                                <span class="fw-bold text-dark fs-6"
+                                      t-out="template_price_vals['price_reduce']"
+                                      t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                            </t>
                         </div>
                         <div class="d-flex align-items-center gap-1">
-                            <button type="button"
-                                    class="btn btn-sm btn-outline-primary rounded-circle js_bm_quick_add_cart"
-                                    t-att-data-product-id="product._get_first_possible_variant_id()"
-                                    t-att-data-product-template-id="product.id"
-                                    title="Thêm vào giỏ"
-                                    style="width: 32px; height: 32px; padding: 0; display: inline-flex; align-items: center; justify-content: center;">
-                                <i class="fa fa-shopping-cart"/>
-                            </button>
-                            <a t-att-href="product_href" class="btn btn-sm bm-button-view">
-                                Xem sản phẩm <i class="fa fa-chevron-right ms-1 small"/>
-                            </a>
+                            <t t-if="product_actions">
+                                <t t-out="product_actions"/>
+                            </t>
+                            <t t-else="">
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-primary rounded-circle js_bm_quick_add_cart"
+                                        t-att-data-product-id="product._get_first_possible_variant_id()"
+                                        t-att-data-product-template-id="product.id"
+                                        title="Thêm vào giỏ"
+                                        style="width: 32px; height: 32px; padding: 0; display: inline-flex; align-items: center; justify-content: center;">
+                                    <i class="fa fa-shopping-cart"/>
+                                </button>
+                                <a t-att-href="product_href" class="btn btn-sm bm-button-view">
+                                    Xem sản phẩm <i class="fa fa-chevron-right ms-1 small"/>
+                                </a>
+                            </t>
                         </div>
                     </div>
                 </div>
