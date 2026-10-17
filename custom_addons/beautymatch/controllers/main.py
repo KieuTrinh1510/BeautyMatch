@@ -1,12 +1,19 @@
 # -*- coding: utf-8 -*-
-from odoo import http
+# pyright: reportMissingImports=false
+# pyright: reportMissingModuleSource=false
+# mypy: ignore-errors
 # pyrefly: ignore[missing-import]
-from odoo.http import request
+from odoo import http  # type: ignore
 # pyrefly: ignore[missing-import]
-from odoo.fields import Domain
-from odoo.addons.website.controllers.main import Website
-from odoo.addons.website_sale.controllers.main import WebsiteSale
-from odoo.addons.website_sale.controllers.cart import Cart
+from odoo.http import request  # type: ignore
+# pyrefly: ignore[missing-import]
+from odoo.fields import Domain  # type: ignore
+# pyrefly: ignore[missing-import]
+from odoo.addons.website.controllers.main import Website  # type: ignore
+# pyrefly: ignore[missing-import]
+from odoo.addons.website_sale.controllers.main import WebsiteSale  # type: ignore
+# pyrefly: ignore[missing-import]
+from odoo.addons.website_sale.controllers.cart import Cart  # type: ignore
 
 
 class BeautyMatchWebsite(Website):
