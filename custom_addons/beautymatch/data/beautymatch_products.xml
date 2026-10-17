@@ -406,4 +406,133 @@
         <field name="beautymatch_is_featured" eval="False"/>
         <field name="beautymatch_is_quiz_recommended" eval="True"/>
     </record>
+
+    <!-- ======================================================== -->
+    <!-- 6. CÁC SẢN PHẨM BỔ SUNG (BƯỚC 12 - TỔNG 20 SẢN PHẨM)      -->
+    <!-- ======================================================== -->
+
+    <!-- 6.1 Sữa rửa mặt: Simple Kind to Skin Refreshing Facial Wash -->
+    <record id="product_template_simple_cleanser" model="product.template">
+        <field name="image_1920" type="base64" file="beautymatch/static/src/img/products/simple_facial_wash.webp"/>
+        <field name="name">Simple Kind to Skin Refreshing Facial Wash</field>
+        <field name="beautymatch_brand">Simple</field>
+        <field name="default_code">SMP-KTS-150</field>
+        <field name="list_price">135000.0</field>
+        <field name="categ_id" ref="cat_skincare_cleanser"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_cleanser')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">sensitive</field>
+        <field name="beautymatch_skin_concern">sensitivity</field>
+        <field name="beautymatch_routine_step">cleanser</field>
+        <field name="beautymatch_usage_time">both</field>
+        <field name="beautymatch_origin">Ba Lan</field>
+        <field name="beautymatch_volume">150ml</field>
+        <field name="beautymatch_budget_level">budget</field>
+        <field name="beautymatch_key_ingredients">Pro-Vitamin B5, Vitamin E, Nước tinh lọc 3 lần</field>
+        <field name="beautymatch_short_fit_reason">Công thức dạng gel 100% không chứa xà phòng, nhẹ nhàng cuốn trôi bụi bẩn mà không gây căng rát, cực kỳ dịu lành cho làn da nhạy cảm.</field>
+        <field name="beautymatch_is_featured" eval="False"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
+
+    <!-- 6.2 Toner: Thayers Witch Hazel Alcohol-Free Toner (Rose Petal) -->
+    <record id="product_template_thayers_toner" model="product.template">
+        <field name="image_1920" type="base64" file="beautymatch/static/src/img/products/thayers_rose_toner.webp"/>
+        <field name="name">Thayers Witch Hazel Alcohol-Free Toner (Rose Petal)</field>
+        <field name="beautymatch_brand">Thayers</field>
+        <field name="default_code">THY-ROSE-355</field>
+        <field name="list_price">290000.0</field>
+        <field name="categ_id" ref="cat_skincare_toner"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_toner')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">dry</field>
+        <field name="beautymatch_skin_concern">dryness</field>
+        <field name="beautymatch_routine_step">toner</field>
+        <field name="beautymatch_usage_time">both</field>
+        <field name="beautymatch_origin">Mỹ</field>
+        <field name="beautymatch_volume">355ml</field>
+        <field name="beautymatch_budget_level">mid</field>
+        <field name="beautymatch_key_ingredients">Chiết xuất vỏ cây Phỉ (Witch Hazel), Nước hoa hồng hữu cơ, Nha đam</field>
+        <field name="beautymatch_short_fit_reason">Toner không cồn kinh điển với chiết xuất cây Phỉ và cánh hoa hồng thiên nhiên giúp cân bằng độ pH, làm dịu da và cấp ẩm mềm mượt tức thì.</field>
+        <field name="beautymatch_is_featured" eval="False"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
+
+    <!-- 6.3 Serum: Cosrx Advanced Snail 96 Mucin Power Essence -->
+    <record id="product_template_cosrx_essence" model="product.template">
+        <field name="image_1920" type="base64" file="beautymatch/static/src/img/products/cosrx_snail_essence.webp"/>
+        <field name="name">Cosrx Advanced Snail 96 Mucin Power Essence</field>
+        <field name="beautymatch_brand">Cosrx</field>
+        <field name="default_code">CSX-SNL-100</field>
+        <field name="list_price">350000.0</field>
+        <field name="categ_id" ref="cat_skincare_serum"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_serum')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">combination</field>
+        <field name="beautymatch_skin_concern">barrier</field>
+        <field name="beautymatch_routine_step">serum</field>
+        <field name="beautymatch_usage_time">both</field>
+        <field name="beautymatch_origin">Hàn Quốc</field>
+        <field name="beautymatch_volume">100ml</field>
+        <field name="beautymatch_budget_level">mid</field>
+        <field name="beautymatch_key_ingredients">96% Tinh chất dịch ốc sên, Sodium Hyaluronate, Panthenol</field>
+        <field name="beautymatch_short_fit_reason">Chứa 96% dịch nhầy ốc sên đậm đặc giúp phục hồi nhanh chóng làn da tổn thương, tăng cường độ đàn hồi và cấp ẩm chuyên sâu mang lại làn da căng mọng.</field>
+        <field name="beautymatch_is_featured" eval="True"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
+
+    <!-- 6.4 Kem dưỡng: Bioderma Sebium Pore Refiner Cream -->
+    <record id="product_template_bioderma_cream" model="product.template">
+        <field name="image_1920" type="base64" file="beautymatch/static/src/img/products/bioderma_pore_refiner.webp"/>
+        <field name="name">Bioderma Sebium Pore Refiner Cream</field>
+        <field name="beautymatch_brand">Bioderma</field>
+        <field name="default_code">BDM-SPR-030</field>
+        <field name="list_price">460000.0</field>
+        <field name="categ_id" ref="cat_skincare_moisturizer"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_moisturizer')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">oily</field>
+        <field name="beautymatch_skin_concern">pores</field>
+        <field name="beautymatch_routine_step">moisturizer</field>
+        <field name="beautymatch_usage_time">both</field>
+        <field name="beautymatch_origin">Pháp</field>
+        <field name="beautymatch_volume">30ml</field>
+        <field name="beautymatch_budget_level">mid</field>
+        <field name="beautymatch_key_ingredients">Sáng chế Fluidactiv™, Salicylic Acid (BHA), Agaric Acid</field>
+        <field name="beautymatch_short_fit_reason">Ứng dụng phức hợp Fluidactiv™ điều hòa chất lượng bã nhờn, làm mịn kết cấu da và thu nhỏ lỗ chân lông hiệu quả, kiềm dầu suốt cả ngày.</field>
+        <field name="beautymatch_is_featured" eval="False"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
+
+    <!-- 6.5 Chống nắng: Eucerin Sun Dry Touch Oil Control SPF50+ -->
+    <record id="product_template_eucerin_sunscreen" model="product.template">
+        <field name="image_1920" type="base64" file="beautymatch/static/src/img/products/eucerin_sun_dry_touch.webp"/>
+        <field name="name">Eucerin Sun Dry Touch Oil Control SPF50+</field>
+        <field name="beautymatch_brand">Eucerin</field>
+        <field name="default_code">EUC-SDT-050</field>
+        <field name="list_price">520000.0</field>
+        <field name="categ_id" ref="cat_skincare_sunscreen"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_sunscreen')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">oily</field>
+        <field name="beautymatch_skin_concern">acne_oil</field>
+        <field name="beautymatch_routine_step">sunscreen</field>
+        <field name="beautymatch_usage_time">am</field>
+        <field name="beautymatch_origin">Đức</field>
+        <field name="beautymatch_volume">50ml</field>
+        <field name="beautymatch_budget_level">premium</field>
+        <field name="beautymatch_key_ingredients">L-Carnitine, Licochalcone A, Công nghệ quang phổ Spectral</field>
+        <field name="beautymatch_short_fit_reason">Kem chống nắng chuyên biệt cho da dầu mụn với công nghệ kiểm soát nhờn Dry Touch kiềm dầu đến 8 giờ, bảo vệ tối ưu trước tia UVA/UVB và ánh sáng HEVIS.</field>
+        <field name="beautymatch_is_featured" eval="True"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
 </odoo>

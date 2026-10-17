@@ -4,6 +4,11 @@ from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
+import logging
+
+_logger = logging.getLogger(__name__)
+
+
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
@@ -16,6 +21,16 @@ class SaleOrder(models.Model):
         return orders
 
     def action_confirm(self):
+        # 1. Chặn xác nhận tự động khi giao dịch được tạo từ luồng checkout website
+        if self.env.context.get('prevent_auto_confirm'):
+            for order in self:
+                if order.state == 'draft':
+                    order.write({'state': 'sent'})
+                if not order.reference and order.name:
+                    order.reference = f"BM {order.name}"
+            return False
+
+        # 2. Xác nhận thủ công từ Admin Backend Odoo (Sales -> Orders -> Bấm [Xác nhận])
         for order in self:
             if not order.reference and order.name:
                 order.reference = f"BM {order.name}"
@@ -197,25 +212,21 @@ class SaleOrder(models.Model):
 
     def _send_order_confirmation_mail(self):
         """Safely handle order confirmation email sending in environments
-        without wkhtmltopdf installed (such as local dev macOS).
+        without wkhtmltopdf or SMTP configured (non-blocking).
         """
         try:
             return super()._send_order_confirmation_mail()
-        except UserError as e:
-            if "Wkhtmltopdf" in str(e):
-                pass
-            else:
-                raise
+        except Exception as e:
+            _logger.warning("Could not send order confirmation email (non-blocking): %s", e)
+            return False
 
     def _send_payment_succeeded_for_order_mail(self):
         """Safely handle payment notification email sending in environments
-        without wkhtmltopdf installed (such as local dev macOS).
+        without wkhtmltopdf or SMTP configured (non-blocking).
         """
         try:
             return super()._send_payment_succeeded_for_order_mail()
-        except UserError as e:
-            if "Wkhtmltopdf" in str(e):
-                pass
-            else:
-                raise
+        except Exception as e:
+            _logger.warning("Could not send payment notification email (non-blocking): %s", e)
+            return False
 

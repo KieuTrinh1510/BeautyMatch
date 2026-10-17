@@ -147,6 +147,12 @@ class ProductTemplate(models.Model):
             'product_template_anessa_sunscreen',
             'product_template_lrp_anthelios',
             'product_template_skinaqua_sunscreen',
+            # 5 sản phẩm mới bổ sung (Bước 12)
+            'product_template_simple_cleanser',
+            'product_template_thayers_toner',
+            'product_template_cosrx_essence',
+            'product_template_bioderma_cream',
+            'product_template_eucerin_sunscreen',
         ]
 
         Quant = self.env['stock.quant']
@@ -155,6 +161,8 @@ class ProductTemplate(models.Model):
             if not tmpl:
                 continue
             for variant in tmpl.product_variant_ids:
+                if not variant.default_code and tmpl.default_code:
+                    variant.default_code = tmpl.default_code
                 quant = Quant.search([
                     ('product_id', '=', variant.id),
                     ('location_id', '=', location.id),
@@ -212,6 +220,31 @@ class ProductTemplate(models.Model):
                 'product_template_lrp_cicaplast',
                 5.0,
                 'Kem dưỡng phục hồi B5+ đỉnh nhất từng dùng. Da treatment hay bong tróc bôi qua đêm là sáng hôm sau êm ru.',
+            ),
+            (
+                'product_template_simple_cleanser',
+                5.0,
+                'Sữa rửa mặt dạng gel không bọt quá đỉnh cho da nhạy cảm. Rửa xong da mướt mịn tự nhiên, không hề châm chích.',
+            ),
+            (
+                'product_template_thayers_toner',
+                5.0,
+                'Mùi hoa hồng tự nhiên thoang thoảng, toner không cồn dịu mát và cấp ẩm rất tốt sau bước làm sạch.',
+            ),
+            (
+                'product_template_cosrx_essence',
+                5.0,
+                'Chất dịch ốc sên đặc nhưng thấm siêu nhanh. Da mình bớt đỏ và phục hồi hàng rào ẩm rõ rệt chỉ sau 2 tuần.',
+            ),
+            (
+                'product_template_bioderma_cream',
+                5.0,
+                'Chất kem kiềm dầu mịn lì như nhung, vùng chữ T đỡ đổ dầu hẳn và lỗ chân lông nhìn gọn gàng hơn.',
+            ),
+            (
+                'product_template_eucerin_sunscreen',
+                5.0,
+                'Kem chống nắng chân ái cho da dầu mụn mùa hè, ráo mịn không bóng nhờn suốt ngày dài, không bị vón cục khi thoa lại.',
             ),
         ]
 
