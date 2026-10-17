@@ -320,142 +320,414 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
 }
 
 // ========================================================
-// 7. SHOP & PRODUCT DETAIL STYLING (LAB 5 & LAB 6)
+// 7. SHOP & PRODUCT DETAIL STYLING (BEAUTYMATCH LAB REDESIGN)
 // Palette: #8F6FA8, #6E4C7E, #CDB7DD, #F3ECF8, #2B2430, #FFFFFF
 // ========================================================
 
-// 7.1 Filter Sidebar & Mobile Offcanvas
-.bm-filter-wrapper {
-    .bm-filter-title {
-        color: $bm-deep-purple;
-        letter-spacing: 0.05em;
+// 7.1 Two-Column Layout for Desktop
+.o_wsale_products_main_row {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 24px !important;
+
+    #products_grid_before {
+        flex: 0 0 295px !important;
+        width: 295px !important;
+        max-width: 295px !important;
+        min-width: 295px !important;
+        padding: 0 !important;
+        position: sticky !important;
+        top: 86px !important;
+        align-self: flex-start !important;
+        z-index: 15 !important;
     }
 
-    .bm-category-list {
-        a {
-            color: $bm-dark-text;
-            transition: all 0.15s ease;
-
-            &:hover {
-                background-color: $bm-light-bg;
-                color: $bm-deep-purple;
-            }
-
-            &.active {
-                background-color: $bm-light-bg !important;
-                color: $bm-deep-purple !important;
-                font-weight: 700;
-                border-left: 3px solid $bm-primary;
-            }
-        }
-    }
-
-    .bm-filter-pill {
-        background-color: $bm-light-bg;
-        color: $bm-dark-text;
-        border: 1px solid #ECE3F2;
-        padding: 0.4rem 0.75rem;
-        border-radius: 20px;
-        font-size: 0.78rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.15s ease;
-
-        &:hover {
-            background-color: $bm-secondary-lilac;
-            color: $bm-dark-text;
-        }
-
-        &.active {
-            background-color: $bm-primary !important;
-            color: $bm-white !important;
-            border-color: $bm-deep-purple !important;
-            font-weight: 600;
-        }
-    }
-
-    .form-check-input:checked {
-        background-color: $bm-primary;
-        border-color: $bm-deep-purple;
+    #products_grid {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        padding: 0 !important;
     }
 }
 
-// 7.2 Product Card (Clean Skincare Design, Radius 18px, Light Shadow)
+// 7.2 Independent Sidebar Filter Panel
+.bm-sidebar-panel {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(143, 111, 168, 0.18) !important;
+    border-radius: 16px !important;
+    padding: 20px !important;
+    box-shadow: 0 4px 20px rgba(110, 76, 126, 0.05) !important;
+    max-height: calc(100vh - 105px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #CDB7DD #FAF6FB;
+
+    &::-webkit-scrollbar {
+        width: 5px;
+    }
+    &::-webkit-scrollbar-track {
+        background: #FAF6FB;
+        border-radius: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: #CDB7DD;
+        border-radius: 4px;
+    }
+}
+
+// Filter Accordion & Buttons
+.bm-accordion-btn {
+    text-decoration: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+
+    .bm-chevron {
+        transition: transform 0.25s ease;
+    }
+
+    &.collapsed .bm-chevron {
+        transform: rotate(180deg);
+    }
+}
+
+.bm-routine-item {
+    display: flex;
+    align-items: center;
+    padding: 7px 12px;
+    border-radius: 8px;
+    font-size: 0.86rem;
+    color: #2B2430;
+    text-decoration: none !important;
+    transition: all 0.15s ease;
+
+    &:hover {
+        background-color: #FAF4FD;
+        color: #6E4C7E;
+        transform: translateX(2px);
+    }
+
+    &.active {
+        background-color: #F3ECF8 !important;
+        color: #6E4C7E !important;
+        font-weight: 600;
+        border-left: 3px solid #8F6FA8;
+    }
+}
+
+// 2-Column Pill Button Grid
+.bm-filter-pill-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.bm-filter-btn-pill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 10px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-align: center;
+    background: #F8F6FA;
+    color: #2B2430;
+    border: 1px solid #ECE3F2;
+    text-decoration: none !important;
+    transition: all 0.18s ease;
+
+    &:hover {
+        background-color: #F3ECF8;
+        color: #6E4C7E;
+        border-color: #CDB7DD;
+    }
+
+    &.active {
+        background: #6E4C7E !important;
+        color: #FFFFFF !important;
+        border-color: #6E4C7E !important;
+        font-weight: 600;
+        box-shadow: 0 2px 8px rgba(110, 76, 126, 0.2);
+    }
+}
+
+// Checkbox Scrollable List
+.bm-filter-scroll-list {
+    max-height: 170px;
+    overflow-y: auto;
+    padding-right: 4px;
+    scrollbar-width: thin;
+    scrollbar-color: #CDB7DD #FAF6FB;
+
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: #CDB7DD;
+        border-radius: 4px;
+    }
+
+    .form-check {
+        margin-bottom: 2px;
+    }
+
+    .form-check-input {
+        cursor: pointer;
+        border-color: #CDB7DD;
+
+        &:checked {
+            background-color: #6E4C7E;
+            border-color: #6E4C7E;
+        }
+    }
+
+    .form-check-label {
+        cursor: pointer;
+        color: #2B2430;
+        font-size: 0.84rem;
+        transition: color 0.15s ease;
+
+        &:hover {
+            color: #6E4C7E;
+        }
+    }
+}
+
+// Range Slider
+.bm-price-range-slider {
+    accent-color: #6E4C7E;
+    cursor: pointer;
+
+    &::-webkit-slider-thumb {
+        background: #6E4C7E;
+        border: 2px solid #FFFFFF;
+        box-shadow: 0 2px 6px rgba(110, 76, 126, 0.35);
+    }
+}
+
+// Footer Filter Buttons
+.bm-btn-clear-filter {
+    border: 1px solid #8F6FA8 !important;
+    color: #8F6FA8 !important;
+    background: #FFFFFF !important;
+    border-radius: 30px !important;
+    font-weight: 600 !important;
+    font-size: 0.85rem !important;
+    padding: 7px 14px !important;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background-color: #F3ECF8 !important;
+        color: #6E4C7E !important;
+        border-color: #6E4C7E !important;
+    }
+}
+
+.bm-btn-apply-filter {
+    background: linear-gradient(135deg, #8F6FA8, #6E4C7E) !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    border-radius: 30px !important;
+    font-weight: 600 !important;
+    font-size: 0.85rem !important;
+    padding: 7px 18px !important;
+    box-shadow: 0 4px 12px rgba(110, 76, 126, 0.25) !important;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: linear-gradient(135deg, #7E5F98, #5A3D68) !important;
+        color: #FFFFFF !important;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(110, 76, 126, 0.35) !important;
+    }
+}
+
+// 7.3 Product Grid: Desktop 3 Cols, Tablet 2 Cols, Mobile 1 Col
+#o_wsale_products_grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 16px !important;
+
+    @media (max-width: 991.98px) {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 14px !important;
+    }
+
+    @media (max-width: 575.98px) {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+
+    > .oe_product {
+        width: 100% !important;
+        grid-column: span 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .o_wsale_product_grid_wrapper {
+        width: 100% !important;
+        height: 100% !important;
+    }
+}
+
+// 7.4 Product Card & Mandatory Full-Bleed Cover Image
 .bm-product-card {
-    border-radius: 18px !important;
-    border: 1px solid #ECE3F2 !important;
-    box-shadow: 0 4px 16px rgba(110, 76, 126, 0.06);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-radius: 16px !important;
+    border: 1px solid rgba(143, 111, 168, 0.18) !important;
+    background: #FFFFFF !important;
+    box-shadow: 0 4px 16px rgba(110, 76, 126, 0.05);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s ease, border-color 0.25s ease;
     overflow: hidden;
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100%;
 
     &:hover {
         transform: translateY(-4px);
-        box-shadow: 0 10px 24px rgba(110, 76, 126, 0.12);
-        border-color: $bm-secondary-lilac !important;
+        box-shadow: 0 12px 28px rgba(110, 76, 126, 0.12);
+        border-color: #CDB7DD !important;
     }
 
+    // VÙNG ẢNH BẮT BUỘC PHỦ TOÀN BỘ KHUNG (COVER, KHÔNG CONTAIN)
     .bm-card-image-wrap {
-        height: 220px;
+        width: 100% !important;
+        height: 220px !important;
         background-color: #FAF8FC;
         position: relative;
+        overflow: hidden;
+        border-radius: 16px 16px 0 0;
 
-        .bm-card-img {
-            max-height: 190px;
-            object-fit: contain;
-            transition: transform 0.25s ease;
+        a {
+            display: block;
+            width: 100%;
+            height: 100%;
         }
 
+        span, span.d-flex, div {
+            width: 100% !important;
+            height: 100% !important;
+            display: block !important;
+        }
+
+        img, .bm-card-img {
+            width: 100% !important;
+            height: 100% !important;
+            max-width: 100% !important;
+            max-height: 100% !important;
+            object-fit: cover !important;
+            object-position: center !important;
+            display: block !important;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        &:hover img,
         &:hover .bm-card-img {
-            transform: scale(1.04);
+            transform: scale(1.05);
+        }
+    }
+
+    // Nút Wishlist tròn góc phải trên
+    .bm-card-wishlist-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid #ECE3F2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6c757d;
+        z-index: 10;
+        cursor: pointer;
+        pointer-events: auto !important;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+        &:hover {
+            background: #FFFFFF;
+            color: #e0245e;
+            transform: scale(1.12);
+            box-shadow: 0 4px 12px rgba(224, 36, 94, 0.18);
         }
 
-        .bm-card-wishlist-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.94);
-            border: 1px solid #ECE3F2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #6c757d;
-            z-index: 5;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
+        &.o_in_wishlist {
+            color: #e0245e !important;
+            background: #FFF5F7 !important;
+            border-color: #FED7E2 !important;
 
             &:hover {
-                background: #FFFFFF;
-                color: #e0245e;
+                background: #FFE4E9 !important;
                 transform: scale(1.12);
-                box-shadow: 0 4px 12px rgba(224, 36, 94, 0.18);
-            }
-
-            &.o_in_wishlist {
-                color: #e0245e !important;
-                background: #FFF5F7 !important;
-                border-color: #FED7E2 !important;
-
-                &:hover {
-                    background: #FFE4E9 !important;
-                    transform: scale(1.12);
-                }
-            }
-
-            &.is-loading {
-                opacity: 0.6;
-                pointer-events: none;
             }
         }
 
-        .bm-card-skin-badge {
-            position: absolute;
-            bottom: 8px;
-            left: 10px;
-            z-index: 4;
+        &.is-loading {
+            opacity: 0.6;
+            pointer-events: none;
         }
+    }
+
+    // Nút So sánh tròn góc phải trên bên dưới Wishlist
+    .bm-card-compare-btn {
+        position: absolute;
+        top: 52px;
+        right: 10px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid #ECE3F2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6c757d;
+        z-index: 10;
+        cursor: pointer;
+        pointer-events: auto !important;
+        transition: all 0.2s ease;
+
+        &:hover {
+            background: #FFFFFF;
+            color: #6E4C7E;
+            transform: scale(1.12);
+            box-shadow: 0 4px 12px rgba(110, 76, 126, 0.2);
+        }
+
+        &.active {
+            background-color: #F3ECF8 !important;
+            color: #6E4C7E !important;
+            border-color: #CDB7DD !important;
+        }
+    }
+
+    // Skin Type Badge góc trái dưới ảnh
+    .bm-card-skin-badge {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        z-index: 4;
+
+        .bm-badge-skin-pill {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(4px);
+            color: #2B2430 !important;
+            font-weight: 600;
+            font-size: 0.75rem;
+            border-radius: 20px;
+            padding: 5px 12px;
+            border: 1px solid rgba(143, 111, 168, 0.15);
+        }
+    }
+
+    // Nội dung thẻ sản phẩm
+    .bm-card-brand {
+        color: #8F6FA8;
+        font-size: 0.78rem;
+        letter-spacing: 0.06em;
+        font-weight: 700;
     }
 
     .bm-card-title {
@@ -467,42 +739,82 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
         -webkit-line-clamp: 2;
         line-clamp: 2;
         -webkit-box-orient: vertical;
+        margin-bottom: 6px;
 
         a {
-            color: $bm-dark-text;
+            color: #2B2430;
             transition: color 0.15s ease;
             &:hover {
-                color: $bm-primary;
+                color: #6E4C7E;
             }
         }
     }
 
-    .bm-ingredient-tag {
-        background-color: $bm-light-bg;
-        color: $bm-deep-purple;
-        font-weight: 500;
+    .bm-stars {
+        color: #F59E0B;
+        font-size: 0.8rem;
+    }
+
+    .bm-ingredient-pill {
+        background: #F4ECF8 !important;
+        color: #6E4C7E !important;
         font-size: 0.72rem;
-        border-radius: 6px;
+        font-weight: 500;
+        border-radius: 20px;
         padding: 3px 8px;
+        border: 1px solid rgba(143, 111, 168, 0.12);
+    }
+
+    .bm-price-text {
+        color: #6E4C7E !important;
+        font-size: 1.15rem !important;
+        font-weight: 700 !important;
+    }
+
+    .bm-card-add-cart-btn {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: #F3ECF8;
+        color: #6E4C7E;
         border: 1px solid #ECE3F2;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        transition: all 0.2s ease;
+
+        &:hover {
+            background: #6E4C7E;
+            color: #FFFFFF;
+            transform: scale(1.08);
+            box-shadow: 0 4px 10px rgba(110, 76, 126, 0.25);
+        }
     }
 
     .bm-button-view {
-        background-color: $bm-light-bg;
-        color: $bm-deep-purple;
-        font-weight: 600;
+        background: linear-gradient(135deg, #8F6FA8, #6E4C7E);
+        color: #FFFFFF !important;
+        border: none;
         border-radius: 20px;
-        padding: 5px 12px;
+        padding: 6px 14px;
         font-size: 0.8rem;
-        border: 1px solid $bm-secondary-lilac;
-        transition: all 0.15s ease;
+        font-weight: 600;
+        text-decoration: none !important;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        transition: all 0.2s ease;
 
         &:hover {
-            background-color: $bm-deep-purple;
-            color: $bm-white;
+            background: linear-gradient(135deg, #7E5F98, #5A3D68);
+            color: #FFFFFF !important;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(110, 76, 126, 0.28);
         }
     }
 }
+
 
 // 7.3 Product Detail Page Support & Decision Block
 .bm-decision-support-box {
@@ -1004,17 +1316,17 @@ header#top {
         }
 
         &.active {
-            color: #8F6FA8 !important;
+            color: #6E4C7E !important;
             font-weight: 600;
-            background-color: rgba(143, 111, 168, 0.08) !important;
+            background-color: #F3ECF8 !important;
 
             &::after {
                 content: '';
                 position: absolute;
-                bottom: 2px;
+                bottom: 0;
                 left: 15%;
                 right: 15%;
-                height: 2px;
+                height: 2.5px;
                 background-color: #8F6FA8;
                 border-radius: 2px;
             }

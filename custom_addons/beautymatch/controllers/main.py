@@ -77,13 +77,41 @@ class BeautyMatchWebsiteSale(WebsiteSale):
         # 5. Lọc theo Phân khúc giá
         budgets = req_args.getlist('budget')
         if budgets:
-            extra_domains.append(Domain('beautymatch_budget_level', 'in', budgets))
+            budget_conds = []
+            for bg in budgets:
+                if bg == 'budget':
+                    budget_conds.append(Domain('list_price', '<=', 250000))
+                    budget_conds.append(Domain('beautymatch_budget_level', '=', 'budget'))
+                elif bg == 'mid':
+                    budget_conds.append(Domain.AND([Domain('list_price', '>', 250000), Domain('list_price', '<=', 500000)]))
+                    budget_conds.append(Domain('beautymatch_budget_level', '=', 'mid'))
+                elif bg == 'high':
+                    budget_conds.append(Domain.AND([Domain('list_price', '>', 500000), Domain('list_price', '<=', 1000000)]))
+                elif bg == 'premium':
+                    budget_conds.append(Domain('list_price', '>', 1000000))
+                    budget_conds.append(Domain('beautymatch_budget_level', '=', 'premium'))
+                else:
+                    budget_conds.append(Domain('beautymatch_budget_level', '=', bg))
+            if budget_conds:
+                extra_domains.append(Domain.OR(budget_conds))
 
         # 6. Lọc theo Dung tích
         volumes = req_args.getlist('volume')
         if volumes:
-            vol_conds = [Domain('beautymatch_volume', 'ilike', vol) for vol in volumes]
-            extra_domains.append(Domain.OR(vol_conds))
+            vol_conds = []
+            for vol in volumes:
+                if vol == 'lt50':
+                    vol_conds.extend([Domain('beautymatch_volume', 'ilike', v) for v in ['20ml', '30ml', '40ml']])
+                elif vol == '50_100':
+                    vol_conds.extend([Domain('beautymatch_volume', 'ilike', v) for v in ['50ml', '50g', '60ml', '100ml']])
+                elif vol == '100_200':
+                    vol_conds.extend([Domain('beautymatch_volume', 'ilike', v) for v in ['110g', '150ml', '170ml', '180ml', '200ml']])
+                elif vol == 'gt200':
+                    vol_conds.extend([Domain('beautymatch_volume', 'ilike', v) for v in ['236ml', '340g', '355ml', '400ml', '473ml']])
+                else:
+                    vol_conds.append(Domain('beautymatch_volume', 'ilike', vol))
+            if vol_conds:
+                extra_domains.append(Domain.OR(vol_conds))
 
         if extra_domains:
             domain = Domain.AND([domain] + extra_domains)
@@ -93,7 +121,7 @@ class BeautyMatchWebsiteSale(WebsiteSale):
     def _shop_get_query_url_kwargs(self, search, min_price, max_price, **post):
         kwargs = super()._shop_get_query_url_kwargs(search, min_price, max_price, **post)
         req_args = request.httprequest.args
-        for param in ['skin_type', 'concern', 'brand', 'ingredient', 'budget', 'volume']:
+        for param in ['skin_type', 'concern', 'brand', 'ingredient', 'budget', 'volume', 'order']:
             val = req_args.getlist(param)
             if val:
                 kwargs[param] = val if len(val) > 1 else val[0]
@@ -102,10 +130,20 @@ class BeautyMatchWebsiteSale(WebsiteSale):
     def _get_search_options(self, **post):
         options = super()._get_search_options(**post)
         req_args = request.httprequest.args
-        for param in ['skin_type', 'concern', 'brand', 'ingredient', 'budget', 'volume']:
+        for param in ['skin_type', 'concern', 'brand', 'ingredient', 'budget', 'volume', 'order']:
             val = req_args.getlist(param)
             if val:
                 options[param] = val
+        if req_args.get('min_price'):
+            try:
+                options['bm_raw_min_price'] = float(req_args.get('min_price'))
+            except (ValueError, TypeError):
+                pass
+        if req_args.get('max_price'):
+            try:
+                options['bm_raw_max_price'] = float(req_args.get('max_price'))
+            except (ValueError, TypeError):
+                pass
         return options
 
     def shop(self, page=0, category=None, search='', min_price=0.0, max_price=0.0, tags='', **post):
@@ -156,7 +194,15 @@ class BeautyMatchWebsiteSale(WebsiteSale):
             budget_levels_data = [
                 ('budget', 'Tiết kiệm (< 250k)'),
                 ('mid', 'Tầm trung (250k - 500k)'),
-                ('premium', 'Cao cấp (> 500k)'),
+                ('high', 'Cao cấp (500k - 1tr)'),
+                ('premium', 'Premium (> 1tr)'),
+            ]
+
+            volume_options = [
+                ('lt50', 'Dưới 50ml'),
+                ('50_100', '50 – 100ml'),
+                ('100_200', '100 – 200ml'),
+                ('gt200', 'Trên 200ml'),
             ]
 
             # Lấy động thương hiệu từ các sản phẩm đã xuất bản
@@ -176,9 +222,8 @@ class BeautyMatchWebsiteSale(WebsiteSale):
                 'B5 (Panthenol)',
                 'BHA',
                 'AHA',
-                'Zinc PCA',
-                'Vitamin C',
                 'Rau má',
+                'Vitamin C',
             ]
 
             # Dung tích thực tế của sản phẩm
@@ -186,16 +231,24 @@ class BeautyMatchWebsiteSale(WebsiteSale):
                 p.beautymatch_volume.strip() for p in published_products if p.beautymatch_volume
             }))
 
-            has_active_bm_filters = bool(
-                selected_skin_types or selected_concerns or selected_brands
-                or selected_ingredients or selected_budgets or selected_volumes
+            active_filter_count = (
+                len(selected_skin_types)
+                + len(selected_concerns)
+                + len(selected_brands)
+                + len(selected_ingredients)
+                + len(selected_budgets)
+                + len(selected_volumes)
+                + (1 if req_args.get('min_price') or (req_args.get('max_price') and float(req_args.get('max_price', 0)) < 1500000) else 0)
             )
+
+            has_active_bm_filters = bool(active_filter_count > 0 or category)
 
             response.qcontext.update({
                 'bm_main_categories': main_categories,
                 'bm_skin_types_data': skin_types_data,
                 'bm_skin_concerns_data': skin_concerns_data,
                 'bm_budget_levels_data': budget_levels_data,
+                'bm_volume_options': volume_options,
                 'bm_available_brands': available_brands,
                 'bm_popular_ingredients': popular_ingredients,
                 'bm_available_volumes': available_volumes,
@@ -205,7 +258,10 @@ class BeautyMatchWebsiteSale(WebsiteSale):
                 'bm_selected_ingredients': selected_ingredients,
                 'bm_selected_budgets': selected_budgets,
                 'bm_selected_volumes': selected_volumes,
+                'bm_active_filter_count': active_filter_count,
                 'bm_has_active_filters': has_active_bm_filters,
+                'bm_min_price': float(req_args.get('min_price') or 0),
+                'bm_max_price': float(req_args.get('max_price') or 1500000),
             })
 
         return response

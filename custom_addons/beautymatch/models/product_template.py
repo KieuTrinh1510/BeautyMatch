@@ -337,20 +337,70 @@ class ProductTemplate(models.Model):
 
         budgets = options.get('budget')
         if budgets:
-            budgets = [bg for bg in budgets if bg]
-            if budgets:
-                extra_domains.append(Domain('beautymatch_budget_level', 'in', budgets))
+            budget_conds = []
+            for bg in budgets:
+                if not bg:
+                    continue
+                if bg == 'budget':
+                    budget_conds.append(Domain('list_price', '<=', 250000))
+                    budget_conds.append(Domain('beautymatch_budget_level', '=', 'budget'))
+                elif bg == 'mid':
+                    budget_conds.append(Domain.AND([Domain('list_price', '>', 250000), Domain('list_price', '<=', 500000)]))
+                    budget_conds.append(Domain('beautymatch_budget_level', '=', 'mid'))
+                elif bg == 'high':
+                    budget_conds.append(Domain.AND([Domain('list_price', '>', 500000), Domain('list_price', '<=', 1000000)]))
+                elif bg == 'premium':
+                    budget_conds.append(Domain('list_price', '>', 1000000))
+                    budget_conds.append(Domain('beautymatch_budget_level', '=', 'premium'))
+                else:
+                    budget_conds.append(Domain('beautymatch_budget_level', '=', bg))
+            if budget_conds:
+                extra_domains.append(Domain.OR(budget_conds))
 
         volumes = options.get('volume')
         if volumes:
-            vol_conds = [Domain('beautymatch_volume', 'ilike', vol) for vol in volumes if vol]
+            vol_conds = []
+            for vol in volumes:
+                if not vol:
+                    continue
+                if vol == 'lt50':
+                    vol_conds.extend([Domain('beautymatch_volume', 'ilike', v) for v in ['20ml', '30ml', '40ml']])
+                elif vol == '50_100':
+                    vol_conds.extend([Domain('beautymatch_volume', 'ilike', v) for v in ['50ml', '50g', '60ml', '100ml']])
+                elif vol == '100_200':
+                    vol_conds.extend([Domain('beautymatch_volume', 'ilike', v) for v in ['110g', '150ml', '170ml', '180ml', '200ml']])
+                elif vol == 'gt200':
+                    vol_conds.extend([Domain('beautymatch_volume', 'ilike', v) for v in ['236ml', '340g', '355ml', '400ml', '473ml']])
+                else:
+                    vol_conds.append(Domain('beautymatch_volume', 'ilike', vol))
             if vol_conds:
                 extra_domains.append(Domain.OR(vol_conds))
 
+        # Xử lý khoảng giá thực tế theo VND (bảo toàn list_price tránh lỗi chia conversion_rate USD)
+        raw_min = options.get('bm_raw_min_price')
+        raw_max = options.get('bm_raw_max_price')
+        if raw_min is not None or raw_max is not None:
+            cleaned_domains = []
+            for d in domains:
+                if isinstance(d, tuple) and len(d) == 3 and d[0] == 'list_price':
+                    continue
+                if isinstance(d, list) and len(d) == 1 and isinstance(d[0], tuple) and d[0][0] == 'list_price':
+                    continue
+                cleaned_domains.append(d)
+            domains = cleaned_domains
+
+            price_conds = []
+            if raw_min and float(raw_min) > 0:
+                price_conds.append(Domain([('list_price', '>=', float(raw_min))]))
+            if raw_max and float(raw_max) > 0 and float(raw_max) < 1500000:
+                price_conds.append(Domain([('list_price', '<=', float(raw_max))]))
+            if price_conds:
+                extra_domains.append(Domain.AND(price_conds))
+
         if extra_domains:
             domains.append(Domain.AND(extra_domains))
-            res['base_domain'] = domains
 
+        res['base_domain'] = domains
         return res
 
     @api.depends('company_id')
