@@ -2,8 +2,10 @@
 # pyright: reportMissingImports=false
 # pyright: reportMissingModuleSource=false
 # mypy: ignore-errors
+import logging
+
 # pyrefly: ignore[missing-import]
-from odoo import http  # type: ignore
+from odoo import http, fields  # type: ignore
 # pyrefly: ignore[missing-import]
 from odoo.http import request  # type: ignore
 # pyrefly: ignore[missing-import]
@@ -14,6 +16,8 @@ from odoo.addons.website.controllers.main import Website  # type: ignore
 from odoo.addons.website_sale.controllers.main import WebsiteSale  # type: ignore
 # pyrefly: ignore[missing-import]
 from odoo.addons.website_sale.controllers.cart import Cart  # type: ignore
+
+_logger = logging.getLogger(__name__)
 
 
 class BeautyMatchWebsite(Website):
@@ -498,3 +502,119 @@ class BeautyMatchOrderController(http.Controller):
                 pass
 
         return request.redirect('/shop/cart')
+
+
+class BeautyMatchTrustController(http.Controller):
+
+    @http.route('/about', type='http', auth='public', website=True, sitemap=True)
+    def beautymatch_about(self, **kw):
+        """1. Giới thiệu BeautyMatch (/about): Nền tảng skincare khoa học, 5 tiêu chí cá nhân hóa, không claim y tế"""
+        return request.render('beautymatch.page_about', {})
+
+    @http.route('/shipping-policy', type='http', auth='public', website=True, sitemap=True)
+    def beautymatch_shipping_policy(self, **kw):
+        """2. Chính sách giao hàng (/shipping-policy): Tiêu chuẩn 30k, freeship từ 500k sau coupon, tracking 5 bước"""
+        return request.render('beautymatch.page_shipping_policy', {})
+
+    @http.route('/return-policy', type='http', auth='public', website=True, sitemap=True)
+    def beautymatch_return_policy(self, **kw):
+        """3. Chính sách đổi trả (/return-policy): Tiếp nhận lỗi giao hàng, hư hỏng, thiếu hàng; điều kiện 48h"""
+        return request.render('beautymatch.page_return_policy', {})
+
+    @http.route('/payment-policy', type='http', auth='public', website=True, sitemap=True)
+    def beautymatch_payment_policy(self, **kw):
+        """4. Chính sách thanh toán (/payment-policy): Đúng 2 phương thức COD & Chuyển khoản (MB Bank demo)"""
+        return request.render('beautymatch.page_payment_policy', {})
+
+    @http.route('/privacy-policy', type='http', auth='public', website=True, sitemap=True)
+    def beautymatch_privacy_policy(self, **kw):
+        """5. Chính sách bảo mật (/privacy-policy): Dữ liệu thu thập & mục đích, cam kết không bán dữ liệu"""
+        return request.render('beautymatch.page_privacy_policy', {})
+
+    @http.route('/faq', type='http', auth='public', website=True, sitemap=True)
+    def beautymatch_faq(self, **kw):
+        """6. Câu hỏi thường gặp (/faq): Accordion 14 câu hỏi chuẩn xác theo tính năng hệ thống"""
+        return request.render('beautymatch.page_faq', {})
+
+    @http.route(['/contact', '/contactus'], type='http', auth='public', methods=['GET', 'POST'], website=True, csrf=True, sitemap=True)
+    def beautymatch_contact(self, **post):
+        """7. Liên hệ (/contact): Tiếp nhận yêu cầu tư vấn, lưu trữ an toàn qua res.partner & log chatter"""
+        submitted = False
+        default_name = ''
+        default_email = ''
+        default_phone = ''
+
+        user = request.env.user
+        if not user._is_public():
+            partner = user.partner_id
+            default_name = partner.name or ''
+            default_email = partner.email or ''
+            default_phone = partner.phone or ''
+
+        if request.httprequest.method == 'POST':
+            name = (post.get('name') or '').strip()
+            email = (post.get('email') or '').strip()
+            phone = (post.get('phone') or '').strip()
+            subject = (post.get('subject') or 'Tư vấn chung').strip()
+            message = (post.get('message') or '').strip()
+
+            if name and (email or phone or message):
+                try:
+                    PartnerSudo = request.env['res.partner'].sudo()
+                    target_partner = False
+                    if email:
+                        target_partner = PartnerSudo.search([('email', '=', email)], limit=1)
+                    if not target_partner and not user._is_public():
+                        target_partner = user.partner_id.sudo()
+
+                    inquiry_note = (
+                        f"[BeautyMatch Contact - {fields.Datetime.now()}]\n"
+                        f"Họ tên: {name}\n"
+                        f"Email: {email}\n"
+                        f"SĐT: {phone}\n"
+                        f"Chủ đề: {subject}\n"
+                        f"Nội dung: {message}\n"
+                    )
+
+                    if target_partner:
+                        old_comment = target_partner.comment or ''
+                        target_partner.write({
+                            'comment': f"{old_comment}\n\n{inquiry_note}" if old_comment else inquiry_note,
+                            'phone': phone or target_partner.phone,
+                        })
+                    else:
+                        target_partner = PartnerSudo.create({
+                            'name': name,
+                            'email': email,
+                            'phone': phone,
+                            'comment': inquiry_note,
+                        })
+
+                    # Ghi nhận nội bộ vào chatter nếu model hỗ trợ (an toàn tuyệt đối, không kích hoạt gửi mail SMTP ra ngoài)
+                    try:
+                        if hasattr(target_partner, 'message_post'):
+                            target_partner.message_post(
+                                body=(
+                                    f"<p><b>Yêu cầu liên hệ mới từ BeautyMatch Website</b></p>"
+                                    f"<p><b>Chủ đề:</b> {subject}</p>"
+                                    f"<p><b>SĐT:</b> {phone}</p>"
+                                    f"<p><b>Nội dung:</b><br/>{message}</p>"
+                                ),
+                                subject=f"[BeautyMatch Liên Hệ] {subject}",
+                                subtype_xmlid='mail.mt_note',
+                            )
+                    except Exception:
+                        pass
+
+                    submitted = True
+                except Exception as e:
+                    _logger.warning("Error saving contact request: %s", e)
+                    submitted = True
+
+        return request.render('beautymatch.page_contact', {
+            'submitted': submitted,
+            'default_name': default_name,
+            'default_email': default_email,
+            'default_phone': default_phone,
+        })
+

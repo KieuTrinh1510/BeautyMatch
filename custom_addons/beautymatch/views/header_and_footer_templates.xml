@@ -287,12 +287,13 @@
                         <div class="col-6 col-md-3 col-lg-2">
                             <h6 class="fw-bold mb-3" style="color: #6E4C7E; font-size: 0.85rem; letter-spacing: 0.5px;">HỖ TRỢ</h6>
                             <ul class="list-unstyled small mb-0 d-flex flex-column gap-2">
-                                <li><a href="#" class="text-muted text-decoration-none">Giao hàng</a></li>
-                                <li><a href="#" class="text-muted text-decoration-none">Đổi trả</a></li>
-                                <li><a href="#" class="text-muted text-decoration-none">Thanh toán</a></li>
-                                <li><a href="#" class="text-muted text-decoration-none">Bảo mật</a></li>
-                                <li><a href="#" class="text-muted text-decoration-none">FAQ</a></li>
-                                <li><a href="/contactus" class="text-muted text-decoration-none">Liên hệ</a></li>
+                                <li><a href="/about" class="text-muted text-decoration-none">Giới thiệu</a></li>
+                                <li><a href="/shipping-policy" class="text-muted text-decoration-none">Chính sách giao hàng</a></li>
+                                <li><a href="/return-policy" class="text-muted text-decoration-none">Đổi trả &amp; hoàn tiền</a></li>
+                                <li><a href="/payment-policy" class="text-muted text-decoration-none">Thanh toán</a></li>
+                                <li><a href="/privacy-policy" class="text-muted text-decoration-none">Bảo mật</a></li>
+                                <li><a href="/faq" class="text-muted text-decoration-none">FAQ</a></li>
+                                <li><a href="/contact" class="text-muted text-decoration-none">Liên hệ</a></li>
                             </ul>
                         </div>
                     </div>
