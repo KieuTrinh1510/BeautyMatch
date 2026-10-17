@@ -44,6 +44,7 @@ Tính năng chính:
         'views/shop_and_product_views.xml',
         'views/website_menu.xml',
         'views/order_and_portal_templates.xml',
+        'views/header_and_footer_templates.xml',
         'data/product_categories.xml',
         'data/beautymatch_product_attributes.xml',
         'data/beautymatch_products.xml',

@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ======================================================== -->
+    <!-- 1. BEAUTYMATCH DESKTOP HEADER (Inherits website_sale_wishlist) -->
+    <!-- ======================================================== -->
+    <template id="beautymatch_template_header_default" inherit_id="website_sale_wishlist.template_header_default" name="BeautyMatch Desktop Header">
+        <!-- 1.1 Brand Logo: Replace generic/demo logo with BeautyMatch Wordmark -->
+        <xpath expr="//t[@t-call='website.placeholder_header_brand']" position="replace">
+            <a href="/" class="navbar-brand bm-header-brand me-3 me-xl-4 text-decoration-none d-flex flex-column py-1">
+                <span class="bm-brand-wordmark">BeautyMatch</span>
+                <span class="bm-brand-tagline d-none d-sm-block">Beauty &amp; Personal Care</span>
+            </a>
+        </xpath>
+
+        <!-- 1.2 Main Menu: Replace generic navbar with BeautyMatch structured navigation & dropdowns -->
+        <xpath expr="//t[@t-call='website.navbar_nav']" position="replace">
+            <t t-set="curr_path" t-value="request.httprequest.path"/>
+            <ul class="navbar-nav mx-auto align-items-center gap-1 gap-xl-2 bm-main-navbar">
+                <!-- 1. Trang chủ -->
+                <li class="nav-item">
+                    <a href="/" t-attf-class="nav-link bm-nav-link #{'active' if curr_path == '/' else ''}">Trang chủ</a>
+                </li>
+
+                <!-- 2. Cửa hàng (Dropdown với cấu trúc 4 nhóm chuẩn) -->
+                <li class="nav-item dropdown bm-nav-item-dropdown">
+                    <a href="/shop" t-attf-class="nav-link dropdown-toggle bm-nav-link #{'active' if curr_path.startswith('/shop') and not (curr_path.startswith('/shop/cart') or curr_path.startswith('/shop/checkout') or curr_path.startswith('/shop/confirmation') or curr_path.startswith('/shop/wishlist')) else ''}" data-bs-toggle="dropdown" aria-expanded="false">
+                        Cửa hàng
+                    </a>
+                    <div class="dropdown-menu bm-shop-dropdown shadow-lg border-0 p-3 mt-2 rounded-4">
+                        <div class="row g-3" style="min-width: 450px;">
+                            <!-- Nhóm 1 & 2 -->
+                            <div class="col-6">
+                                <div class="bm-drop-group mb-3">
+                                    <span class="bm-group-title text-uppercase fw-bold d-block mb-1">Làm sạch &amp; Cân bằng</span>
+                                    <a class="dropdown-item bm-drop-item rounded-2 py-1 px-2" href="/shop/category/sua-rua-mat-54">Sữa rửa mặt</a>
+                                    <a class="dropdown-item bm-drop-item rounded-2 py-1 px-2" href="/shop/category/toner-55">Toner</a>
+                                </div>
+                                <div class="bm-drop-group">
+                                    <span class="bm-group-title text-uppercase fw-bold d-block mb-1">Dưỡng chuyên sâu</span>
+                                    <a class="dropdown-item bm-drop-item rounded-2 py-1 px-2" href="/shop/category/serum-56">Serum</a>
+                                </div>
+                            </div>
+                            <!-- Nhóm 3 & 4 -->
+                            <div class="col-6">
+                                <div class="bm-drop-group mb-3">
+                                    <span class="bm-group-title text-uppercase fw-bold d-block mb-1">Dưỡng ẩm &amp; Phục hồi</span>
+                                    <a class="dropdown-item bm-drop-item rounded-2 py-1 px-2" href="/shop/category/kem-duong-57">Kem dưỡng</a>
+                                </div>
+                                <div class="bm-drop-group">
+                                    <span class="bm-group-title text-uppercase fw-bold d-block mb-1">Bảo vệ da</span>
+                                    <a class="dropdown-item bm-drop-item rounded-2 py-1 px-2" href="/shop/category/chong-nang-58">Chống nắng</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-top pt-2 mt-2 text-center">
+                            <a href="/shop" class="small text-primary fw-semibold text-decoration-none">
+                                Xem tất cả sản phẩm <i class="fa fa-arrow-right ms-1"/>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- 3. Theo vấn đề da (Dropdown 4 tình trạng) -->
+                <li class="nav-item dropdown bm-nav-item-dropdown">
+                    <a href="/theo-van-de-da" t-attf-class="nav-link dropdown-toggle bm-nav-link #{'active' if curr_path == '/theo-van-de-da' else ''}" data-bs-toggle="dropdown" aria-expanded="false">
+                        Theo vấn đề da
+                    </a>
+                    <ul class="dropdown-menu bm-concern-dropdown border-0 shadow-lg p-2 mt-2 rounded-4" style="min-width: 220px;">
+                        <li><a class="dropdown-item bm-drop-item rounded-2 py-2 px-3" href="/shop?concern=acne_oil"><i class="fa fa-tint text-primary me-2"/>Dầu &amp; mụn</a></li>
+                        <li><a class="dropdown-item bm-drop-item rounded-2 py-2 px-3" href="/shop?concern=dryness"><i class="fa fa-leaf text-success me-2"/>Khô thiếu ẩm</a></li>
+                        <li><a class="dropdown-item bm-drop-item rounded-2 py-2 px-3" href="/shop?concern=sensitivity"><i class="fa fa-heartbeat text-danger me-2"/>Nhạy cảm &amp; phục hồi</a></li>
+                        <li><a class="dropdown-item bm-drop-item rounded-2 py-2 px-3" href="/shop?concern=dullness"><i class="fa fa-sun-o text-warning me-2"/>Xỉn màu</a></li>
+                        <li><hr class="dropdown-divider my-1"/></li>
+                        <li><a class="dropdown-item bm-drop-item text-center small text-primary fw-semibold" href="/theo-van-de-da">Khám phá theo vấn đề da <i class="fa fa-arrow-right ms-1"/></a></li>
+                    </ul>
+                </li>
+
+                <!-- 4. Beauty Quiz -->
+                <li class="nav-item">
+                    <a href="/beauty-quiz" t-attf-class="nav-link bm-nav-link #{'active' if curr_path == '/beauty-quiz' else ''}">Beauty Quiz</a>
+                </li>
+
+                <!-- 5. Routine -->
+                <li class="nav-item">
+                    <a href="/routine" t-attf-class="nav-link bm-nav-link #{'active' if curr_path == '/routine' else ''}">Routine</a>
+                </li>
+
+                <!-- 6. Thương hiệu -->
+                <li class="nav-item">
+                    <a href="/brands" t-attf-class="nav-link bm-nav-link #{'active' if curr_path == '/brands' else ''}">Thương hiệu</a>
+                </li>
+
+                <!-- 7. Kiến thức -->
+                <li class="nav-item">
+                    <a href="/blog" t-attf-class="nav-link bm-nav-link #{'active' if curr_path.startswith('/blog') else ''}">Kiến thức</a>
+                </li>
+            </ul>
+        </xpath>
+
+        <!-- 1.3 Xóa số điện thoại demo khỏi header -->
+        <xpath expr="//t[@t-call='website.placeholder_header_text_element']" position="replace"/>
+
+        <!-- 1.4 Xóa nút 'Liên hệ' demo lớn khỏi header (chuyển xuống footer) -->
+        <xpath expr="//t[@t-call='website.placeholder_header_call_to_action']" position="replace"/>
+
+        <!-- 1.5 Xóa icon mạng xã hội thừa khỏi header -->
+        <xpath expr="//t[@t-call='website.placeholder_header_social_links']" position="replace"/>
+
+        <!-- 1.6 Xóa chuyển đổi ngôn ngữ thừa nếu có -->
+        <xpath expr="//t[@t-call='website.placeholder_header_language_selector']" position="replace"/>
+
+        <!-- 1.7 Chuẩn hóa hiển thị tài khoản người dùng đăng nhập -->
+        <xpath expr="//t[@t-call='portal.user_dropdown']" position="replace">
+            <t t-if="not request.env.user._is_public()">
+                <li class="nav-item dropdown bm-account-item">
+                    <a href="#" class="nav-link dropdown-toggle bm-account-btn d-flex align-items-center gap-2 border-0 px-2 py-1 rounded-pill" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-user-circle-o fa-lg" style="color: #8F6FA8;"/>
+                        <span class="bm-user-name fw-medium" t-out="user_id.name if user_id.name != 'Mitchell Admin' else 'Tài khoản'"/>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 mt-2 p-2" style="min-width: 210px;">
+                        <li>
+                            <div class="px-3 py-2 border-bottom mb-1">
+                                <small class="text-muted d-block" style="font-size: 0.75rem;">Đang đăng nhập:</small>
+                                <strong class="text-dark" t-out="user_id.name"/>
+                            </div>
+                        </li>
+                        <li><a class="dropdown-item bm-drop-item rounded-2 py-2" href="/my/home"><i class="fa fa-tachometer me-2 text-primary opacity-75"/>Tài khoản của tôi</a></li>
+                        <li><a class="dropdown-item bm-drop-item rounded-2 py-2" href="/my/orders"><i class="fa fa-shopping-bag me-2 text-primary opacity-75"/>Đơn hàng của tôi</a></li>
+                        <li><a class="dropdown-item bm-drop-item rounded-2 py-2" href="/shop/wishlist"><i class="fa fa-heart-o me-2 text-primary opacity-75"/>Sản phẩm yêu thích</a></li>
+                        <li><hr class="dropdown-divider my-1"/></li>
+                        <li><a class="dropdown-item bm-drop-item rounded-2 py-2 text-danger" href="/web/session/logout?redirect=/"><i class="fa fa-sign-out me-2"/>Đăng xuất</a></li>
+                    </ul>
+                </li>
+            </t>
+        </xpath>
+
+        <!-- 1.8 Chuẩn hóa nút Đăng nhập khi khách là Guest -->
+        <xpath expr="//t[@t-call='portal.placeholder_user_sign_in']" position="replace">
+            <t t-if="request.env.user._is_public()">
+                <li class="nav-item">
+                    <a href="/web/login" class="nav-link bm-login-btn px-3 py-1 rounded-pill fw-medium">
+                        <i class="fa fa-user-o me-1"/> Đăng nhập
+                    </a>
+                </li>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- ======================================================== -->
+    <!-- 2. BEAUTYMATCH MOBILE HEADER (Inherits template_header_mobile) -->
+    <!-- ======================================================== -->
+    <template id="beautymatch_template_header_mobile" inherit_id="website_sale_wishlist.template_header_mobile" name="BeautyMatch Mobile Header">
+        <!-- 2.1 Logo trên Mobile -->
+        <xpath expr="//t[@t-call='website.placeholder_header_brand']" position="replace">
+            <a href="/" class="navbar-brand bm-header-brand text-decoration-none py-1">
+                <span class="bm-brand-wordmark fs-4">BeautyMatch</span>
+            </a>
+        </xpath>
+
+        <!-- 2.2 Menu điều hướng trong Mobile Offcanvas -->
+        <xpath expr="//t[@t-call='website.navbar_nav']" position="replace">
+            <t t-set="curr_path" t-value="request.httprequest.path"/>
+            <ul class="navbar-nav bm-mobile-menu w-100">
+                <li class="nav-item border-top">
+                    <a href="/" t-attf-class="nav-link py-3 px-2 #{'active fw-bold text-primary' if curr_path == '/' else ''}">Trang chủ</a>
+                </li>
+                <!-- Cửa hàng Accordion -->
+                <li class="nav-item border-top">
+                    <a class="nav-link py-3 px-2 d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#bm_mobile_shop_sub" role="button">
+                        <span>Cửa hàng</span>
+                        <i class="fa fa-angle-down"/>
+                    </a>
+                    <div class="collapse ps-3 pe-2 pb-2 rounded-3 bg-light mx-1 mb-2" id="bm_mobile_shop_sub">
+                        <div class="small fw-bold text-uppercase text-muted pt-2 pb-1" style="font-size: 0.75rem;">Làm sạch &amp; Cân bằng</div>
+                        <a class="d-block py-1 text-decoration-none text-dark small" href="/shop/category/sua-rua-mat-54">Sữa rửa mặt</a>
+                        <a class="d-block py-1 text-decoration-none text-dark small" href="/shop/category/toner-55">Toner</a>
+                        <div class="small fw-bold text-uppercase text-muted pt-2 pb-1" style="font-size: 0.75rem;">Dưỡng chuyên sâu</div>
+                        <a class="d-block py-1 text-decoration-none text-dark small" href="/shop/category/serum-56">Serum</a>
+                        <div class="small fw-bold text-uppercase text-muted pt-2 pb-1" style="font-size: 0.75rem;">Dưỡng ẩm &amp; Phục hồi</div>
+                        <a class="d-block py-1 text-decoration-none text-dark small" href="/shop/category/kem-duong-57">Kem dưỡng</a>
+                        <div class="small fw-bold text-uppercase text-muted pt-2 pb-1" style="font-size: 0.75rem;">Bảo vệ da</div>
+                        <a class="d-block py-1 text-decoration-none text-dark small" href="/shop/category/chong-nang-58">Chống nắng</a>
+                        <div class="border-top mt-2 pt-2">
+                            <a class="d-block text-primary fw-semibold small" href="/shop">Xem tất cả sản phẩm →</a>
+                        </div>
+                    </div>
+                </li>
+                <!-- Theo vấn đề da Accordion -->
+                <li class="nav-item border-top">
+                    <a class="nav-link py-3 px-2 d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#bm_mobile_concern_sub" role="button">
+                        <span>Theo vấn đề da</span>
+                        <i class="fa fa-angle-down"/>
+                    </a>
+                    <div class="collapse ps-3 pe-2 pb-2 rounded-3 bg-light mx-1 mb-2" id="bm_mobile_concern_sub">
+                        <a class="d-block py-2 text-decoration-none text-dark small" href="/shop?concern=acne_oil"><i class="fa fa-tint text-primary me-2"/>Dầu &amp; mụn</a>
+                        <a class="d-block py-2 text-decoration-none text-dark small" href="/shop?concern=dryness"><i class="fa fa-leaf text-success me-2"/>Khô thiếu ẩm</a>
+                        <a class="d-block py-2 text-decoration-none text-dark small" href="/shop?concern=sensitivity"><i class="fa fa-heartbeat text-danger me-2"/>Nhạy cảm &amp; phục hồi</a>
+                        <a class="d-block py-2 text-decoration-none text-dark small" href="/shop?concern=dullness"><i class="fa fa-sun-o text-warning me-2"/>Xỉn màu</a>
+                        <div class="border-top mt-1 pt-2">
+                            <a class="d-block text-primary fw-semibold small" href="/theo-van-de-da">Tất cả vấn đề da →</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item border-top">
+                    <a href="/beauty-quiz" t-attf-class="nav-link py-3 px-2 #{'active fw-bold text-primary' if curr_path == '/beauty-quiz' else ''}">Beauty Quiz</a>
+                </li>
+                <li class="nav-item border-top">
+                    <a href="/routine" t-attf-class="nav-link py-3 px-2 #{'active fw-bold text-primary' if curr_path == '/routine' else ''}">Routine</a>
+                </li>
+                <li class="nav-item border-top">
+                    <a href="/brands" t-attf-class="nav-link py-3 px-2 #{'active fw-bold text-primary' if curr_path == '/brands' else ''}">Thương hiệu</a>
+                </li>
+                <li class="nav-item border-top border-bottom">
+                    <a href="/blog" t-attf-class="nav-link py-3 px-2 #{'active fw-bold text-primary' if curr_path.startswith('/blog') else ''}">Kiến thức</a>
+                </li>
+            </ul>
+        </xpath>
+
+        <!-- 2.3 Xóa số điện thoại demo trên mobile -->
+        <xpath expr="//t[@t-call='website.placeholder_header_text_element']" position="replace"/>
+
+        <!-- 2.4 Xóa nút liên hệ lớn trên mobile -->
+        <xpath expr="//t[@t-call='website.header_call_to_action_large']" position="replace"/>
+
+        <!-- 2.5 Xóa icon social trên mobile -->
+        <xpath expr="//t[@t-call='website.placeholder_header_social_links']" position="replace"/>
+
+        <!-- 2.6 Xóa chọn ngôn ngữ trên mobile -->
+        <xpath expr="//t[@t-call='website.placeholder_header_language_selector']" position="replace"/>
+    </template>
+
+    <!-- ======================================================== -->
+    <!-- 3. BEAUTYMATCH FOOTER (Inherits website.footer_custom)   -->
+    <!-- ======================================================== -->
+    <template id="beautymatch_footer_custom" inherit_id="website.footer_custom" name="BeautyMatch Footer Custom">
+        <xpath expr="//div[@id='footer']" position="replace">
+            <div id="footer" class="bm-footer border-top pt-5 pb-3 text-break" style="background-color: #FAF7FB;">
+                <div class="container">
+                    <div class="row g-4 pb-4 border-bottom">
+                        <!-- Cột 1: Thông tin thương hiệu -->
+                        <div class="col-12 col-lg-3">
+                            <div class="mb-3">
+                                <span class="bm-footer-brand fw-bold fs-3" style="color: #6E4C7E;">BeautyMatch</span>
+                                <span class="d-block small text-muted text-uppercase" style="letter-spacing: 1px;">Beauty &amp; Personal Care</span>
+                            </div>
+                            <p class="text-muted small mb-3" style="line-height: 1.6;">
+                                Nền tảng thương mại điện tử mỹ phẩm &amp; chăm sóc da chuẩn khoa học. Giúp bạn tìm đúng chu trình chăm sóc da chuẩn xác cho từng tình trạng da.
+                            </p>
+                            <div class="d-flex gap-2 mb-2">
+                                <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" aria-label="Facebook"><i class="fa fa-facebook"/></a>
+                                <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" aria-label="Instagram"><i class="fa fa-instagram"/></a>
+                                <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" aria-label="Youtube"><i class="fa fa-youtube-play"/></a>
+                            </div>
+                        </div>
+
+                        <!-- Cột 2: MUA SẮM -->
+                        <div class="col-6 col-md-3 col-lg-2 offset-lg-1">
+                            <h6 class="fw-bold mb-3" style="color: #6E4C7E; font-size: 0.85rem; letter-spacing: 0.5px;">MUA SẮM</h6>
+                            <ul class="list-unstyled small mb-0 d-flex flex-column gap-2">
+                                <li><a href="/shop" class="text-muted text-decoration-none">Cửa hàng</a></li>
+                                <li><a href="/theo-van-de-da" class="text-muted text-decoration-none">Theo vấn đề da</a></li>
+                                <li><a href="/brands" class="text-muted text-decoration-none">Thương hiệu</a></li>
+                            </ul>
+                        </div>
+
+                        <!-- Cột 3: KHÁM PHÁ -->
+                        <div class="col-6 col-md-3 col-lg-2">
+                            <h6 class="fw-bold mb-3" style="color: #6E4C7E; font-size: 0.85rem; letter-spacing: 0.5px;">KHÁM PHÁ</h6>
+                            <ul class="list-unstyled small mb-0 d-flex flex-column gap-2">
+                                <li><a href="/beauty-quiz" class="text-muted text-decoration-none">Beauty Quiz</a></li>
+                                <li><a href="/routine" class="text-muted text-decoration-none">Routine</a></li>
+                                <li><a href="/blog" class="text-muted text-decoration-none">Kiến thức</a></li>
+                            </ul>
+                        </div>
+
+                        <!-- Cột 4: TÀI KHOẢN -->
+                        <div class="col-6 col-md-3 col-lg-2">
+                            <h6 class="fw-bold mb-3" style="color: #6E4C7E; font-size: 0.85rem; letter-spacing: 0.5px;">TÀI KHOẢN</h6>
+                            <ul class="list-unstyled small mb-0 d-flex flex-column gap-2">
+                                <li><a href="/web/login" class="text-muted text-decoration-none">Đăng nhập</a></li>
+                                <li><a href="/my/orders" class="text-muted text-decoration-none">Đơn hàng của tôi</a></li>
+                                <li><a href="/shop/wishlist" class="text-muted text-decoration-none">Sản phẩm yêu thích</a></li>
+                            </ul>
+                        </div>
+
+                        <!-- Cột 5: HỖ TRỢ -->
+                        <div class="col-6 col-md-3 col-lg-2">
+                            <h6 class="fw-bold mb-3" style="color: #6E4C7E; font-size: 0.85rem; letter-spacing: 0.5px;">HỖ TRỢ</h6>
+                            <ul class="list-unstyled small mb-0 d-flex flex-column gap-2">
+                                <li><a href="#" class="text-muted text-decoration-none">Giao hàng</a></li>
+                                <li><a href="#" class="text-muted text-decoration-none">Đổi trả</a></li>
+                                <li><a href="#" class="text-muted text-decoration-none">Thanh toán</a></li>
+                                <li><a href="#" class="text-muted text-decoration-none">Bảo mật</a></li>
+                                <li><a href="#" class="text-muted text-decoration-none">FAQ</a></li>
+                                <li><a href="/contactus" class="text-muted text-decoration-none">Liên hệ</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Dòng bản quyền chân trang -->
+                    <div class="pt-3 text-center small text-muted">
+                        <p class="mb-0">© 2026 BeautyMatch. Nền tảng mỹ phẩm &amp; chăm sóc da khoa học. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

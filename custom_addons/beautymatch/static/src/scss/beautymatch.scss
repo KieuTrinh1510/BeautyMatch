@@ -922,3 +922,186 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
         color: #FFFFFF !important;
     }
 }
+
+// ========================================================
+// 8. BEAUTYMATCH HEADER & NAVIGATION
+// ========================================================
+header#top {
+    background-color: #FFFFFF !important;
+}
+
+.o_header_standard {
+    min-height: 76px;
+    background-color: #FFFFFF !important;
+    border-bottom: 1px solid rgba(143, 111, 168, 0.15) !important;
+    box-shadow: 0 2px 14px rgba(110, 76, 126, 0.05) !important;
+    transition: all 0.25s ease;
+}
+
+// Brand Wordmark
+.bm-header-brand {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+    text-decoration: none !important;
+
+    .bm-brand-wordmark {
+        font-family: inherit;
+        font-size: 1.55rem;
+        font-weight: 750;
+        letter-spacing: -0.5px;
+        color: #8F6FA8;
+        transition: color 0.2s ease;
+    }
+
+    .bm-brand-tagline {
+        font-size: 0.65rem;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        color: #6E4C7E;
+        font-weight: 600;
+        margin-top: 1px;
+    }
+
+    &:hover .bm-brand-wordmark {
+        color: #6E4C7E;
+    }
+}
+
+// Main Navbar Links
+.bm-main-navbar {
+    .bm-nav-link {
+        color: #2B2430 !important;
+        font-size: 0.95rem;
+        font-weight: 500;
+        padding: 0.5rem 0.85rem !important;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        position: relative;
+        text-decoration: none;
+
+        &:hover {
+            color: #8F6FA8 !important;
+            background-color: #F3ECF8 !important;
+        }
+
+        &.active {
+            color: #8F6FA8 !important;
+            font-weight: 600;
+            background-color: rgba(143, 111, 168, 0.08) !important;
+
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: 2px;
+                left: 15%;
+                right: 15%;
+                height: 2px;
+                background-color: #8F6FA8;
+                border-radius: 2px;
+            }
+        }
+    }
+}
+
+// Dropdowns
+.bm-nav-item-dropdown {
+    .dropdown-menu {
+        border-radius: 16px !important;
+        box-shadow: 0 12px 32px rgba(110, 76, 126, 0.12) !important;
+        border: none !important;
+        background-color: #FFFFFF !important;
+        animation: bm-fade-in-down 0.2s ease forwards;
+    }
+
+    .bm-group-title {
+        color: #8F6FA8;
+        font-size: 0.72rem;
+        letter-spacing: 0.8px;
+    }
+
+    .bm-drop-item {
+        color: #2B2430;
+        font-size: 0.88rem;
+        transition: all 0.15s ease;
+
+        &:hover {
+            background-color: #F3ECF8;
+            color: #6E4C7E;
+            font-weight: 500;
+            transform: translateX(3px);
+        }
+    }
+}
+
+// Right Elements: Search, Wishlist, Cart, Account order
+.o_header_standard {
+    .navbar-nav.align-items-center {
+        li:has([data-bs-target="#o_search_modal"]) {
+            order: 1;
+        }
+        .o_wsale_my_wish {
+            order: 2;
+        }
+        .o_wsale_my_cart {
+            order: 3;
+        }
+        .bm-account-item, li:has(.bm-login-btn) {
+            order: 4;
+        }
+    }
+}
+
+// Right Elements: Account & Login
+.bm-account-item {
+    .bm-account-btn {
+        color: #2B2430 !important;
+        background-color: #F3ECF8;
+        transition: all 0.2s ease;
+
+        &:hover {
+            background-color: #EBDFF3;
+            color: #6E4C7E !important;
+        }
+    }
+}
+
+.bm-login-btn {
+    color: #6E4C7E !important;
+    background-color: #F3ECF8;
+    border: 1px solid #CDB7DD;
+    font-size: 0.88rem;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background-color: #8F6FA8;
+        color: #FFFFFF !important;
+        border-color: #8F6FA8;
+    }
+}
+
+// Footer
+.bm-footer {
+    background-color: #FAF7FB !important;
+
+    .bm-footer-brand {
+        color: #6E4C7E;
+    }
+
+    a.text-muted:hover {
+        color: #8F6FA8 !important;
+        text-decoration: underline !important;
+    }
+}
+
+@keyframes bm-fade-in-down {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
