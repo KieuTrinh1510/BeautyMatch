@@ -1140,7 +1140,9 @@ header#top {
     align-items: center;
     justify-content: center;
     color: #6c757d;
-    z-index: 5;
+    z-index: 10;
+    cursor: pointer;
+    pointer-events: auto !important;
     transition: all 0.2s ease;
 
     &:hover {

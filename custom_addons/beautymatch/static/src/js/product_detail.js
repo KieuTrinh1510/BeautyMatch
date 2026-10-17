@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-document.addEventListener('DOMContentLoaded', () => {
+function initProductDetail() {
     // ========================================================
     // 1. SCROLL TỚI REVIEW KHI CÓ ANCHOR #reviews
     // ========================================================
@@ -109,4 +109,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 200);
         });
     });
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initProductDetail);
+} else {
+    initProductDetail();
+}
