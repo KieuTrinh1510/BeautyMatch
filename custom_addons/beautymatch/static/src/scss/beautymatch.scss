@@ -574,11 +574,16 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
     }
 }
 
-// 7.3 Product Grid: Desktop 3 Cols, Tablet 2 Cols, Mobile 1 Col
+// 7.3 Product Grid: Desktop 4 Cols, Laptop/Tablet L 3 Cols, Tablet P 2 Cols, Mobile 1 Col
 #o_wsale_products_grid {
     display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
+    grid-template-columns: repeat(4, 1fr) !important;
     gap: 16px !important;
+
+    @media (max-width: 1199.98px) {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 14px !important;
+    }
 
     @media (max-width: 991.98px) {
         grid-template-columns: repeat(2, 1fr) !important;
@@ -624,11 +629,15 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
     // VÙNG ẢNH BẮT BUỘC PHỦ TOÀN BỘ KHUNG (COVER, KHÔNG CONTAIN)
     .bm-card-image-wrap {
         width: 100% !important;
-        height: 220px !important;
+        height: 205px !important;
         background-color: #FAF8FC;
         position: relative;
         overflow: hidden;
         border-radius: 16px 16px 0 0;
+
+        @media (max-width: 1199.98px) {
+            height: 220px !important;
+        }
 
         > a {
             display: block !important;
@@ -809,13 +818,14 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
 
     .bm-price-text {
         color: #6E4C7E !important;
-        font-size: 1.15rem !important;
+        font-size: 1.05rem !important;
         font-weight: 700 !important;
+        white-space: nowrap;
     }
 
     .bm-card-add-cart-btn {
-        width: 34px;
-        height: 34px;
+        width: 32px;
+        height: 32px;
         border-radius: 50%;
         background: #F3ECF8;
         color: #6E4C7E;
@@ -824,6 +834,7 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
         align-items: center;
         justify-content: center;
         padding: 0;
+        flex-shrink: 0;
         transition: all 0.2s ease;
 
         &:hover {
@@ -839,12 +850,13 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
         color: #FFFFFF !important;
         border: none;
         border-radius: 20px;
-        padding: 6px 14px;
-        font-size: 0.8rem;
+        padding: 5px 11px;
+        font-size: 0.76rem;
         font-weight: 600;
         text-decoration: none !important;
         display: inline-flex;
         align-items: center;
+        white-space: nowrap;
         gap: 4px;
         transition: all 0.2s ease;
 
@@ -1308,14 +1320,48 @@ header#top {
     border-bottom: 1px solid rgba(143, 111, 168, 0.15) !important;
     box-shadow: 0 2px 14px rgba(110, 76, 126, 0.05) !important;
     transition: all 0.25s ease;
+
+    .container, .o_main_nav {
+        max-width: 100% !important;
+        width: 100% !important;
+        padding-left: 28px !important;
+        padding-right: 28px !important;
+
+        @media (min-width: 1400px) {
+            padding-left: 36px !important;
+            padding-right: 36px !important;
+        }
+
+        @media (max-width: 768px) {
+            padding-left: 16px !important;
+            padding-right: 16px !important;
+        }
+    }
 }
 
-// Brand Wordmark
+// Brand Wordmark - Căn thẳng hàng hoàn hảo phía trên khối bộ lọc 330px/345px
 .bm-header-brand {
-    display: flex;
-    flex-direction: column;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
     line-height: 1.15;
     text-decoration: none !important;
+
+    @media (min-width: 992px) {
+        flex: 0 0 330px !important;
+        width: 330px !important;
+        max-width: 330px !important;
+        margin-right: 28px !important;
+        padding-left: 10px !important;
+    }
+
+    @media (min-width: 1400px) {
+        flex: 0 0 345px !important;
+        width: 345px !important;
+        max-width: 345px !important;
+        margin-right: 28px !important;
+        padding-left: 10px !important;
+    }
 
     .bm-brand-wordmark {
         font-family: inherit;
@@ -1340,17 +1386,32 @@ header#top {
     }
 }
 
-// Main Navbar Links
+// Main Navbar Links - Đẩy thưa khoảng cách phù hợp, thoáng đãng và thanh lịch
 .bm-main-navbar {
+    display: flex !important;
+    align-items: center !important;
+    margin-left: 0 !important;
+    margin-right: auto !important;
+    gap: 16px !important;
+
+    @media (min-width: 1200px) {
+        gap: 26px !important;
+    }
+
+    @media (min-width: 1400px) {
+        gap: 34px !important;
+    }
+
     .bm-nav-link {
         color: #2B2430 !important;
         font-size: 0.95rem;
-        font-weight: 500;
-        padding: 0.5rem 0.85rem !important;
+        font-weight: 550;
+        padding: 0.5rem 0.65rem !important;
         border-radius: 8px;
         transition: all 0.2s ease;
         position: relative;
         text-decoration: none;
+        white-space: nowrap;
 
         &:hover {
             color: #8F6FA8 !important;
@@ -1408,6 +1469,13 @@ header#top {
 
 // Right Elements: Search, Wishlist, Cart, Account order
 .o_header_standard {
+    .navbar-nav.justify-content-end {
+        gap: 12px !important;
+        @media (min-width: 1200px) {
+            gap: 16px !important;
+        }
+    }
+
     .navbar-nav.align-items-center {
         li:has([data-bs-target="#o_search_modal"]) {
             order: 1;

@@ -6,7 +6,7 @@
     <template id="beautymatch_template_header_default" inherit_id="website_sale_wishlist.template_header_default" name="BeautyMatch Desktop Header">
         <!-- 1.1 Brand Logo: Replace generic/demo logo with BeautyMatch Wordmark -->
         <xpath expr="//t[@t-call='website.placeholder_header_brand']" position="replace">
-            <a href="/" class="navbar-brand bm-header-brand me-3 me-xl-4 text-decoration-none d-flex flex-column py-1">
+            <a href="/" class="navbar-brand bm-header-brand text-decoration-none d-flex flex-column py-1">
                 <span class="bm-brand-wordmark">BeautyMatch</span>
                 <span class="bm-brand-tagline d-none d-sm-block">Beauty &amp; Personal Care</span>
             </a>
@@ -15,7 +15,7 @@
         <!-- 1.2 Main Menu: Replace generic navbar with BeautyMatch structured navigation & dropdowns -->
         <xpath expr="//t[@t-call='website.navbar_nav']" position="replace">
             <t t-set="curr_path" t-value="request.httprequest.path"/>
-            <ul class="navbar-nav mx-auto align-items-center gap-1 gap-xl-2 bm-main-navbar">
+            <ul class="navbar-nav align-items-center bm-main-navbar">
                 <!-- 1. Trang chủ -->
                 <li class="nav-item">
                     <a href="/" t-attf-class="nav-link bm-nav-link #{'active' if curr_path == '/' else ''}">Trang chủ</a>
