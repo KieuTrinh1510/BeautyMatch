@@ -132,6 +132,9 @@
 
     // Clear all compare
     async function clearAllCompare() {
+        try {
+            document.cookie = "comparison_product_ids=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+        } catch (e) {}
         const res = await jsonRpc('/shop/compare/clear', {});
         renderCompareBar(res);
         if (window.location.pathname === '/compare') {
@@ -155,6 +158,11 @@
 
     // Initialize listeners
     document.addEventListener('DOMContentLoaded', async function () {
+        // Vô hiệu hoá hoàn toàn cookie so sánh native của Odoo
+        try {
+            document.cookie = "comparison_product_ids=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+        } catch (e) {}
+
         // Fetch current compare state
         const initialData = await jsonRpc('/shop/compare/get', {});
         renderCompareBar(initialData);
@@ -163,9 +171,10 @@
         document.addEventListener('click', function (e) {
             const toggleBtn = e.target.closest('.js_bm_compare_toggle');
             if (toggleBtn) {
+                e.preventDefault();
+                e.stopPropagation();
                 const pId = parseInt(toggleBtn.dataset.productId);
                 if (pId) toggleProduct(pId);
-                // Để native Odoo 19 interaction (.o_add_compare_dyn) nhận event click đồng bộ bottom bar
                 return;
             }
 

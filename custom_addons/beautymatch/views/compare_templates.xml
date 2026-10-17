@@ -6,8 +6,31 @@
     <!-- ======================================================== -->
     <template id="beautymatch_compare_bar" inherit_id="website.layout" name="BeautyMatch Floating Compare Bar">
         <xpath expr="//footer" position="after">
+            <!-- CSS ẩn triệt để bottom bar native của Odoo 19 để chỉ dùng duy nhất BeautyMatch Compare -->
+            <style>
+                .o_wsale_comparison_bottom_bar,
+                div[name="comparison_bottom_bar"],
+                .o_wsale_comparison_mini_sticky {
+                    display: none !important;
+                    visibility: hidden !important;
+                    height: 0 !important;
+                    overflow: hidden !important;
+                    pointer-events: none !important;
+                }
+                #bm_floating_compare_bar {
+                    z-index: 9999 !important;
+                }
+                .bm-diff-row td {
+                    background-color: #FAF4FD !important;
+                }
+                .bm-compare-sec-header td {
+                    font-size: 0.8rem;
+                    letter-spacing: 0.05em;
+                }
+            </style>
+
             <!-- Toast thông báo tối đa 3 sản phẩm -->
-            <div id="bm_compare_toast" class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 9999; display: none;">
+            <div id="bm_compare_toast" class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 10000; display: none;">
                 <div class="toast show bg-danger text-white border-0 rounded-4 shadow-lg p-2" role="alert">
                     <div class="d-flex align-items-center">
                         <i class="fa fa-exclamation-triangle fa-lg me-2 ms-2"/>
@@ -20,7 +43,7 @@
             </div>
 
             <!-- Thanh Compare cố định dưới chân màn hình -->
-            <div id="bm_floating_compare_bar" class="bm-floating-compare-bar position-fixed bottom-0 start-0 end-0 bg-white border-top shadow-lg py-2 px-3" style="z-index: 1040; display: none; transition: transform 0.3s ease;">
+            <div id="bm_floating_compare_bar" class="bm-floating-compare-bar position-fixed bottom-0 start-0 end-0 bg-white border-top shadow-lg py-2 px-3" style="z-index: 9999; display: none; transition: transform 0.3s ease;">
                 <div class="container d-flex align-items-center justify-content-between flex-wrap gap-2">
                     <div class="d-flex align-items-center gap-3">
                         <div class="d-flex align-items-center gap-2">
@@ -151,7 +174,14 @@
                                     </thead>
 
                                     <tbody>
-                                        <!-- 2. TÊN SẢN PHẨM -->
+                                        <!-- SECTION 1: THÔNG TIN CƠ BẢN -->
+                                        <tr class="bm-compare-sec-header">
+                                            <td t-att-colspan="len(products) + (2 if len(products) &lt; 3 else 1)" class="fw-bold text-uppercase py-2 px-3 small" style="background-color: #F4ECF8; color: #6E4C7E; letter-spacing: 0.05em;">
+                                                <i class="fa fa-info-circle me-1"/> THÔNG TIN CƠ BẢN
+                                            </td>
+                                        </tr>
+
+                                        <!-- TÊN SẢN PHẨM -->
                                         <tr>
                                             <td class="fw-bold text-dark p-3">Tên sản phẩm</td>
                                             <t t-foreach="products" t-as="p">
@@ -164,23 +194,7 @@
                                             <td t-if="len(products) &lt; 3" class="bg-light"/>
                                         </tr>
 
-                                        <!-- 3. THƯƠNG HIỆU -->
-                                        <tr t-attf-class="#{diffs.get('brand') and 'bm-diff-row' or ''}">
-                                            <td class="fw-bold text-dark p-3">
-                                                Thương hiệu
-                                                <span t-if="diffs.get('brand')" class="badge rounded-pill bg-light border text-purple small ms-1">Khác biệt</span>
-                                            </td>
-                                            <t t-foreach="products" t-as="p">
-                                                <td class="p-3 text-center">
-                                                    <span class="badge rounded-pill px-3 py-1 fw-bold text-uppercase" style="background-color: #F3ECF8; color: #6E4C7E;">
-                                                        <t t-out="p.beautymatch_brand or 'BeautyMatch'"/>
-                                                    </span>
-                                                </td>
-                                            </t>
-                                            <td t-if="len(products) &lt; 3" class="bg-light"/>
-                                        </tr>
-
-                                        <!-- 4. GIÁ NIÊM YẾT -->
+                                        <!-- GIÁ NIÊM YẾT -->
                                         <tr t-attf-class="#{diffs.get('price') and 'bm-diff-row' or ''}">
                                             <td class="fw-bold text-dark p-3">
                                                 Giá bán
@@ -197,7 +211,7 @@
                                             <td t-if="len(products) &lt; 3" class="bg-light"/>
                                         </tr>
 
-                                        <!-- 5. DUNG TÍCH / VARIANT -->
+                                        <!-- DUNG TÍCH / PHÂN LOẠI -->
                                         <tr t-attf-class="#{diffs.get('volume') and 'bm-diff-row' or ''}">
                                             <td class="fw-bold text-dark p-3">Dung tích / Phân loại</td>
                                             <t t-foreach="products" t-as="p">
@@ -208,7 +222,30 @@
                                             <td t-if="len(products) &lt; 3" class="bg-light"/>
                                         </tr>
 
-                                        <!-- 6. LOẠI DA PHÙ HỢP -->
+                                        <!-- THƯƠNG HIỆU -->
+                                        <tr t-attf-class="#{diffs.get('brand') and 'bm-diff-row' or ''}">
+                                            <td class="fw-bold text-dark p-3">
+                                                Thương hiệu
+                                                <span t-if="diffs.get('brand')" class="badge rounded-pill bg-light border text-purple small ms-1">Khác biệt</span>
+                                            </td>
+                                            <t t-foreach="products" t-as="p">
+                                                <td class="p-3 text-center">
+                                                    <span class="badge rounded-pill px-3 py-1 fw-bold text-uppercase" style="background-color: #F3ECF8; color: #6E4C7E;">
+                                                        <t t-out="p.beautymatch_brand or 'BeautyMatch'"/>
+                                                    </span>
+                                                </td>
+                                            </t>
+                                            <td t-if="len(products) &lt; 3" class="bg-light"/>
+                                        </tr>
+
+                                        <!-- SECTION 2: PHÙ HỢP VỚI LÀN DA -->
+                                        <tr class="bm-compare-sec-header">
+                                            <td t-att-colspan="len(products) + (2 if len(products) &lt; 3 else 1)" class="fw-bold text-uppercase py-2 px-3 small" style="background-color: #F4ECF8; color: #6E4C7E; letter-spacing: 0.05em;">
+                                                <i class="fa fa-heartbeat me-1"/> PHÙ HỢP VỚI LÀN DA
+                                            </td>
+                                        </tr>
+
+                                        <!-- LOẠI DA PHÙ HỢP -->
                                         <tr t-attf-class="#{diffs.get('skin_type') and 'bm-diff-row' or ''}">
                                             <td class="fw-bold text-dark p-3">
                                                 Loại da phù hợp
@@ -227,7 +264,7 @@
                                             <td t-if="len(products) &lt; 3" class="bg-light"/>
                                         </tr>
 
-                                        <!-- 7. VẤN ĐỀ DA MỤC TIÊU -->
+                                        <!-- VẤN ĐỀ DA MỤC TIÊU -->
                                         <tr t-attf-class="#{diffs.get('skin_concern') and 'bm-diff-row' or ''}">
                                             <td class="fw-bold text-dark p-3">
                                                 Vấn đề da mục tiêu
@@ -246,7 +283,14 @@
                                             <td t-if="len(products) &lt; 3" class="bg-light"/>
                                         </tr>
 
-                                        <!-- 8. HOẠT CHẤT CHÍNH -->
+                                        <!-- SECTION 3: THÀNH PHẦN & ROUTINE -->
+                                        <tr class="bm-compare-sec-header">
+                                            <td t-att-colspan="len(products) + (2 if len(products) &lt; 3 else 1)" class="fw-bold text-uppercase py-2 px-3 small" style="background-color: #F4ECF8; color: #6E4C7E; letter-spacing: 0.05em;">
+                                                <i class="fa fa-flask me-1"/> THÀNH PHẦN &amp; ROUTINE
+                                            </td>
+                                        </tr>
+
+                                        <!-- HOẠT CHẤT CHÍNH -->
                                         <tr t-attf-class="#{diffs.get('key_ingredients') and 'bm-diff-row' or ''}">
                                             <td class="fw-bold text-dark p-3">Hoạt chất chính</td>
                                             <t t-foreach="products" t-as="p">
@@ -268,7 +312,7 @@
                                             <td t-if="len(products) &lt; 3" class="bg-light"/>
                                         </tr>
 
-                                        <!-- 9. BƯỚC ROUTINE -->
+                                        <!-- BƯỚC ROUTINE -->
                                         <tr t-attf-class="#{diffs.get('routine_step') and 'bm-diff-row' or ''}">
                                             <td class="fw-bold text-dark p-3">
                                                 Bước Routine
@@ -288,7 +332,7 @@
                                             <td t-if="len(products) &lt; 3" class="bg-light"/>
                                         </tr>
 
-                                        <!-- 10. THỜI ĐIỂM SỬ DỤNG -->
+                                        <!-- THỜI ĐIỂM SỬ DỤNG -->
                                         <tr t-attf-class="#{diffs.get('usage_time') and 'bm-diff-row' or ''}">
                                             <td class="fw-bold text-dark p-3">Thời điểm sử dụng</td>
                                             <t t-foreach="products" t-as="p">
@@ -303,7 +347,14 @@
                                             <td t-if="len(products) &lt; 3" class="bg-light"/>
                                         </tr>
 
-                                        <!-- 11. PHÂN KHÚC GIÁ -->
+                                        <!-- SECTION 4: HỖ TRỢ RA QUYẾT ĐỊNH -->
+                                        <tr class="bm-compare-sec-header">
+                                            <td t-att-colspan="len(products) + (2 if len(products) &lt; 3 else 1)" class="fw-bold text-uppercase py-2 px-3 small" style="background-color: #F4ECF8; color: #6E4C7E; letter-spacing: 0.05em;">
+                                                <i class="fa fa-lightbulb-o me-1"/> HỖ TRỢ RA QUYẾT ĐỊNH
+                                            </td>
+                                        </tr>
+
+                                        <!-- PHÂN KHÚC GIÁ -->
                                         <tr t-attf-class="#{diffs.get('budget_level') and 'bm-diff-row' or ''}">
                                             <td class="fw-bold text-dark p-3">Phân khúc giá</td>
                                             <t t-foreach="products" t-as="p">
@@ -317,7 +368,7 @@
                                             <td t-if="len(products) &lt; 3" class="bg-light"/>
                                         </tr>
 
-                                        <!-- 12. TỒN KHO -->
+                                        <!-- TÌNH TRẠNG KHO -->
                                         <tr>
                                             <td class="fw-bold text-dark p-3">Tình trạng kho</td>
                                             <t t-foreach="products" t-as="p">
@@ -330,7 +381,7 @@
                                             <td t-if="len(products) &lt; 3" class="bg-light"/>
                                         </tr>
 
-                                        <!-- 13. RATING -->
+                                        <!-- ĐÁNH GIÁ (RATING) -->
                                         <tr>
                                             <td class="fw-bold text-dark p-3">Đánh giá</td>
                                             <t t-foreach="products" t-as="p">
@@ -347,7 +398,7 @@
                                             <td t-if="len(products) &lt; 3" class="bg-light"/>
                                         </tr>
 
-                                        <!-- 14. VÌ SAO PHÙ HỢP? (Decision Support) -->
+                                        <!-- VÌ SAO PHÙ HỢP? (Decision Support) -->
                                         <tr>
                                             <td class="fw-bold text-dark p-3">Vì sao phù hợp?</td>
                                             <t t-foreach="products" t-as="p">
@@ -363,7 +414,7 @@
                                             <td t-if="len(products) &lt; 3" class="bg-light"/>
                                         </tr>
 
-                                        <!-- 15. PHÙ HỢP HƠN NẾU BẠN... (Smart Recommendation) -->
+                                        <!-- PHÙ HỢP HƠN NẾU BẠN... (Smart Recommendation) -->
                                         <tr style="background-color: #F8F4FA;">
                                             <td class="fw-bold p-3" style="color: #6E4C7E;">
                                                 <i class="fa fa-lightbulb-o me-1"/>
@@ -371,16 +422,28 @@
                                             </td>
                                             <t t-foreach="products" t-as="p">
                                                 <td class="p-3 small text-start" style="line-height: 1.6;">
-                                                    <div class="p-3 rounded-3 bg-white border h-100">
+                                                    <div class="p-3 rounded-3 bg-white border h-100 shadow-sm">
                                                         <strong class="d-block mb-1" style="color: #6E4C7E;">Nên ưu tiên chọn nếu:</strong>
                                                         <span class="text-muted" t-out="fit_advices.get(p.id)"/>
+                                                        <t t-if="p.beautymatch_short_fit_reason">
+                                                            <div class="mt-2 text-dark small">
+                                                                <em><t t-out="p.beautymatch_short_fit_reason"/></em>
+                                                            </div>
+                                                        </t>
                                                     </div>
                                                 </td>
                                             </t>
                                             <td t-if="len(products) &lt; 3" class="bg-light"/>
                                         </tr>
 
-                                        <!-- 16. HÀNH ĐỘNG CUỐI BẢNG -->
+                                        <!-- SECTION 5: THAO TÁC / HÀNH ĐỘNG -->
+                                        <tr class="bm-compare-sec-header">
+                                            <td t-att-colspan="len(products) + (2 if len(products) &lt; 3 else 1)" class="fw-bold text-uppercase py-2 px-3 small" style="background-color: #F4ECF8; color: #6E4C7E; letter-spacing: 0.05em;">
+                                                <i class="fa fa-shopping-bag me-1"/> THAO TÁC
+                                            </td>
+                                        </tr>
+
+                                        <!-- HÀNH ĐỘNG CUỐI BẢNG -->
                                         <tr>
                                             <td class="p-3 fw-bold text-dark">Thao tác</td>
                                             <t t-foreach="products" t-as="p">

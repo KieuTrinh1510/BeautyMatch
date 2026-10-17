@@ -777,6 +777,24 @@ class BeautyMatchCompareController(http.Controller):
             'get_product_prices': lambda p: products_prices.get(p.id, {'price_reduce': p.list_price}),
         })
 
+    @http.route(['/shop/compare'], type='http', auth='public', website=True, sitemap=False)
+    def shop_compare_redirect(self, **post):
+        """Chuyển hướng toàn bộ yêu cầu so sánh từ Odoo native /shop/compare sang trang chuẩn BeautyMatch /compare.
+        Nếu có tham số ?products=..., tự động chuyển đổi sang template_id và đưa vào session BeautyMatch.
+        """
+        raw_products = post.get('products', '')
+        if raw_products:
+            variant_ids = [int(i) for i in raw_products.split(',') if i.isdigit()]
+            if variant_ids:
+                variants = request.env['product.product'].sudo().browse(variant_ids).exists()
+                tmpl_ids = list(dict.fromkeys(variants.mapped('product_tmpl_id.id')))
+                curr_ids = self._get_compare_product_ids()
+                for tid in tmpl_ids:
+                    if tid not in curr_ids and len(curr_ids) < 3:
+                        curr_ids.append(tid)
+                self._set_compare_product_ids(curr_ids)
+        return request.redirect('/compare')
+
     @http.route('/shop/category/sunscreen', type='http', auth='public', website=True)
     def redirect_sunscreen_category(self, **kw):
         """Điều hướng thông minh danh mục chống nắng mà không cần hard-code id"""
