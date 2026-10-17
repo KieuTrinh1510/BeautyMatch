@@ -259,8 +259,11 @@
                     <!-- Compare Button (Toggle) - chỉ hiển thị ngoài trang wishlist -->
                     <button t-if="not extra_actions"
                             type="button"
-                            class="btn bm-card-compare-btn js_bm_compare_toggle shadow-sm"
+                            class="btn bm-card-compare-btn o_add_compare js_bm_compare_toggle shadow-sm"
+                            t-att-data-product-product-id="product_variant_id"
+                            t-att-data-product-template-id="product.id"
                             t-att-data-product-id="product.id"
+                            data-action="o_comparelist"
                             title="So sánh sản phẩm">
                         <i class="fa fa-exchange"/>
                     </button>
@@ -478,13 +481,24 @@
     <!-- 5.4 Nút So sánh trên trang Product Detail (Bên cạnh Wishlist) -->
     <template id="beautymatch_product_compare_button" inherit_id="website_sale.cta_wrapper" name="BeautyMatch Product Detail Compare Button" priority="25">
         <xpath expr="//div[@id='product_option_block']" position="inside">
+            <t t-set="bm_var_id" t-value="product._get_first_possible_variant_id() or (product.product_variant_ids and product.product_variant_ids[0].id)"/>
             <button type="button"
-                    class="btn btn-outline-primary text-nowrap js_bm_compare_toggle d-inline-flex align-items-center justify-content-center gap-2"
+                    class="btn btn-outline-primary text-nowrap o_add_compare_dyn js_bm_compare_toggle d-inline-flex align-items-center justify-content-center gap-2"
+                    t-att-data-product-product-id="bm_var_id"
+                    t-att-data-product-template-id="product.id"
                     t-att-data-product-id="product.id"
+                    data-action="o_comparelist"
                     title="So sánh sản phẩm">
                 <i class="fa fa-exchange"/>
                 <span class="bm-compare-btn-text">So sánh</span>
             </button>
+        </xpath>
+    </template>
+
+    <!-- Ẩn nút compare native cũ của website_sale_comparison để tránh trùng lặp trên sản phẩm có thuộc tính -->
+    <template id="beautymatch_hide_native_compare_btn" inherit_id="website_sale_comparison.product_add_to_compare" name="BeautyMatch Hide Native Compare Duplicate Btn">
+        <xpath expr="//button[@data-action='o_comparelist']" position="attributes">
+            <attribute name="class" add="d-none" separator=" "/>
         </xpath>
     </template>
 

@@ -163,10 +163,9 @@
         document.addEventListener('click', function (e) {
             const toggleBtn = e.target.closest('.js_bm_compare_toggle');
             if (toggleBtn) {
-                e.preventDefault();
-                e.stopPropagation();
                 const pId = parseInt(toggleBtn.dataset.productId);
                 if (pId) toggleProduct(pId);
+                // Để native Odoo 19 interaction (.o_add_compare_dyn) nhận event click đồng bộ bottom bar
                 return;
             }
 
