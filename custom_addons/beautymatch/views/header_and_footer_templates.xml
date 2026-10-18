@@ -15,7 +15,7 @@
         <!-- 1.2 Main Menu: Replace generic navbar with BeautyMatch structured navigation & dropdowns -->
         <xpath expr="//t[@t-call='website.navbar_nav']" position="replace">
             <t t-set="curr_path" t-value="request.httprequest.path"/>
-            <ul class="navbar-nav mx-auto align-items-center bm-main-navbar">
+            <ul id="top_menu" class="nav navbar-nav top_menu mx-auto align-items-center bm-main-navbar" role="menu">
                 <!-- 1. Trang chủ -->
                 <li class="nav-item">
                     <a href="/" t-attf-class="nav-link bm-nav-link #{'active' if curr_path == '/' else ''}">Trang chủ</a>
@@ -105,7 +105,6 @@
                     <a href="/blog" t-attf-class="nav-link bm-nav-link #{'active' if curr_path.startswith('/blog') else ''}">Kiến thức</a>
                 </li>
             </ul>
-            <script type="text/javascript" src="/beautymatch/static/src/js/header_dropdown.js"/>
         </xpath>
 
         <!-- 1.3 Xóa số điện thoại demo khỏi header -->
