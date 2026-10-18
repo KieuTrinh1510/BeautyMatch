@@ -1,10 +1,10 @@
 # Cách chạy dự án:
-1. Vào thư mục Odoo 19
+1. Vào thư mục Odoo 19:
    cd odoo19
-2. Kích hoạt môi trường Python
+2. Kích hoạt môi trường Python:
 source .venv/bin/activate
 
-3. Chạy website BeautyMatch
+3. Chạy website BeautyMatch:
 python odoo-bin -c odoo.conf -d beautymatch
 
 # Tài khoản admin
