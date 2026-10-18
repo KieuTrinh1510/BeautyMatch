@@ -1322,36 +1322,52 @@ header#top {
 }
 
 .o_header_standard {
-    min-height: 78px;
+    min-height: 74px;
+    height: 74px;
     background-color: #FFFFFF !important;
     border-bottom: 1px solid rgba(143, 111, 168, 0.15) !important;
     box-shadow: 0 2px 14px rgba(110, 76, 126, 0.05) !important;
     transition: all 0.25s ease;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 
     nav.navbar {
+        height: 100% !important;
+        width: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
         box-shadow: none !important;
+        border: none !important;
     }
 
     .container, .o_main_nav {
+        height: 100% !important;
         max-width: 100% !important;
         width: 100% !important;
-        padding-left: 28px !important;
-        padding-right: 28px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
 
         @media (min-width: 1400px) {
-            padding-left: 36px !important;
-            padding-right: 36px !important;
+            padding-left: 30px !important;
+            padding-right: 30px !important;
         }
 
         @media (max-width: 768px) {
-            padding-left: 16px !important;
-            padding-right: 16px !important;
+            padding-left: 14px !important;
+            padding-right: 14px !important;
         }
     }
 }
 
 // Brand Wordmark - Căn chính giữa hoàn hảo ngay trên khối "Bộ lọc sản phẩm"
 .bm-header-brand {
+    height: 100% !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
@@ -1359,26 +1375,26 @@ header#top {
     text-align: center !important;
     line-height: 1.15;
     text-decoration: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
 
     @media (min-width: 992px) {
+        flex: 0 0 260px !important;
+        width: 260px !important;
+        max-width: 260px !important;
+        min-width: 260px !important;
+    }
+
+    @media (min-width: 1400px) {
         flex: 0 0 330px !important;
         width: 330px !important;
         max-width: 330px !important;
         min-width: 330px !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-
-    @media (min-width: 1400px) {
-        flex: 0 0 345px !important;
-        width: 345px !important;
-        max-width: 345px !important;
-        min-width: 345px !important;
     }
 
     .bm-brand-wordmark {
         font-family: inherit;
-        font-size: 1.55rem;
+        font-size: 1.45rem;
         font-weight: 750;
         letter-spacing: -0.5px;
         color: #8F6FA8;
@@ -1389,7 +1405,7 @@ header#top {
     }
 
     .bm-brand-tagline {
-        font-size: 0.65rem;
+        font-size: 0.62rem;
         letter-spacing: 1.2px;
         text-transform: uppercase;
         color: #6E4C7E;
@@ -1405,32 +1421,42 @@ header#top {
     }
 }
 
-// Main Navbar Links - Căn giữa tự nhiên, khoảng cách ấm cúng và hài hòa
+// Main Navbar Links - Căn giữa chuẩn xác top và bottom, khoảng cách vừa vặn chống tràn
 .bm-main-navbar {
+    height: 100% !important;
     display: flex !important;
     align-items: center !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    gap: 16px !important;
+    justify-content: center !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    gap: 4px !important;
 
     @media (min-width: 1200px) {
-        gap: 20px !important;
+        gap: 6px !important;
     }
 
     @media (min-width: 1400px) {
-        gap: 24px !important;
+        gap: 12px !important;
     }
 
     .bm-nav-link {
         color: #2B2430 !important;
-        font-size: 0.94rem;
+        font-size: 0.88rem;
         font-weight: 550;
-        padding: 0.55rem 1.15rem !important;
-        border-radius: 12px;
+        padding: 0.42rem 0.68rem !important;
+        border-radius: 9px;
         transition: all 0.2s ease;
         position: relative;
         text-decoration: none;
         white-space: nowrap;
+        display: inline-flex !important;
+        align-items: center !important;
+        line-height: 1.2;
+
+        @media (min-width: 1400px) {
+            font-size: 0.91rem;
+            padding: 0.45rem 0.8rem !important;
+        }
 
         &:hover {
             color: #8F6FA8 !important;
@@ -1478,13 +1504,22 @@ header#top {
 // Right Elements: Search, Wishlist, Cart, Account order
 .o_header_standard {
     .navbar-nav.justify-content-end {
-        gap: 10px !important;
-        margin-left: 20px !important;
+        height: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        gap: 6px !important;
         flex: 0 0 auto !important;
 
         @media (min-width: 1200px) {
-            gap: 14px !important;
-            margin-left: 28px !important;
+            gap: 8px !important;
+            margin-left: 8px !important;
+        }
+
+        @media (min-width: 1400px) {
+            gap: 12px !important;
+            margin-left: 16px !important;
         }
     }
 
@@ -1509,7 +1544,19 @@ header#top {
     .bm-account-btn {
         color: #2B2430 !important;
         background-color: #F3ECF8;
+        padding: 0.35rem 0.7rem !important;
+        font-size: 0.85rem;
         transition: all 0.2s ease;
+        white-space: nowrap;
+
+        .bm-user-name {
+            max-width: 105px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: inline-block;
+            vertical-align: middle;
+        }
 
         &:hover {
             background-color: #EBDFF3;
