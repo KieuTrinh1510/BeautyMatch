@@ -353,7 +353,7 @@
 
                         <!-- Dropdown Sắp xếp theo: Nổi bật -->
                         <div class="dropdown bm-sort-dropdown">
-                            <button class="btn bg-white border rounded-pill px-3 py-2 small d-flex align-items-center gap-2 shadow-sm text-dark"
+                            <button class="btn bg-white border rounded-pill px-3 py-2 small d-flex align-items-center gap-2 shadow-sm text-dark dropdown-toggle"
                                     type="button"
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false"

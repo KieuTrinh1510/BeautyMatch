@@ -2313,6 +2313,10 @@ header#top {
             border-radius: 4px;
             transition: all 0.2s ease;
 
+            &::after {
+                display: none !important;
+            }
+
             &:focus {
                 box-shadow: none;
                 outline: none;
@@ -2765,4 +2769,8 @@ header#top {
     100% {
         transform: scale(1);
     }
+}
+
+.bm-sort-dropdown .dropdown-toggle::after {
+    display: none !important;
 }

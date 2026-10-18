@@ -27,7 +27,7 @@
                         <a href="/shop" t-attf-class="nav-link bm-nav-link #{'active' if curr_path.startswith('/shop') and not (curr_path.startswith('/shop/cart') or curr_path.startswith('/shop/checkout') or curr_path.startswith('/shop/confirmation') or curr_path.startswith('/shop/wishlist')) else ''}">
                             Cửa hàng
                         </a>
-                        <button type="button" class="btn p-0 bm-caret-btn d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Mở menu Cửa hàng">
+                        <button type="button" class="btn p-0 bm-caret-btn dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Mở menu Cửa hàng">
                             <i class="fa fa-angle-down bm-caret-icon"/>
                         </button>
                     </div>
@@ -71,7 +71,7 @@
                         <a href="/theo-van-de-da" t-attf-class="nav-link bm-nav-link #{'active' if curr_path == '/theo-van-de-da' else ''}">
                             Theo vấn đề da
                         </a>
-                        <button type="button" class="btn p-0 bm-caret-btn d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Mở menu Theo vấn đề da">
+                        <button type="button" class="btn p-0 bm-caret-btn dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Mở menu Theo vấn đề da">
                             <i class="fa fa-angle-down bm-caret-icon"/>
                         </button>
                     </div>

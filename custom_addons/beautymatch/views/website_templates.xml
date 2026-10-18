@@ -433,7 +433,7 @@
     <template id="homepage" name="BeautyMatch Homepage">
         <t t-call="website.layout">
             <t t-set="additional_title">BeautyMatch - Chăm Sóc Da Cá Nhân Hóa Chuẩn Khoa Học</t>
-            <div id="wrap" class="bm-homepage">
+            <div id="wrap" class="oe_structure bm-homepage">
 
                 <!-- ========================================== -->
                 <!-- 1. HERO SECTION (Seamless Panoramic Banner)-->
