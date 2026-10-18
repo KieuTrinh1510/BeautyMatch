@@ -432,630 +432,643 @@
     <!-- ======================================================== -->
     <template id="homepage" name="BeautyMatch Homepage">
         <t t-call="website.layout">
-            <t t-set="additional_title">BeautyMatch - Find Your Perfect Skincare Match</t>
+            <t t-set="additional_title">BeautyMatch - Chăm Sóc Da Cá Nhân Hóa Chuẩn Khoa Học</t>
             <div id="wrap" class="bm-homepage">
 
-                <!-- 1. HERO SECTION -->
-                <section class="bm-hero-section py-5 py-lg-6">
-                    <div class="container py-lg-4">
-                        <div class="row align-items-center g-5">
-                            <div class="col-lg-6 text-center text-lg-start">
-                                <span class="bm-badge bm-badge-primary mb-3">
-                                    <i class="fa fa-sparkles me-1"/> Beauty &amp; Personal Care
-                                </span>
-                                <h1 class="display-4 fw-bold text-dark mb-3 bm-hero-title">
-                                    Find your perfect skincare match
+                <!-- ========================================== -->
+                <!-- 1. HERO SECTION                            -->
+                <!-- ========================================== -->
+                <section class="bm-hero-section">
+                    <div class="container">
+                        <div class="row align-items-center g-4">
+                            <!-- Left Column -->
+                            <div class="col-12 col-lg-6 text-center text-lg-start">
+                                <div class="bm-hero-pill-badge mb-3">
+                                    <span>Skincare phù hợp hơn, làn da khỏe đẹp hơn</span>
+                                </div>
+                                <h1 class="bm-hero-heading mb-3">
+                                    Tìm đúng sản phẩm<br/>
+                                    chăm sóc da dành riêng<br/>
+                                    cho bạn <span class="bm-sparkle">✦</span>
                                 </h1>
-                                <p class="lead text-muted mb-4 pe-lg-4">
-                                    Tìm skincare phù hợp hơn với loại da, vấn đề da và ngân sách của bạn.
+                                <p class="bm-hero-desc mb-4 mx-auto mx-lg-0">
+                                    BeautyMatch giúp bạn tìm các sản phẩm và xây dựng routine phù hợp với loại da, vấn đề da, thành phần yêu thích và ngân sách của bạn.
                                 </p>
-                                <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
-                                    <a href="/beauty-quiz" class="bm-button-primary px-4 py-3 fs-6 text-decoration-none">
-                                        <i class="fa fa-magic me-2"/>Làm Beauty Quiz
+                                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-3 mb-4">
+                                    <a href="/beauty-quiz" class="bm-btn-hero-primary">
+                                        Làm Beauty Quiz <i class="fa fa-arrow-right ms-2"/>
                                     </a>
-                                    <a href="/shop" class="bm-button-secondary px-4 py-3 fs-6 text-decoration-none">
-                                        <i class="fa fa-shopping-bag me-2"/>Khám phá sản phẩm
+                                    <a href="/shop" class="bm-btn-hero-secondary">
+                                        <i class="fa fa-shopping-bag me-2"/> Khám phá sản phẩm
                                     </a>
                                 </div>
-                                <div class="mt-4 pt-2 d-flex flex-wrap gap-4 justify-content-center justify-content-lg-start small text-muted">
-                                    <span><i class="fa fa-check text-purple me-1"/> Hỗ trợ ra quyết định</span>
-                                    <span><i class="fa fa-check text-purple me-1"/> Minh bạch thành phần</span>
-                                    <span><i class="fa fa-check text-purple me-1"/> Tối ưu chi phí</span>
+                                <div class="bm-hero-trust-bar d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-3">
+                                    <div class="bm-trust-item d-flex align-items-center gap-2">
+                                        <div class="bm-trust-icon"><i class="fa fa-user-circle-o"/></div>
+                                        <span>Gợi ý thấu đáo<br/>theo vấn đề da</span>
+                                    </div>
+                                    <div class="bm-trust-item d-flex align-items-center gap-2">
+                                        <div class="bm-trust-icon"><i class="fa fa-qrcode"/></div>
+                                        <span>Minh bạch<br/>thành phần</span>
+                                    </div>
+                                    <div class="bm-trust-item d-flex align-items-center gap-2">
+                                        <div class="bm-trust-icon"><i class="fa fa-tag"/></div>
+                                        <span>Phù hợp<br/>ngân sách của bạn</span>
+                                    </div>
+                                    <div class="bm-trust-item d-flex align-items-center gap-2">
+                                        <div class="bm-trust-icon"><i class="fa fa-shield"/></div>
+                                        <span>Gợi ý routine<br/>khoa học, dễ áp dụng</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
-                                <div class="position-relative mx-auto text-center" style="max-width: 540px;">
-                                    <img src="/beautymatch/static/src/img/beautymatch_hero.webp" alt="BeautyMatch Skincare Campaign" class="img-fluid rounded-4 shadow-lg w-100" style="max-height: 420px; object-fit: cover; border: 2px solid rgba(205, 183, 221, 0.4);"/>
-                                    <div class="bm-routine-preview-box p-3 rounded-3 shadow position-absolute bottom-0 start-50 translate-middle-x mb-n3 w-90 d-none d-sm-block text-start" style="background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(8px); border-left: 4px solid #8F6FA8; max-width: 440px;">
-                                        <div class="d-flex justify-content-between align-items-center mb-1">
-                                            <span class="fw-semibold text-purple small"><i class="fa fa-sparkles me-1"/> Routine Cá Nhân Hóa</span>
-                                            <span class="bm-badge bm-badge-skin py-0 px-2" style="font-size: 0.72rem;">Độ phù hợp 98%</span>
-                                        </div>
-                                        <div class="small fw-medium text-dark" style="font-size: 0.8rem;">
-                                            Sáng: Làm sạch &gt; Serum &gt; Chống nắng | Tối: Làm sạch sâu &gt; Phục hồi
-                                        </div>
-                                    </div>
+                            <!-- Right Column -->
+                            <div class="col-12 col-lg-6 text-center">
+                                <div class="position-relative mx-auto" style="max-width: 520px;">
+                                    <img src="/beautymatch/static/src/img/hero_model_cosmetics.webp" alt="BeautyMatch Skincare Routine" class="img-fluid bm-hero-art-img"/>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- 1.5 PROMOTION BANNER: ƯU ĐÃI BEAUTYMATCH -->
-                <section class="bm-promo-banner-section py-4" style="background: linear-gradient(135deg, #FAF7FB 0%, #F3ECF8 100%); border-top: 1px solid #ECE3F2; border-bottom: 1px solid #ECE3F2;">
+                <!-- ========================================== -->
+                <!-- 2. VẤN ĐỀ DA ("Bạn đang quan tâm điều gì?") -->
+                <!-- ========================================== -->
+                <section class="bm-section-concern py-4">
                     <div class="container">
-                        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
-                            <div>
-                                <span class="bm-badge bm-badge-primary mb-1">Đặc quyền mua sắm</span>
-                                <h3 class="fw-bold text-dark mb-0 fs-4">Ưu Đãi BeautyMatch</h3>
-                            </div>
-                            <a href="/shop" class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-semibold">
-                                Mua sắm ngay <i class="fa fa-arrow-right ms-1"/>
-                            </a>
-                        </div>
-                        <div class="row g-3">
-                            <!-- Card 1: WELCOME10 -->
-                            <div class="col-12 col-md-6">
-                                <div class="bm-promo-voucher-card p-3 rounded-4 bg-white shadow-sm d-flex align-items-center justify-content-between border position-relative overflow-hidden h-100">
-                                    <div class="d-flex align-items-center gap-3">
-                                        <div class="bm-promo-icon-box rounded-3 p-3 text-center d-flex align-items-center justify-content-center" style="background: #F3ECF8; color: #6E4C7E; width: 56px; height: 56px;">
-                                            <i class="fa fa-percent fa-2x"/>
-                                        </div>
-                                        <div>
-                                            <div class="d-flex align-items-center gap-2 mb-1">
-                                                <span class="badge fw-bold px-2 py-1 user-select-all" style="background-color: #F3ECF8; color: #6E4C7E; font-size: 0.85rem; letter-spacing: 0.05em;">WELCOME10</span>
-                                                <span class="badge bg-success-subtle text-success small">Mọi đơn hàng</span>
-                                            </div>
-                                            <strong class="d-block text-dark" style="font-size: 0.95rem;">Giảm 10% cho đơn hàng</strong>
-                                            <small class="text-muted">Áp dụng trực tiếp tại bước giỏ hàng hoặc thanh toán</small>
-                                        </div>
-                                    </div>
-                                    <a href="/shop" class="btn btn-sm btn-primary rounded-pill px-3 text-nowrap ms-2">
-                                        Dùng mã
-                                    </a>
+                        <div class="bm-concern-card-wrapper">
+                            <div class="d-flex justify-content-between align-items-end mb-3">
+                                <div>
+                                    <h2 class="bm-section-title mb-1">Bạn đang quan tâm điều gì?</h2>
+                                    <p class="bm-section-sub mb-0">Chọn vấn đề da của bạn để khám phá sản phẩm phù hợp nhất.</p>
                                 </div>
-                            </div>
-
-                            <!-- Card 2: BEAUTY50 -->
-                            <div class="col-12 col-md-6">
-                                <div class="bm-promo-voucher-card p-3 rounded-4 bg-white shadow-sm d-flex align-items-center justify-content-between border position-relative overflow-hidden h-100">
-                                    <div class="d-flex align-items-center gap-3">
-                                        <div class="bm-promo-icon-box rounded-3 p-3 text-center d-flex align-items-center justify-content-center" style="background: #FFF5F7; color: #E0245E; width: 56px; height: 56px;">
-                                            <i class="fa fa-gift fa-2x"/>
-                                        </div>
-                                        <div>
-                                            <div class="d-flex align-items-center gap-2 mb-1">
-                                                <span class="badge fw-bold px-2 py-1 user-select-all" style="background-color: #FFF5F7; color: #E0245E; font-size: 0.85rem; letter-spacing: 0.05em;">BEAUTY50</span>
-                                                <span class="badge bg-info-subtle text-info small">Đơn từ 700.000đ</span>
-                                            </div>
-                                            <strong class="d-block text-dark" style="font-size: 0.95rem;">Giảm 50.000đ cho đơn từ 700.000đ</strong>
-                                            <small class="text-muted">Tiết kiệm ngay 50k khi mua combo hoặc chu trình skincare</small>
-                                        </div>
-                                    </div>
-                                    <a href="/shop" class="btn btn-sm btn-primary rounded-pill px-3 text-nowrap ms-2">
-                                        Dùng mã
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- 2. SHOP BY CONCERN SECTION -->
-                <section class="bm-section-py py-5 bg-white">
-                    <div class="container py-lg-3">
-                        <div class="text-center mb-5">
-                            <span class="bm-badge bm-badge-concern mb-2">Khám phá theo nhu cầu</span>
-                            <h2 class="fw-bold text-dark mb-2">Bạn đang quan tâm điều gì?</h2>
-                            <p class="text-muted mx-auto" style="max-width: 600px;">
-                                Bắt đầu từ nhu cầu của làn da và thu hẹp lựa chọn nhanh hơn.
-                            </p>
-                        </div>
-
-                        <div class="row g-4">
-                            <!-- Card 1 -->
-                            <div class="col-12 col-md-6 col-lg-3">
-                                <a href="/theo-van-de-da" class="text-decoration-none">
-                                    <div class="bm-card p-3 h-100 d-flex flex-column justify-content-between">
-                                        <div>
-                                            <div class="mb-3 overflow-hidden rounded-3 text-center" style="height: 150px;">
-                                                <img src="/beautymatch/static/src/img/concern_acne.webp" alt="Da dầu &amp; mụn" class="img-fluid w-100 h-100" style="object-fit: cover;"/>
-                                            </div>
-                                            <div class="d-flex align-items-center justify-content-between mb-2">
-                                                <span class="bm-badge bm-badge-concern">Kiểm soát nhờn</span>
-                                                <i class="fa fa-tint text-purple opacity-75"/>
-                                            </div>
-                                            <h3 class="h5 fw-bold text-dark mb-2">Da dầu &amp; mụn</h3>
-                                            <p class="text-muted small mb-3">
-                                                Kiểm soát bã nhờn, làm sạch sâu và tìm kiếm các lựa chọn phù hợp cho làn da dễ nổi mụn.
-                                            </p>
-                                        </div>
-                                        <div class="text-purple fw-semibold small mt-2">
-                                            Khám phá sản phẩm <i class="fa fa-arrow-right ms-1"/>
-                                        </div>
-                                    </div>
+                                <a href="/theo-van-de-da" class="bm-link-viewall text-decoration-none">
+                                    Xem tất cả <i class="fa fa-arrow-right ms-1"/>
                                 </a>
                             </div>
-
-                            <!-- Card 2 -->
-                            <div class="col-12 col-md-6 col-lg-3">
-                                <a href="/theo-van-de-da" class="text-decoration-none">
-                                    <div class="bm-card p-3 h-100 d-flex flex-column justify-content-between">
-                                        <div>
-                                            <div class="mb-3 overflow-hidden rounded-3 text-center" style="height: 150px;">
-                                                <img src="/beautymatch/static/src/img/concern_dry.webp" alt="Da khô" class="img-fluid w-100 h-100" style="object-fit: cover;"/>
-                                            </div>
-                                            <div class="d-flex align-items-center justify-content-between mb-2">
-                                                <span class="bm-badge bm-badge-concern">Cấp ẩm đa tầng</span>
-                                                <i class="fa fa-snowflake-o text-purple opacity-75"/>
-                                            </div>
-                                            <h3 class="h5 fw-bold text-dark mb-2">Da khô</h3>
-                                            <p class="text-muted small mb-3">
-                                                Khám phá các sản phẩm tập trung vào cấp ẩm đa tầng và củng cố hàng rào ẩm tự nhiên.
-                                            </p>
+                            <div class="row g-3 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5">
+                                <!-- Concern 1 -->
+                                <div class="col">
+                                    <div class="bm-concern-item-card">
+                                        <div class="bm-concern-img-box">
+                                            <img src="/beautymatch/static/src/img/concern_oily_acne.webp" alt="Da dầu &amp; mụn"/>
                                         </div>
-                                        <div class="text-purple fw-semibold small mt-2">
-                                            Khám phá sản phẩm <i class="fa fa-arrow-right ms-1"/>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-
-                            <!-- Card 3 -->
-                            <div class="col-12 col-md-6 col-lg-3">
-                                <a href="/theo-van-de-da" class="text-decoration-none">
-                                    <div class="bm-card p-3 h-100 d-flex flex-column justify-content-between">
-                                        <div>
-                                            <div class="mb-3 overflow-hidden rounded-3 text-center" style="height: 150px;">
-                                                <img src="/beautymatch/static/src/img/concern_sensitive.webp" alt="Da nhạy cảm" class="img-fluid w-100 h-100" style="object-fit: cover;"/>
-                                            </div>
-                                            <div class="d-flex align-items-center justify-content-between mb-2">
-                                                <span class="bm-badge bm-badge-concern">Dịu nhẹ phục hồi</span>
-                                                <i class="fa fa-shield text-purple opacity-75"/>
-                                            </div>
-                                            <h3 class="h5 fw-bold text-dark mb-2">Da nhạy cảm</h3>
-                                            <p class="text-muted small mb-3">
-                                                Ưu tiên các công thức dịu nhẹ, tối giản bảng thành phần để giảm thiểu nguy cơ kích ứng.
-                                            </p>
-                                        </div>
-                                        <div class="text-purple fw-semibold small mt-2">
-                                            Khám phá sản phẩm <i class="fa fa-arrow-right ms-1"/>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-
-                            <!-- Card 4 -->
-                            <div class="col-12 col-md-6 col-lg-3">
-                                <a href="/theo-van-de-da" class="text-decoration-none">
-                                    <div class="bm-card p-3 h-100 d-flex flex-column justify-content-between">
-                                        <div>
-                                            <div class="mb-3 overflow-hidden rounded-3 text-center" style="height: 150px;">
-                                                <img src="/beautymatch/static/src/img/concern_dull.webp" alt="Làm sáng" class="img-fluid w-100 h-100" style="object-fit: cover;"/>
-                                            </div>
-                                            <div class="d-flex align-items-center justify-content-between mb-2">
-                                                <span class="bm-badge bm-badge-concern">Rạng rỡ đều màu</span>
-                                                <i class="fa fa-sun-o text-purple opacity-75"/>
-                                            </div>
-                                            <h3 class="h5 fw-bold text-dark mb-2">Làm sáng</h3>
-                                            <p class="text-muted small mb-3">
-                                                Khám phá các sản phẩm hướng đến nhu cầu cải thiện vẻ ngoài xỉn màu và không đều màu.
-                                            </p>
-                                        </div>
-                                        <div class="text-purple fw-semibold small mt-2">
-                                            Khám phá sản phẩm <i class="fa fa-arrow-right ms-1"/>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- 3. BEAUTY QUIZ HIGHLIGHT SECTION -->
-                <section class="bm-section-py py-5" style="background-color: #F8F4FA;">
-                    <div class="container py-lg-4">
-                        <div class="bm-card p-4 p-md-5 mx-auto" style="max-width: 980px;">
-                            <div class="text-center mb-4">
-                                <span class="bm-badge bm-badge-primary mb-2">Trắc nghiệm da thông minh</span>
-                                <h2 class="fw-bold text-dark mb-2">Không biết bắt đầu từ đâu?</h2>
-                                <p class="text-muted mx-auto" style="max-width: 640px;">
-                                    Trả lời 4 câu hỏi ngắn về loại da, vấn đề da, routine và ngân sách để nhận gợi ý phù hợp hơn.
-                                </p>
-                            </div>
-
-                            <!-- Flow 4 bước -->
-                            <div class="row g-3 text-center my-4">
-                                <div class="col-6 col-md-3">
-                                    <div class="bm-flow-step p-3 rounded-4 h-100">
-                                        <div class="bm-flow-num mb-2">01</div>
-                                        <h4 class="h6 fw-bold text-dark mb-1">Loại da</h4>
-                                        <small class="text-muted">Dầu, Khô, Hỗn hợp, Nhạy cảm</small>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <div class="bm-flow-step p-3 rounded-4 h-100">
-                                        <div class="bm-flow-num mb-2">02</div>
-                                        <h4 class="h6 fw-bold text-dark mb-1">Vấn đề da</h4>
-                                        <small class="text-muted">Mụn, Khô, Xỉn màu, Lỗ chân lông</small>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <div class="bm-flow-step p-3 rounded-4 h-100">
-                                        <div class="bm-flow-num mb-2">03</div>
-                                        <h4 class="h6 fw-bold text-dark mb-1">Routine</h4>
-                                        <small class="text-muted">Tối giản hoặc Đầy đủ</small>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <div class="bm-flow-step p-3 rounded-4 h-100">
-                                        <div class="bm-flow-num mb-2">04</div>
-                                        <h4 class="h6 fw-bold text-dark mb-1">Ngân sách</h4>
-                                        <small class="text-muted">Tiết kiệm, Tầm trung, Cao cấp</small>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="text-center pt-3">
-                                <a href="/beauty-quiz" class="bm-button-primary px-5 py-3 fs-6 text-decoration-none shadow-sm">
-                                    Bắt đầu Beauty Quiz <i class="fa fa-arrow-right ms-2"/>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- 4. FEATURED PRODUCTS SECTION -->
-                <section class="bm-section-py py-5 bg-white">
-                    <div class="container py-lg-3">
-                        <div class="text-center mb-5">
-                            <span class="bm-badge bm-badge-primary mb-2">Lựa chọn ưu tiên</span>
-                            <h2 class="fw-bold text-dark mb-2">Sản phẩm nổi bật</h2>
-                            <p class="text-muted mx-auto" style="max-width: 620px;">
-                                Những lựa chọn được BeautyMatch ưu tiên hiển thị dựa trên nhu cầu chăm sóc da phổ biến.
-                            </p>
-                        </div>
-
-                        <!-- Truy vấn sản phẩm nổi bật an toàn: ưu tiên biến từ controller, nếu không có thì query trực tiếp -->
-                        <t t-set="products_to_show" t-value="featured_products if featured_products is not None else request.env['product.template'].sudo().search([('website_published', '=', True), ('sale_ok', '=', True), ('beautymatch_is_featured', '=', True)], limit=4, order='sequence, id desc')"/>
-
-                        <t t-if="products_to_show">
-                            <div class="row g-4">
-                                <t t-foreach="products_to_show" t-as="p">
-                                    <div class="col-12 col-sm-6 col-lg-3">
-                                        <div class="bm-card h-100 d-flex flex-column justify-content-between p-3">
+                                        <div class="bm-concern-body">
                                             <div>
-                                                <div class="position-relative mb-3 overflow-hidden rounded-3 text-center bg-light">
-                                                    <a t-att-href="p.website_url">
-                                                        <img t-att-src="'/web/image/product.template/%s/image_512' % p.id" alt="" class="img-fluid" style="height: 220px; object-fit: contain;"/>
-                                                    </a>
-                                                </div>
-                                                <div class="d-flex flex-wrap gap-1 mb-2">
-                                                    <span t-if="p.beautymatch_skin_type" class="bm-badge bm-badge-skin py-0 px-2 small">
-                                                        <span t-field="p.beautymatch_skin_type"/>
-                                                    </span>
-                                                    <span t-if="p.beautymatch_skin_concern" class="bm-badge bm-badge-concern py-0 px-2 small">
-                                                        <span t-field="p.beautymatch_skin_concern"/>
-                                                    </span>
-                                                </div>
-                                                <small t-if="p.beautymatch_brand" class="text-muted d-block mb-1 text-uppercase fw-semibold" style="font-size: 0.72rem; letter-spacing: 0.5px;">
-                                                    <t t-out="p.beautymatch_brand"/>
-                                                </small>
-                                                <h3 class="h6 fw-bold mb-2">
-                                                    <a t-att-href="p.website_url" class="text-dark text-decoration-none">
-                                                        <t t-out="p.name"/>
-                                                    </a>
-                                                </h3>
-                                                <div class="text-purple fw-bold mb-3">
-                                                    <span t-field="p.list_price" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
-                                                </div>
+                                                <h3 class="bm-concern-name">Da dầu &amp; mụn</h3>
+                                                <p class="bm-concern-text">Kiểm soát dầu thừa, giảm mụn và se khít lỗ chân lông.</p>
                                             </div>
-                                            <div class="pt-2 border-top">
-                                                <a t-att-href="p.website_url" class="bm-button-secondary w-100 text-center text-decoration-none py-2 small">
-                                                    Xem sản phẩm <i class="fa fa-angle-right ms-1"/>
-                                                </a>
-                                            </div>
+                                            <a href="/theo-van-de-da?concern=acne" class="bm-concern-action">
+                                                Khám phá giải pháp <i class="fa fa-arrow-right ms-1"/>
+                                            </a>
                                         </div>
                                     </div>
-                                </t>
+                                </div>
+                                <!-- Concern 2 -->
+                                <div class="col">
+                                    <div class="bm-concern-item-card">
+                                        <div class="bm-concern-img-box">
+                                            <img src="/beautymatch/static/src/img/concern_dry_skin.webp" alt="Da khô thiếu ẩm"/>
+                                        </div>
+                                        <div class="bm-concern-body">
+                                            <div>
+                                                <h3 class="bm-concern-name">Da khô thiếu ẩm</h3>
+                                                <p class="bm-concern-text">Cấp nước sâu, duy trì làn da mềm mịn, căng bóng.</p>
+                                            </div>
+                                            <a href="/theo-van-de-da?concern=dry" class="bm-concern-action">
+                                                Khám phá giải pháp <i class="fa fa-arrow-right ms-1"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Concern 3 -->
+                                <div class="col">
+                                    <div class="bm-concern-item-card">
+                                        <div class="bm-concern-img-box">
+                                            <img src="/beautymatch/static/src/img/concern_sensitive_skin.webp" alt="Da nhạy cảm"/>
+                                        </div>
+                                        <div class="bm-concern-body">
+                                            <div>
+                                                <h3 class="bm-concern-name">Da nhạy cảm</h3>
+                                                <p class="bm-concern-text">Làm dịu kích ứng, củng cố hàng rào bảo vệ da.</p>
+                                            </div>
+                                            <a href="/theo-van-de-da?concern=sensitive" class="bm-concern-action">
+                                                Khám phá giải pháp <i class="fa fa-arrow-right ms-1"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Concern 4 -->
+                                <div class="col">
+                                    <div class="bm-concern-item-card">
+                                        <div class="bm-concern-img-box">
+                                            <img src="/beautymatch/static/src/img/concern_brightening.webp" alt="Làm sáng da"/>
+                                        </div>
+                                        <div class="bm-concern-body">
+                                            <div>
+                                                <h3 class="bm-concern-name">Làm sáng da</h3>
+                                                <p class="bm-concern-text">Cải thiện thâm sạm, giúp da đều màu và rạng rỡ hơn.</p>
+                                            </div>
+                                            <a href="/theo-van-de-da?concern=dull" class="bm-concern-action">
+                                                Khám phá giải pháp <i class="fa fa-arrow-right ms-1"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Concern 5 -->
+                                <div class="col">
+                                    <div class="bm-concern-item-card">
+                                        <div class="bm-concern-img-box">
+                                            <img src="/beautymatch/static/src/img/concern_barrier_repair.webp" alt="Phục hồi hàng rào da"/>
+                                        </div>
+                                        <div class="bm-concern-body">
+                                            <div>
+                                                <h3 class="bm-concern-name">Phục hồi hàng rào da</h3>
+                                                <p class="bm-concern-text">Tăng cường sức khỏe da, giảm kích ứng, phục hồi da.</p>
+                                            </div>
+                                            <a href="/theo-van-de-da?concern=barrier" class="bm-concern-action">
+                                                Khám phá giải pháp <i class="fa fa-arrow-right ms-1"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </t>
-                        <t t-else="">
-                            <div class="bm-card p-5 text-center mx-auto" style="max-width: 640px;">
-                                <i class="fa fa-leaf text-purple fs-2 mb-3 opacity-50"/>
-                                <h4 class="h5 fw-bold text-dark mb-2">Danh mục sản phẩm đang được chuẩn bị</h4>
-                                <p class="text-muted small mb-4">
-                                    Các sản phẩm nổi bật sẽ sớm xuất hiện tại đây khi quản trị viên đánh dấu sản phẩm nổi bật trong kho hàng.
-                                </p>
-                                <a href="/shop" class="bm-button-primary text-decoration-none">
-                                    Khám phá toàn bộ Cửa hàng
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================================== -->
+                <!-- 3. BEAUTY QUIZ BANNER                      -->
+                <!-- ========================================== -->
+                <section class="bm-section-quiz py-3">
+                    <div class="container">
+                        <div class="bm-quiz-banner-card">
+                            <div class="row align-items-center g-4">
+                                <!-- Left side -->
+                                <div class="col-12 col-lg-6 text-center text-lg-start">
+                                    <h2 class="bm-quiz-title mb-1">Làm Beauty Quiz</h2>
+                                    <h3 class="bm-quiz-subtitle mb-3">Nhận gợi ý dành riêng cho bạn</h3>
+                                    <p class="bm-quiz-desc mb-4 mx-auto mx-lg-0">
+                                        Trả lời một vài câu hỏi về loại da, vấn đề da, thói quen và ngân sách.<br class="d-none d-md-inline"/>
+                                        Chúng tôi sẽ gợi ý sản phẩm và routine phù hợp nhất với bạn.
+                                    </p>
+                                    <a href="/beauty-quiz" class="bm-btn-quiz">
+                                        Làm Beauty Quiz <i class="fa fa-arrow-right ms-2"/>
+                                    </a>
+                                </div>
+                                <!-- Right side -->
+                                <div class="col-12 col-lg-6">
+                                    <div class="d-flex flex-wrap flex-sm-nowrap align-items-center justify-content-center justify-content-lg-end gap-3">
+                                        <!-- Prompt chips -->
+                                        <div class="d-flex flex-column gap-2">
+                                            <div class="bm-quiz-chip"><i class="fa fa-dot-circle-o me-2"/>Loại da của bạn?</div>
+                                            <div class="bm-quiz-chip"><i class="fa fa-dot-circle-o me-2"/>Vấn đề da đang gặp?</div>
+                                            <div class="bm-quiz-chip"><i class="fa fa-dot-circle-o me-2"/>Ngân sách mong muốn?</div>
+                                            <div class="bm-quiz-chip"><i class="fa fa-dot-circle-o me-2"/>Thành phần phù hợp?</div>
+                                        </div>
+                                        <!-- Skincare Plan clipboard card -->
+                                        <div class="bm-skincare-plan-card">
+                                            <div class="bm-plan-header">
+                                                <span class="d-block small text-muted text-uppercase" style="font-size: 0.65rem;">YOUR</span>
+                                                SKINCARE PLAN
+                                            </div>
+                                            <div class="bm-plan-item"><i class="fa fa-check"/> Sản phẩm phù hợp</div>
+                                            <div class="bm-plan-item"><i class="fa fa-check"/> Routine cá nhân hóa</div>
+                                            <div class="bm-plan-item"><i class="fa fa-check"/> Tối ưu theo ngân sách</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================================== -->
+                <!-- 4. SẢN PHẨM NỔI BẬT                        -->
+                <!-- ========================================== -->
+                <section class="bm-section-featured py-4">
+                    <div class="container">
+                        <div class="d-flex justify-content-between align-items-end mb-3">
+                            <div>
+                                <h2 class="bm-section-title mb-1">Sản phẩm nổi bật</h2>
+                                <p class="bm-section-sub mb-0">Những sản phẩm được yêu thích và đánh giá cao tại BeautyMatch.</p>
+                            </div>
+                            <a href="/shop" class="bm-link-viewall text-decoration-none">
+                                Xem tất cả sản phẩm <i class="fa fa-arrow-right ms-1"/>
+                            </a>
+                        </div>
+
+                        <div class="row g-3 row-cols-1 row-cols-sm-2 row-cols-md-4">
+                            <!-- Product 1: Eucerin Sun Dry Touch -->
+                            <div class="col">
+                                <div class="bm-product-card">
+                                    <div>
+                                        <div class="bm-prod-top">
+                                            <span class="bm-badge-ribbon bm-ribbon-coral">Bán chạy</span>
+                                            <a href="/shop/wishlist" class="bm-card-heart" title="Thêm vào danh sách yêu thích"><i class="fa fa-heart-o"/></a>
+                                        </div>
+                                        <div class="bm-prod-img-wrap">
+                                            <a href="/shop/euc-sdt-050-eucerin-sun-dry-touch-oil-control-spf50-82">
+                                                <img src="/beautymatch/static/src/img/products/eucerin_sun_dry_touch.webp" alt="Eucerin Sun Dry Touch Oil Control SPF50+"/>
+                                            </a>
+                                        </div>
+                                        <span class="bm-prod-brand">EUCERIN</span>
+                                        <h3 class="bm-prod-title">
+                                            <a href="/shop/euc-sdt-050-eucerin-sun-dry-touch-oil-control-spf50-82">
+                                                Eucerin Sun Dry Touch Oil Control SPF50+
+                                            </a>
+                                        </h3>
+                                        <div class="bm-prod-tags">
+                                            <span class="bm-prod-tag">Chống nắng</span>
+                                            <span class="bm-prod-tag">Kiểm soát dầu</span>
+                                        </div>
+                                        <div class="bm-prod-price">
+                                            520.000 đ
+                                        </div>
+                                    </div>
+                                    <form action="/shop/cart/update" method="post" class="w-100">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <input type="hidden" name="product_id" value="105"/>
+                                        <button type="submit" class="bm-btn-addtocart">
+                                            <i class="fa fa-shopping-cart me-2"/>Thêm vào giỏ hàng
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <!-- Product 2: Cosrx Advanced Snail 96 -->
+                            <div class="col">
+                                <div class="bm-product-card">
+                                    <div>
+                                        <div class="bm-prod-top">
+                                            <span class="bm-badge-ribbon bm-ribbon-orchid">Được yêu thích</span>
+                                            <a href="/shop/wishlist" class="bm-card-heart" title="Thêm vào danh sách yêu thích"><i class="fa fa-heart-o"/></a>
+                                        </div>
+                                        <div class="bm-prod-img-wrap">
+                                            <a href="/shop/csx-snl-100-cosrx-advanced-snail-96-mucin-power-essence-80">
+                                                <img src="/beautymatch/static/src/img/products/cosrx_snail_essence.webp" alt="Cosrx Advanced Snail 96 Mucin Power Essence"/>
+                                            </a>
+                                        </div>
+                                        <span class="bm-prod-brand">COSRX</span>
+                                        <h3 class="bm-prod-title">
+                                            <a href="/shop/csx-snl-100-cosrx-advanced-snail-96-mucin-power-essence-80">
+                                                Cosrx Advanced Snail 96 Mucin Power Essence
+                                            </a>
+                                        </h3>
+                                        <div class="bm-prod-tags">
+                                            <span class="bm-prod-tag">Phục hồi da</span>
+                                            <span class="bm-prod-tag">Cấp ẩm</span>
+                                        </div>
+                                        <div class="bm-prod-price">
+                                            350.000 đ
+                                        </div>
+                                    </div>
+                                    <form action="/shop/cart/update" method="post" class="w-100">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <input type="hidden" name="product_id" value="103"/>
+                                        <button type="submit" class="bm-btn-addtocart">
+                                            <i class="fa fa-shopping-cart me-2"/>Thêm vào giỏ hàng
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <!-- Product 3: Anessa Perfect UV Sunscreen -->
+                            <div class="col">
+                                <div class="bm-product-card">
+                                    <div>
+                                        <div class="bm-prod-top">
+                                            <span class="bm-badge-ribbon bm-ribbon-lavender">Mới</span>
+                                            <a href="/shop/wishlist" class="bm-card-heart" title="Thêm vào danh sách yêu thích"><i class="fa fa-heart-o"/></a>
+                                        </div>
+                                        <div class="bm-prod-img-wrap">
+                                            <a href="/shop/ane-puv-060-anessa-perfect-uv-sunscreen-skincare-milk-56">
+                                                <img src="/beautymatch/static/src/img/products/anessa_uv.webp" alt="Anessa Perfect UV Sunscreen Skincare Milk"/>
+                                            </a>
+                                        </div>
+                                        <span class="bm-prod-brand">ANESSA</span>
+                                        <h3 class="bm-prod-title">
+                                            <a href="/shop/ane-puv-060-anessa-perfect-uv-sunscreen-skincare-milk-56">
+                                                Anessa Perfect UV Sunscreen Skincare Milk
+                                            </a>
+                                        </h3>
+                                        <div class="bm-prod-tags">
+                                            <span class="bm-prod-tag">Chống nắng</span>
+                                            <span class="bm-prod-tag">Làm sáng da</span>
+                                        </div>
+                                        <div class="bm-prod-price">
+                                            660.000 đ
+                                        </div>
+                                    </div>
+                                    <form action="/shop/cart/update" method="post" class="w-100">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <input type="hidden" name="product_id" value="79"/>
+                                        <button type="submit" class="bm-btn-addtocart">
+                                            <i class="fa fa-shopping-cart me-2"/>Thêm vào giỏ hàng
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <!-- Product 4: CeraVe Moisturizing Cream -->
+                            <div class="col">
+                                <div class="bm-product-card">
+                                    <div>
+                                        <div class="bm-prod-top">
+                                            <span class="bm-badge-ribbon bm-ribbon-rose">Cực hot</span>
+                                            <a href="/shop/wishlist" class="bm-card-heart" title="Thêm vào danh sách yêu thích"><i class="fa fa-heart-o"/></a>
+                                        </div>
+                                        <div class="bm-prod-img-wrap">
+                                            <a href="/shop/cv-mc-340-cerave-moisturizing-cream-53">
+                                                <img src="/beautymatch/static/src/img/products/cerave_moisturizing_cream.webp" alt="CeraVe Moisturizing Cream"/>
+                                            </a>
+                                        </div>
+                                        <span class="bm-prod-brand">CERAVE</span>
+                                        <h3 class="bm-prod-title">
+                                            <a href="/shop/cv-mc-340-cerave-moisturizing-cream-53">
+                                                CeraVe Moisturizing Cream
+                                            </a>
+                                        </h3>
+                                        <div class="bm-prod-tags">
+                                            <span class="bm-prod-tag">Dưỡng ẩm</span>
+                                            <span class="bm-prod-tag">Phục hồi da</span>
+                                        </div>
+                                        <div class="bm-prod-price">
+                                            420.000 đ <del>470.000 đ</del>
+                                        </div>
+                                    </div>
+                                    <form action="/shop/cart/update" method="post" class="w-100">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <input type="hidden" name="product_id" value="76"/>
+                                        <button type="submit" class="bm-btn-addtocart">
+                                            <i class="fa fa-shopping-cart me-2"/>Thêm vào giỏ hàng
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================================== -->
+                <!-- 5. ROUTINE ("Xây dựng routine phù hợp")    -->
+                <!-- ========================================== -->
+                <section class="bm-section-routine py-4">
+                    <div class="container">
+                        <div class="d-flex justify-content-between align-items-end mb-3">
+                            <div>
+                                <h2 class="bm-section-title mb-1">Xây dựng routine phù hợp với bạn</h2>
+                                <p class="bm-section-sub mb-0">Một routine chuẩn xác và khoa học sẽ giúp bạn đạt hiệu quả chăm sóc da tốt nhất.</p>
+                            </div>
+                            <a href="/routine" class="bm-link-viewall text-decoration-none">
+                                Tìm hiểu thêm <i class="fa fa-arrow-right ms-1"/>
+                            </a>
+                        </div>
+
+                        <div class="bm-routine-flow-card">
+                            <div class="d-flex flex-wrap flex-lg-nowrap align-items-center justify-content-between gap-3">
+                                <!-- Step 01 -->
+                                <div class="bm-routine-step-item">
+                                    <div class="bm-step-img-box">
+                                        <img src="/beautymatch/static/src/img/routine_step_01.webp" alt="Làm sạch"/>
+                                    </div>
+                                    <div class="bm-step-text">
+                                        <span class="bm-step-num">01</span>
+                                        <h4 class="bm-step-title mb-0">Làm sạch</h4>
+                                        <span class="bm-step-desc">Loại bỏ bụi bẩn, dầu thừa</span>
+                                    </div>
+                                </div>
+                                <div class="bm-step-arrow d-none d-lg-block"><i class="fa fa-angle-right"/></div>
+
+                                <!-- Step 02 -->
+                                <div class="bm-routine-step-item">
+                                    <div class="bm-step-img-box">
+                                        <img src="/beautymatch/static/src/img/routine_step_02.webp" alt="Cân bằng"/>
+                                    </div>
+                                    <div class="bm-step-text">
+                                        <span class="bm-step-num">02</span>
+                                        <h4 class="bm-step-title mb-0">Cân bằng</h4>
+                                        <span class="bm-step-desc">Cân bằng độ ẩm và pH da</span>
+                                    </div>
+                                </div>
+                                <div class="bm-step-arrow d-none d-lg-block"><i class="fa fa-angle-right"/></div>
+
+                                <!-- Step 03 -->
+                                <div class="bm-routine-step-item">
+                                    <div class="bm-step-img-box">
+                                        <img src="/beautymatch/static/src/img/routine_step_03.webp" alt="Serum"/>
+                                    </div>
+                                    <div class="bm-step-text">
+                                        <span class="bm-step-num">03</span>
+                                        <h4 class="bm-step-title mb-0">Serum</h4>
+                                        <span class="bm-step-desc">Giải quyết vấn đề chuyên sâu</span>
+                                    </div>
+                                </div>
+                                <div class="bm-step-arrow d-none d-lg-block"><i class="fa fa-angle-right"/></div>
+
+                                <!-- Step 04 -->
+                                <div class="bm-routine-step-item">
+                                    <div class="bm-step-img-box">
+                                        <img src="/beautymatch/static/src/img/routine_step_04.webp" alt="Dưỡng ẩm"/>
+                                    </div>
+                                    <div class="bm-step-text">
+                                        <span class="bm-step-num">04</span>
+                                        <h4 class="bm-step-title mb-0">Dưỡng ẩm</h4>
+                                        <span class="bm-step-desc">Khóa ẩm và nuôi dưỡng da</span>
+                                    </div>
+                                </div>
+                                <div class="bm-step-arrow d-none d-lg-block"><i class="fa fa-angle-right"/></div>
+
+                                <!-- Step 05 -->
+                                <div class="bm-routine-step-item">
+                                    <div class="bm-step-img-box">
+                                        <img src="/beautymatch/static/src/img/routine_step_05.webp" alt="Chống nắng"/>
+                                    </div>
+                                    <div class="bm-step-text">
+                                        <span class="bm-step-num">05</span>
+                                        <h4 class="bm-step-title mb-0">Chống nắng</h4>
+                                        <span class="bm-step-desc">Bảo vệ da khỏi tia UV</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================================== -->
+                <!-- 6. THÀNH PHẦN NỔI BẬT                      -->
+                <!-- ========================================== -->
+                <section class="bm-section-ingredients py-4">
+                    <div class="container">
+                        <div class="d-flex justify-content-between align-items-end mb-3">
+                            <div>
+                                <h2 class="bm-section-title mb-1">Thành phần nổi bật</h2>
+                                <p class="bm-section-sub mb-0">Khám phá các thành phần quan trọng giúp cải thiện làn da.</p>
+                            </div>
+                            <a href="/shop" class="bm-link-viewall text-decoration-none">
+                                Xem thêm thành phần <i class="fa fa-arrow-right ms-1"/>
+                            </a>
+                        </div>
+
+                        <div class="row g-3 row-cols-1 row-cols-sm-2 row-cols-lg-4">
+                            <!-- Ingredient 1: Niacinamide -->
+                            <div class="col">
+                                <a href="/shop" class="bm-ingredient-card">
+                                    <div class="bm-ing-img-box">
+                                        <img src="/beautymatch/static/src/img/ingredient_niacinamide.webp" alt="Niacinamide"/>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <h4 class="bm-ing-name mb-0">Niacinamide</h4>
+                                            <i class="fa fa-external-link bm-ing-arrow"/>
+                                        </div>
+                                        <p class="bm-ing-desc mb-0">Kiểm soát dầu nhờn, giảm mụn, làm đều màu da.</p>
+                                    </div>
                                 </a>
                             </div>
-                        </t>
-                    </div>
-                </section>
 
-                <!-- 5. ROUTINE BUILDER SECTION -->
-                <section class="bm-section-py py-5" style="background-color: #FAF8FC;">
-                    <div class="container py-lg-3">
-                        <div class="text-center mb-5">
-                            <span class="bm-badge bm-badge-step mb-2">Chu trình chăm sóc da</span>
-                            <h2 class="fw-bold text-dark mb-2">Xây dựng routine phù hợp với bạn</h2>
-                            <p class="text-muted mx-auto" style="max-width: 620px;">
-                                Hiểu rõ từng bước trong chu trình chăm sóc da và tìm sản phẩm phù hợp cho từng bước.
-                            </p>
-                        </div>
-
-                        <!-- 5 bước routine chuẩn -->
-                        <div class="row g-3">
-                            <div class="col-12 col-md col-lg">
-                                <div class="bm-card p-3 h-100 text-center">
-                                    <div class="badge rounded-pill bg-light text-purple fw-bold mb-2">Bước 1</div>
-                                    <div class="fs-4 text-purple mb-2"><i class="fa fa-shower"/></div>
-                                    <h4 class="h6 fw-bold text-dark mb-1">Làm sạch</h4>
-                                    <p class="text-muted small mb-0">Loại bỏ dầu thừa, bụi bẩn và kem chống nắng</p>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md col-lg">
-                                <div class="bm-card p-3 h-100 text-center">
-                                    <div class="badge rounded-pill bg-light text-purple fw-bold mb-2">Bước 2</div>
-                                    <div class="fs-4 text-purple mb-2"><i class="fa fa-tint"/></div>
-                                    <h4 class="h6 fw-bold text-dark mb-1">Cân bằng</h4>
-                                    <p class="text-muted small mb-0">Cân bằng lại độ pH và cấp ẩm nền cho da</p>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md col-lg">
-                                <div class="bm-card p-3 h-100 text-center">
-                                    <div class="badge rounded-pill bg-light text-purple fw-bold mb-2">Bước 3</div>
-                                    <div class="fs-4 text-purple mb-2"><i class="fa fa-flask"/></div>
-                                    <h4 class="h6 fw-bold text-dark mb-1">Serum</h4>
-                                    <p class="text-muted small mb-0">Tinh chất đặc trị giải quyết vấn đề chuyên sâu</p>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md col-lg">
-                                <div class="bm-card p-3 h-100 text-center">
-                                    <div class="badge rounded-pill bg-light text-purple fw-bold mb-2">Bước 4</div>
-                                    <div class="fs-4 text-purple mb-2"><i class="fa fa-magic"/></div>
-                                    <h4 class="h6 fw-bold text-dark mb-1">Dưỡng ẩm</h4>
-                                    <p class="text-muted small mb-0">Khóa ẩm và nuôi dưỡng màng bảo vệ da</p>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md col-lg">
-                                <div class="bm-card p-3 h-100 text-center">
-                                    <div class="badge rounded-pill bg-light text-purple fw-bold mb-2">Bước 5</div>
-                                    <div class="fs-4 text-purple mb-2"><i class="fa fa-sun-o"/></div>
-                                    <h4 class="h6 fw-bold text-dark mb-1">Chống nắng</h4>
-                                    <p class="text-muted small mb-0">Bảo vệ da toàn diện trước tia UVA và UVB</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="text-center mt-4 pt-2">
-                            <a href="/routine" class="bm-button-primary px-4 py-3 text-decoration-none">
-                                Khám phá Routine chi tiết <i class="fa fa-angle-right ms-2"/>
-                            </a>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- 6. INGREDIENT DISCOVERY SECTION -->
-                <section class="bm-section-py py-5 bg-white">
-                    <div class="container py-lg-3">
-                        <div class="text-center mb-5">
-                            <span class="bm-badge bm-badge-primary mb-2">Minh bạch hoạt chất</span>
-                            <h2 class="fw-bold text-dark mb-2">Thành phần nổi bật</h2>
-                            <p class="text-muted mx-auto" style="max-width: 600px;">
-                                Khám phá các hoạt chất quen thuộc để hiểu cách chúng hoạt động trên làn da của bạn.
-                            </p>
-                        </div>
-
-                        <div class="row g-4">
-                            <!-- Niacinamide -->
-                            <div class="col-12 col-md-6 col-lg-3">
-                                <div class="bm-card p-4 h-100 d-flex flex-column justify-content-between">
-                                    <div>
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <span class="bm-badge bm-badge-primary">Vitamin B3</span>
-                                            <i class="fa fa-check-circle text-purple"/>
+                            <!-- Ingredient 2: Hyaluronic Acid -->
+                            <div class="col">
+                                <a href="/shop" class="bm-ingredient-card">
+                                    <div class="bm-ing-img-box">
+                                        <img src="/beautymatch/static/src/img/ingredient_ha.webp" alt="Hyaluronic Acid"/>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <h4 class="bm-ing-name mb-0">Hyaluronic Acid</h4>
+                                            <i class="fa fa-external-link bm-ing-arrow"/>
                                         </div>
-                                        <h3 class="h5 fw-bold text-dark mb-2">Niacinamide</h3>
-                                        <p class="text-muted small mb-3">
-                                            Hỗ trợ điều tiết bã nhờn, làm dịu da và củng cố hàng rào bảo vệ, giúp bề mặt da thông thoáng và mịn màng hơn.
-                                        </p>
+                                        <p class="bm-ing-desc mb-0">Cấp ẩm chuyên sâu, giúp da căng mọng, ngậm nước.</p>
                                     </div>
-                                    <div class="small text-muted pt-2 border-top">
-                                        Phù hợp: <strong>Da dầu, da mụn</strong>
-                                    </div>
-                                </div>
+                                </a>
                             </div>
 
-                            <!-- Hyaluronic Acid -->
-                            <div class="col-12 col-md-6 col-lg-3">
-                                <div class="bm-card p-4 h-100 d-flex flex-column justify-content-between">
-                                    <div>
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <span class="bm-badge bm-badge-primary">Cấp nước</span>
-                                            <i class="fa fa-check-circle text-purple"/>
+                            <!-- Ingredient 3: Vitamin C -->
+                            <div class="col">
+                                <a href="/shop" class="bm-ingredient-card">
+                                    <div class="bm-ing-img-box">
+                                        <img src="/beautymatch/static/src/img/ingredient_vitaminc.webp" alt="Vitamin C"/>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <h4 class="bm-ing-name mb-0">Vitamin C</h4>
+                                            <i class="fa fa-external-link bm-ing-arrow"/>
                                         </div>
-                                        <h3 class="h5 fw-bold text-dark mb-2">Hyaluronic Acid</h3>
-                                        <p class="text-muted small mb-3">
-                                            Khả năng ngậm nước vượt trội, hỗ trợ cấp ẩm đa tầng giúp làn da duy trì vẻ căng mọng, đàn hồi và tươi trẻ.
-                                        </p>
+                                        <p class="bm-ing-desc mb-0">Làm sáng da, chống oxy hóa, cải thiện thâm sạm.</p>
                                     </div>
-                                    <div class="small text-muted pt-2 border-top">
-                                        Phù hợp: <strong>Mọi loại da, da khô thiếu ẩm</strong>
-                                    </div>
-                                </div>
+                                </a>
                             </div>
 
-                            <!-- Vitamin C -->
-                            <div class="col-12 col-md-6 col-lg-3">
-                                <div class="bm-card p-4 h-100 d-flex flex-column justify-content-between">
-                                    <div>
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <span class="bm-badge bm-badge-primary">Chống oxy hóa</span>
-                                            <i class="fa fa-check-circle text-purple"/>
+                            <!-- Ingredient 4: Ceramide -->
+                            <div class="col">
+                                <a href="/shop" class="bm-ingredient-card">
+                                    <div class="bm-ing-img-box">
+                                        <img src="/beautymatch/static/src/img/ingredient_ceramide.webp" alt="Ceramide"/>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <h4 class="bm-ing-name mb-0">Ceramide</h4>
+                                            <i class="fa fa-external-link bm-ing-arrow"/>
                                         </div>
-                                        <h3 class="h5 fw-bold text-dark mb-2">Vitamin C</h3>
-                                        <p class="text-muted small mb-3">
-                                            Hợp chất chống oxy hóa tự nhiên, hỗ trợ cải thiện làn da xỉn màu và hỗ trợ làm đều màu sắc tố da an toàn.
-                                        </p>
+                                        <p class="bm-ing-desc mb-0">Củng cố hàng rào bảo vệ da, khóa ẩm hiệu quả.</p>
                                     </div>
-                                    <div class="small text-muted pt-2 border-top">
-                                        Phù hợp: <strong>Da xỉn màu, vết thâm sau mụn</strong>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Ceramide -->
-                            <div class="col-12 col-md-6 col-lg-3">
-                                <div class="bm-card p-4 h-100 d-flex flex-column justify-content-between">
-                                    <div>
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <span class="bm-badge bm-badge-primary">Khóa ẩm</span>
-                                            <i class="fa fa-check-circle text-purple"/>
-                                        </div>
-                                        <h3 class="h5 fw-bold text-dark mb-2">Ceramide</h3>
-                                        <p class="text-muted small mb-3">
-                                            Thành phần lipid thiết yếu cấu tạo nên lớp màng bảo vệ, ngăn ngừa thoát nước qua biểu bì và hạn chế khô căng.
-                                        </p>
-                                    </div>
-                                    <div class="small text-muted pt-2 border-top">
-                                        Phù hợp: <strong>Da khô, da nhạy cảm, phục hồi</strong>
-                                    </div>
-                                </div>
+                                </a>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- 7. WHY BEAUTYMATCH SECTION -->
-                <section class="bm-section-py py-5" style="background-color: #F8F5FA;">
-                    <div class="container py-lg-3">
-                        <div class="text-center mb-5">
-                            <span class="bm-badge bm-badge-primary mb-2">Định vị thương hiệu</span>
-                            <h2 class="fw-bold text-dark mb-2">Vì sao chọn BeautyMatch?</h2>
-                            <p class="text-muted mx-auto" style="max-width: 620px;">
-                                Chúng tôi tập trung giải quyết bài toán chọn đúng sản phẩm giữa hàng nghìn lựa chọn mỹ phẩm trên thị trường.
-                            </p>
-                        </div>
-
-                        <div class="row g-4">
-                            <div class="col-12 col-md-6 col-lg-3">
-                                <div class="bm-card p-4 h-100 text-center">
-                                    <div class="bm-card-icon-wrapper mx-auto mb-3">
-                                        <i class="fa fa-user-circle-o fs-4 text-purple"/>
-                                    </div>
-                                    <h3 class="h6 fw-bold text-dark mb-2">Gợi ý theo nhu cầu cá nhân</h3>
-                                    <p class="text-muted small mb-0">
-                                        Thu hẹp sản phẩm theo đúng loại da, vấn đề thực tế và ngân sách, không chạy theo trào lưu chung.
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6 col-lg-3">
-                                <div class="bm-card p-4 h-100 text-center">
-                                    <div class="bm-card-icon-wrapper mx-auto mb-3">
-                                        <i class="fa fa-list-alt fs-4 text-purple"/>
-                                    </div>
-                                    <h3 class="h6 fw-bold text-dark mb-2">Thông tin sản phẩm rõ ràng</h3>
-                                    <p class="text-muted small mb-0">
-                                        Minh bạch thành phần, nguồn gốc xuất xứ và giải thích ngắn gọn vì sao sản phẩm phù hợp với bạn.
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6 col-lg-3">
-                                <div class="bm-card p-4 h-100 text-center">
-                                    <div class="bm-card-icon-wrapper mx-auto mb-3">
-                                        <i class="fa fa-tasks fs-4 text-purple"/>
-                                    </div>
-                                    <h3 class="h6 fw-bold text-dark mb-2">Hỗ trợ xây dựng routine</h3>
-                                    <p class="text-muted small mb-0">
-                                        Định vị chính xác từng sản phẩm nằm ở bước nào trong chu trình sáng &amp; tối để tránh chồng chéo.
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6 col-lg-3">
-                                <div class="bm-card p-4 h-100 text-center">
-                                    <div class="bm-card-icon-wrapper mx-auto mb-3">
-                                        <i class="fa fa-compress fs-4 text-purple"/>
-                                    </div>
-                                    <h3 class="h6 fw-bold text-dark mb-2">Thu hẹp lựa chọn dễ dàng</h3>
-                                    <p class="text-muted small mb-0">
-                                        Giảm thiểu quá tải quyết định, rút ngắn thời gian mua sắm và tiết kiệm chi phí thử nghiệm sai lầm.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- 8. FINAL CTA SECTION -->
-                <section class="bm-final-cta-section py-5 text-center text-white" style="background: linear-gradient(135deg, #6E4C7E 0%, #8F6FA8 100%);">
-                    <div class="container py-lg-4">
-                        <h2 class="display-6 fw-bold text-white mb-3">Sẵn sàng tìm skincare phù hợp với bạn?</h2>
-                        <p class="lead opacity-90 mb-4 mx-auto" style="max-width: 580px;">
-                            Bắt đầu Beauty Quiz và khám phá lựa chọn phù hợp hơn với nhu cầu của làn da.
-                        </p>
-                        <div class="d-flex flex-wrap gap-3 justify-content-center">
-                            <a href="/beauty-quiz" class="btn btn-light text-purple fw-bold px-4 py-3 rounded-pill shadow-sm">
-                                Bắt đầu Beauty Quiz <i class="fa fa-magic ms-1"/>
-                            </a>
-                            <a href="/shop" class="btn btn-outline-light fw-bold px-4 py-3 rounded-pill">
-                                Xem sản phẩm <i class="fa fa-shopping-bag ms-1"/>
-                            </a>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- 9. FOOTER SECTION -->
-                <footer class="bm-footer-section py-5 bg-white border-top">
+                <!-- ========================================== -->
+                <!-- 7. VÌ SAO CHỌN BEAUTYMATCH?                -->
+                <!-- ========================================== -->
+                <section class="bm-section-why py-4">
                     <div class="container">
-                        <div class="row g-4 justify-content-between mb-4">
-                            <div class="col-12 col-lg-4">
-                                <h3 class="h4 fw-bold text-purple mb-2">BeautyMatch</h3>
-                                <p class="text-muted small mb-3">
-                                    BeautyMatch giúp bạn khám phá sản phẩm chăm sóc da phù hợp hơn dựa trên loại da, vấn đề da và ngân sách.
-                                </p>
-                                <div class="small text-muted">
-                                    Đề tài Thương mại điện tử B2C Skincare
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-3 col-lg-2">
-                                <h4 class="h6 fw-bold text-dark mb-3">Khám phá</h4>
-                                <ul class="list-unstyled small mb-0">
-                                    <li class="mb-2"><a href="/shop" class="text-muted text-decoration-none">Cửa hàng</a></li>
-                                    <li class="mb-2"><a href="/theo-van-de-da" class="text-muted text-decoration-none">Theo vấn đề da</a></li>
-                                    <li class="mb-2"><a href="/beauty-quiz" class="text-muted text-decoration-none">Beauty Quiz</a></li>
-                                    <li class="mb-2"><a href="/routine" class="text-muted text-decoration-none">Routine</a></li>
-                                    <li class="mb-2"><a href="/brands" class="text-muted text-decoration-none">Thương hiệu</a></li>
-                                    <li class="mb-2"><a href="/blog" class="text-muted text-decoration-none">Blog</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-6 col-md-3 col-lg-2">
-                                <h4 class="h6 fw-bold text-dark mb-3">Chính sách</h4>
-                                <ul class="list-unstyled small mb-0">
-                                    <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Thanh toán</a></li>
-                                    <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Giao hàng</a></li>
-                                    <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Đổi trả &amp; hoàn tiền</a></li>
-                                    <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Chính sách bảo mật</a></li>
-                                    <li class="mb-2"><a href="#" class="text-muted text-decoration-none">Điều khoản sử dụng</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-12 col-md-6 col-lg-3">
-                                <h4 class="h6 fw-bold text-dark mb-3">Cam kết BeautyMatch</h4>
-                                <p class="text-muted small mb-2">
-                                    100% sản phẩm có thông tin xuất xứ rõ ràng, bảng thành phần minh bạch và hướng dẫn sử dụng chi tiết.
-                                </p>
-                                <span class="bm-badge bm-badge-primary">B2C Personalized Skincare</span>
-                            </div>
+                        <div class="text-center mb-4">
+                            <h2 class="bm-section-title mb-1">Vì sao chọn BeautyMatch?</h2>
+                            <p class="bm-section-sub mb-0">Chúng tôi đồng hành cùng bạn trên hành trình chăm sóc da thông minh và hiệu quả hơn.</p>
                         </div>
 
-                        <div class="pt-3 border-top d-flex flex-wrap justify-content-between align-items-center small text-muted">
-                            <div>© 2026 BeautyMatch. All rights reserved.</div>
-                            <div>Nền tảng thương mại điện tử mỹ phẩm cá nhân hóa</div>
+                        <div class="row g-3 row-cols-1 row-cols-sm-2 row-cols-lg-4">
+                            <!-- Card 1 -->
+                            <div class="col">
+                                <div class="bm-why-card">
+                                    <div class="bm-why-icon-box">
+                                        <i class="fa fa-user-circle-o"/>
+                                    </div>
+                                    <div>
+                                        <h4 class="bm-why-title">Gợi ý cá nhân hóa</h4>
+                                        <p class="bm-why-desc mb-0">Sản phẩm được chọn lọc dựa trên từng loại da, vấn đề da và ngân sách.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Card 2 -->
+                            <div class="col">
+                                <div class="bm-why-card">
+                                    <div class="bm-why-icon-box">
+                                        <i class="fa fa-leaf"/>
+                                    </div>
+                                    <div>
+                                        <h4 class="bm-why-title">Minh bạch &amp; đáng tin cậy</h4>
+                                        <p class="bm-why-desc mb-0">Thông tin thành phần rõ ràng, đánh giá thực tế từ người dùng.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Card 3 -->
+                            <div class="col">
+                                <div class="bm-why-card">
+                                    <div class="bm-why-icon-box">
+                                        <i class="fa fa-shield"/>
+                                    </div>
+                                    <div>
+                                        <h4 class="bm-why-title">Sản phẩm chính hãng</h4>
+                                        <p class="bm-why-desc mb-0">100% sản phẩm chính hãng từ các thương hiệu uy tín.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Card 4 -->
+                            <div class="col">
+                                <div class="bm-why-card">
+                                    <div class="bm-why-icon-box">
+                                        <i class="fa fa-book"/>
+                                    </div>
+                                    <div>
+                                        <h4 class="bm-why-title">Kiến thức chuyên sâu</h4>
+                                        <p class="bm-why-desc mb-0">Cập nhật kiến thức chuẩn da liễu và mẹo chăm sóc khoa học.</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </footer>
+                </section>
+
+                <!-- ========================================== -->
+                <!-- 8. PRE-FOOTER PURPLE CTA BANNER            -->
+                <!-- ========================================== -->
+                <section class="bm-section-cta-prefooter py-3 pb-5">
+                    <div class="container">
+                        <div class="bm-cta-prefooter-card text-white position-relative overflow-hidden">
+                            <div class="bm-cta-flower-bg position-absolute top-0 start-0 h-100">
+                                <img src="/beautymatch/static/src/img/cta_banner_flowers.webp" alt="" class="h-100"/>
+                            </div>
+                            <div class="row align-items-center position-relative" style="z-index: 2;">
+                                <div class="col-12 col-lg-7 ps-lg-5 mb-3 mb-lg-0 text-center text-lg-start">
+                                    <h3 class="fw-bold mb-1 fs-5 text-white">Đã sẵn sàng tìm skincare phù hợp với bạn?</h3>
+                                    <p class="mb-0 small text-white-50" style="font-size: 0.82rem;">Làm Beauty Quiz ngay để nhận gợi ý sản phẩm và routine thông minh hơn.</p>
+                                </div>
+                                <div class="col-12 col-lg-5 text-center text-lg-end">
+                                    <div class="d-inline-flex flex-wrap gap-2 justify-content-center justify-content-lg-end">
+                                        <a href="/beauty-quiz" class="btn btn-light rounded-pill px-4 py-2 fw-bold" style="color: #5D3770; font-size: 0.82rem;">
+                                            Bắt đầu Beauty Quiz <i class="fa fa-arrow-right ms-1"/>
+                                        </a>
+                                        <a href="/shop" class="btn btn-outline-light rounded-pill px-3 py-2 fw-semibold" style="font-size: 0.82rem;">
+                                            <i class="fa fa-shopping-bag me-1"/> Khám phá sản phẩm
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
             </div>
         </t>

@@ -241,73 +241,83 @@
     <!-- ======================================================== -->
     <template id="beautymatch_footer_custom" inherit_id="website.footer_custom" name="BeautyMatch Footer Custom">
         <xpath expr="//div[@id='footer']" position="replace">
-            <div id="footer" class="bm-footer border-top pt-5 pb-3 text-break" style="background-color: #FAF7FB;">
+            <div id="footer" class="bm-footer border-top py-5 text-break" style="background-color: #FFFFFF; border-color: #ECE3F2 !important;">
                 <div class="container">
-                    <div class="row g-4 pb-4 border-bottom">
-                        <!-- Cột 1: Thông tin thương hiệu -->
-                        <div class="col-12 col-lg-3">
-                            <div class="mb-3">
-                                <span class="bm-footer-brand fw-bold fs-3" style="color: #6E4C7E;">BeautyMatch</span>
-                                <span class="d-block small text-muted text-uppercase" style="letter-spacing: 1px;">Beauty &amp; Personal Care</span>
+                    <div class="row g-4 pb-4">
+                        <!-- Cột 1: Thông tin thương hiệu & Socials -->
+                        <div class="col-12 col-lg-4">
+                            <div class="mb-2">
+                                <span class="bm-footer-brand fw-bold fs-3" style="color: #6E4C7E; letter-spacing: -0.5px;">BeautyMatch</span>
+                                <span class="d-block text-muted text-uppercase fw-semibold" style="letter-spacing: 1px; font-size: 0.65rem;">BEAUTY &amp; PERSONAL CARE</span>
                             </div>
-                            <p class="text-muted small mb-3" style="line-height: 1.6;">
-                                Nền tảng thương mại điện tử mỹ phẩm &amp; chăm sóc da chuẩn khoa học. Giúp bạn tìm đúng chu trình chăm sóc da chuẩn xác cho từng tình trạng da.
+                            <p class="text-muted small mb-3" style="line-height: 1.6; font-size: 0.78rem; max-width: 320px;">
+                                BeautyMatch giúp bạn dễ dàng khám phá sản phẩm chăm sóc da phù hợp nhất với loại da, vấn đề da và ngân sách của bạn.
                             </p>
-                            <div class="d-flex gap-2 mb-2">
-                                <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" aria-label="Facebook"><i class="fa fa-facebook"/></a>
-                                <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" aria-label="Instagram"><i class="fa fa-instagram"/></a>
-                                <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" aria-label="Youtube"><i class="fa fa-youtube-play"/></a>
+                            <div class="d-flex gap-2">
+                                <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; border-color: #DFCEEC; color: #6E4C7E;" aria-label="Facebook"><i class="fa fa-facebook"/></a>
+                                <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; border-color: #DFCEEC; color: #6E4C7E;" aria-label="Instagram"><i class="fa fa-instagram"/></a>
+                                <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; border-color: #DFCEEC; color: #6E4C7E;" aria-label="TikTok"><i class="fa fa-music"/></a>
+                                <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; border-color: #DFCEEC; color: #6E4C7E;" aria-label="Youtube"><i class="fa fa-youtube-play"/></a>
                             </div>
                         </div>
 
-                        <!-- Cột 2: MUA SẮM -->
-                        <div class="col-6 col-md-3 col-lg-2 offset-lg-1">
-                            <h6 class="fw-bold mb-3" style="color: #6E4C7E; font-size: 0.85rem; letter-spacing: 0.5px;">MUA SẮM</h6>
-                            <ul class="list-unstyled small mb-0 d-flex flex-column gap-2">
+                        <!-- Cột 2: Khám phá -->
+                        <div class="col-6 col-md-3 col-lg-2">
+                            <h6 class="fw-bold mb-3" style="color: #2F1B40; font-size: 0.85rem;">Khám phá</h6>
+                            <ul class="list-unstyled small mb-0 d-flex flex-column gap-2" style="font-size: 0.76rem;">
                                 <li><a href="/shop" class="text-muted text-decoration-none">Cửa hàng</a></li>
                                 <li><a href="/theo-van-de-da" class="text-muted text-decoration-none">Theo vấn đề da</a></li>
+                                <li><a href="/beauty-quiz" class="text-muted text-decoration-none">Beauty Quiz</a></li>
+                                <li><a href="/routine" class="text-muted text-decoration-none">Routine</a></li>
                                 <li><a href="/brands" class="text-muted text-decoration-none">Thương hiệu</a></li>
                             </ul>
                         </div>
 
-                        <!-- Cột 3: KHÁM PHÁ -->
+                        <!-- Cột 3: Hỗ trợ khách hàng -->
                         <div class="col-6 col-md-3 col-lg-2">
-                            <h6 class="fw-bold mb-3" style="color: #6E4C7E; font-size: 0.85rem; letter-spacing: 0.5px;">KHÁM PHÁ</h6>
-                            <ul class="list-unstyled small mb-0 d-flex flex-column gap-2">
-                                <li><a href="/beauty-quiz" class="text-muted text-decoration-none">Beauty Quiz</a></li>
-                                <li><a href="/routine" class="text-muted text-decoration-none">Routine</a></li>
-                                <li><a href="/blog" class="text-muted text-decoration-none">Kiến thức</a></li>
+                            <h6 class="fw-bold mb-3" style="color: #2F1B40; font-size: 0.85rem;">Hỗ trợ khách hàng</h6>
+                            <ul class="list-unstyled small mb-0 d-flex flex-column gap-2" style="font-size: 0.76rem;">
+                                <li><a href="/about" class="text-muted text-decoration-none">Hướng dẫn đặt hàng</a></li>
+                                <li><a href="/return-policy" class="text-muted text-decoration-none">Chính sách đổi trả</a></li>
+                                <li><a href="/privacy-policy" class="text-muted text-decoration-none">Chính sách bảo mật</a></li>
+                                <li><a href="/contact" class="text-muted text-decoration-none">Liên hệ chúng tôi</a></li>
                             </ul>
                         </div>
 
-                        <!-- Cột 4: TÀI KHOẢN -->
+                        <!-- Cột 4: Về BeautyMatch -->
                         <div class="col-6 col-md-3 col-lg-2">
-                            <h6 class="fw-bold mb-3" style="color: #6E4C7E; font-size: 0.85rem; letter-spacing: 0.5px;">TÀI KHOẢN</h6>
-                            <ul class="list-unstyled small mb-0 d-flex flex-column gap-2">
-                                <li><a href="/web/login" class="text-muted text-decoration-none">Đăng nhập</a></li>
-                                <li><a href="/my/orders" class="text-muted text-decoration-none">Đơn hàng của tôi</a></li>
-                                <li><a href="/shop/wishlist" class="text-muted text-decoration-none">Sản phẩm yêu thích</a></li>
-                            </ul>
-                        </div>
-
-                        <!-- Cột 5: HỖ TRỢ -->
-                        <div class="col-6 col-md-3 col-lg-2">
-                            <h6 class="fw-bold mb-3" style="color: #6E4C7E; font-size: 0.85rem; letter-spacing: 0.5px;">HỖ TRỢ</h6>
-                            <ul class="list-unstyled small mb-0 d-flex flex-column gap-2">
+                            <h6 class="fw-bold mb-3" style="color: #2F1B40; font-size: 0.85rem;">Về BeautyMatch</h6>
+                            <ul class="list-unstyled small mb-0 d-flex flex-column gap-2" style="font-size: 0.76rem;">
                                 <li><a href="/about" class="text-muted text-decoration-none">Giới thiệu</a></li>
-                                <li><a href="/shipping-policy" class="text-muted text-decoration-none">Chính sách giao hàng</a></li>
-                                <li><a href="/return-policy" class="text-muted text-decoration-none">Đổi trả &amp; hoàn tiền</a></li>
-                                <li><a href="/payment-policy" class="text-muted text-decoration-none">Thanh toán</a></li>
-                                <li><a href="/privacy-policy" class="text-muted text-decoration-none">Bảo mật</a></li>
-                                <li><a href="/faq" class="text-muted text-decoration-none">FAQ</a></li>
-                                <li><a href="/contact" class="text-muted text-decoration-none">Liên hệ</a></li>
+                                <li><a href="/brands" class="text-muted text-decoration-none">Thương hiệu</a></li>
+                                <li><a href="/shipping-policy" class="text-muted text-decoration-none">Điều khoản sử dụng</a></li>
+                                <li><a href="/payment-policy" class="text-muted text-decoration-none">Chính sách toàn diện</a></li>
                             </ul>
+                        </div>
+
+                        <!-- Cột 5: Đăng ký nhận tin -->
+                        <div class="col-6 col-md-3 col-lg-2">
+                            <h6 class="fw-bold mb-3" style="color: #2F1B40; font-size: 0.85rem;">Đăng ký nhận tin</h6>
+                            <p class="text-muted small mb-2" style="font-size: 0.72rem; line-height: 1.4;">Cập nhật thông tin khuyến mãi và bí quyết mới.</p>
+                            <div class="d-flex align-items-center">
+                                <input type="email" class="form-control form-control-sm rounded-start-pill border-end-0" placeholder="Email của bạn" style="font-size: 0.74rem; border-color: #D8CCE2; padding-left: 12px;"/>
+                                <button class="btn btn-sm text-white rounded-end-pill px-3" type="button" style="background-color: #5D3770; border-color: #5D3770;" aria-label="Subscribe">
+                                    <i class="fa fa-arrow-right"/>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Dòng bản quyền chân trang -->
-                    <div class="pt-3 text-center small text-muted">
-                        <p class="mb-0">© 2026 BeautyMatch. Nền tảng mỹ phẩm &amp; chăm sóc da khoa học. All rights reserved.</p>
+                    <!-- Dòng bản quyền & Thanh toán -->
+                    <div class="pt-3 border-top d-flex flex-wrap justify-content-between align-items-center small text-muted" style="border-color: #ECE3F2 !important; font-size: 0.74rem;">
+                        <div class="mb-2 mb-md-0">© 2026 BeautyMatch. All rights reserved.</div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-light text-dark border px-2 py-1" style="font-size: 0.7rem; font-weight: 600;">VISA</span>
+                            <span class="badge bg-light text-dark border px-2 py-1" style="font-size: 0.7rem; font-weight: 600;">Mastercard</span>
+                            <span class="badge bg-light text-dark border px-2 py-1" style="font-size: 0.7rem; font-weight: 600;">MoMo</span>
+                            <span class="badge bg-light text-dark border px-2 py-1" style="font-size: 0.7rem; font-weight: 600;">PayPal</span>
+                            <span class="ms-2 d-none d-lg-inline text-muted" style="font-size: 0.7rem;">Trải nghiệm mua sắm thông minh &amp; an tâm tuyệt đối</span>
+                        </div>
                     </div>
                 </div>
             </div>
