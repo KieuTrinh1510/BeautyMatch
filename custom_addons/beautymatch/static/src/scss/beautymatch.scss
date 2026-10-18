@@ -326,6 +326,13 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
 
 // 7.1 Two-Column Layout for Desktop & Full Edge Alignment
 .o_wsale_products_page {
+    #oe_structure_website_sale_products_1:empty,
+    #oe_structure_website_sale_products_2:empty {
+        display: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
     #o_wsale_container {
         max-width: 100% !important;
         width: 100% !important;
@@ -1315,11 +1322,15 @@ header#top {
 }
 
 .o_header_standard {
-    min-height: 74px;
+    min-height: 78px;
     background-color: #FFFFFF !important;
     border-bottom: 1px solid rgba(143, 111, 168, 0.15) !important;
     box-shadow: 0 2px 14px rgba(110, 76, 126, 0.05) !important;
     transition: all 0.25s ease;
+
+    nav.navbar {
+        box-shadow: none !important;
+    }
 
     .container, .o_main_nav {
         max-width: 100% !important;
@@ -1412,10 +1423,10 @@ header#top {
 
     .bm-nav-link {
         color: #2B2430 !important;
-        font-size: 0.93rem;
+        font-size: 0.94rem;
         font-weight: 550;
-        padding: 0.45rem 0.65rem !important;
-        border-radius: 8px;
+        padding: 0.55rem 1.15rem !important;
+        border-radius: 12px;
         transition: all 0.2s ease;
         position: relative;
         text-decoration: none;
@@ -1430,17 +1441,6 @@ header#top {
             color: #6E4C7E !important;
             font-weight: 600;
             background-color: #F3ECF8 !important;
-
-            &::after {
-                content: '';
-                position: absolute;
-                bottom: 0;
-                left: 15%;
-                right: 15%;
-                height: 2.5px;
-                background-color: #8F6FA8;
-                border-radius: 2px;
-            }
         }
     }
 }
