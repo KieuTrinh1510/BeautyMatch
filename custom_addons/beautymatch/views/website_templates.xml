@@ -436,13 +436,18 @@
             <div id="wrap" class="bm-homepage">
 
                 <!-- ========================================== -->
-                <!-- 1. HERO SECTION (Right-Bleed Banner)       -->
+                <!-- 1. HERO SECTION (Seamless Panoramic Banner)-->
                 <!-- ========================================== -->
                 <section class="bm-hero-section position-relative overflow-hidden">
+                    <!-- Right-side Seamless Panoramic Banner Image -->
+                    <div class="bm-hero-banner-art">
+                        <img src="/beautymatch/static/src/img/hero_model_cosmetics.webp" alt="BeautyMatch Skincare Banner" class="bm-hero-banner-img"/>
+                    </div>
+
                     <div class="container position-relative bm-hero-container">
                         <div class="row align-items-center">
-                            <!-- Left Column -->
-                            <div class="col-12 col-lg-6 col-xl-6 text-center text-lg-start bm-hero-content-col py-4 py-lg-5 pe-lg-4 pe-xl-5">
+                            <!-- Left Column (Content) -->
+                            <div class="col-12 col-lg-7 col-xl-6 text-center text-lg-start bm-hero-content-col py-4 py-lg-5 pe-lg-3">
                                 <div class="bm-hero-pill-badge mb-3">
                                     <span>Skincare phù hợp hơn, làn da khỏe đẹp hơn</span>
                                 </div>
@@ -452,7 +457,7 @@
                                     cho bạn <span class="bm-sparkle">✦</span>
                                 </h1>
                                 <p class="bm-hero-desc mb-4 mx-auto mx-lg-0">
-                                    BeautyMatch giúp bạn tìm các sản phẩm và xây dựng routine phù hợp với loại da, vấn đề da, thành phần yêu thích và ngân sách của bạn.
+                                    BeautyMatch giúp bạn lựa chọn sản phẩm và xây dựng routine phù hợp với loại da, vấn đề da, thành phần yêu thích và ngân sách của bạn.
                                 </p>
                                 <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-3 mb-4">
                                     <a href="/beauty-quiz" class="bm-btn-hero-primary">
@@ -465,7 +470,7 @@
                                 <div class="bm-hero-trust-bar d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start gap-3">
                                     <div class="bm-trust-item d-flex align-items-center gap-2">
                                         <div class="bm-trust-icon"><i class="fa fa-user-circle-o"/></div>
-                                        <span>Gợi ý thấu đáo<br/>theo vấn đề da</span>
+                                        <span>Gợi ý theo<br/>loại da &amp; vấn đề da</span>
                                     </div>
                                     <div class="bm-trust-item d-flex align-items-center gap-2">
                                         <div class="bm-trust-icon"><i class="fa fa-qrcode"/></div>
@@ -482,10 +487,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- Right-bleed Hero Banner Image -->
-                    <div class="bm-hero-bleed-wrap">
-                        <img src="/beautymatch/static/src/img/hero_model_cosmetics.webp" alt="BeautyMatch Skincare Banner" class="bm-hero-bleed-img"/>
                     </div>
                 </section>
 
