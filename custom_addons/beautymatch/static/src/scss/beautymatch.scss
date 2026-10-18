@@ -1322,42 +1322,47 @@ header#top {
     transition: all 0.25s ease;
 
     .container, .o_main_nav {
-        max-width: 1300px !important;
+        max-width: 100% !important;
         width: 100% !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
-        padding-left: 24px !important;
-        padding-right: 24px !important;
+        padding-left: 28px !important;
+        padding-right: 28px !important;
 
         @media (min-width: 1400px) {
-            max-width: 1360px !important;
-            padding-left: 32px !important;
-            padding-right: 32px !important;
+            padding-left: 36px !important;
+            padding-right: 36px !important;
         }
 
-        @media (max-width: 991.98px) {
-            max-width: 100% !important;
+        @media (max-width: 768px) {
             padding-left: 16px !important;
             padding-right: 16px !important;
         }
     }
 }
 
-// Brand Wordmark - Thu gọn tự nhiên, không bị kéo giãn hay dạt ra mép ngoài
+// Brand Wordmark - Căn chính giữa hoàn hảo ngay trên khối "Bộ lọc sản phẩm"
 .bm-header-brand {
     display: flex !important;
     flex-direction: column !important;
+    align-items: center !important;
     justify-content: center !important;
+    text-align: center !important;
     line-height: 1.15;
     text-decoration: none !important;
-    flex: 0 0 auto !important;
-    width: auto !important;
-    max-width: none !important;
-    margin-right: 28px !important;
-    padding-left: 0 !important;
 
-    @media (min-width: 1200px) {
-        margin-right: 36px !important;
+    @media (min-width: 992px) {
+        flex: 0 0 330px !important;
+        width: 330px !important;
+        max-width: 330px !important;
+        min-width: 330px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    @media (min-width: 1400px) {
+        flex: 0 0 345px !important;
+        width: 345px !important;
+        max-width: 345px !important;
+        min-width: 345px !important;
     }
 
     .bm-brand-wordmark {
@@ -1367,6 +1372,9 @@ header#top {
         letter-spacing: -0.5px;
         color: #8F6FA8;
         transition: color 0.2s ease;
+        display: block;
+        text-align: center;
+        width: 100%;
     }
 
     .bm-brand-tagline {
@@ -1376,6 +1384,9 @@ header#top {
         color: #6E4C7E;
         font-weight: 600;
         margin-top: 1px;
+        display: block;
+        text-align: center;
+        width: 100%;
     }
 
     &:hover .bm-brand-wordmark {
@@ -1389,14 +1400,14 @@ header#top {
     align-items: center !important;
     margin-left: auto !important;
     margin-right: auto !important;
-    gap: 12px !important;
+    gap: 16px !important;
 
     @media (min-width: 1200px) {
-        gap: 18px !important;
+        gap: 20px !important;
     }
 
     @media (min-width: 1400px) {
-        gap: 22px !important;
+        gap: 24px !important;
     }
 
     .bm-nav-link {
