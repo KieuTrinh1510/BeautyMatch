@@ -436,13 +436,13 @@
             <div id="wrap" class="bm-homepage">
 
                 <!-- ========================================== -->
-                <!-- 1. HERO SECTION                            -->
+                <!-- 1. HERO SECTION (Right-Bleed Banner)       -->
                 <!-- ========================================== -->
-                <section class="bm-hero-section">
-                    <div class="container">
-                        <div class="row align-items-center g-4">
+                <section class="bm-hero-section position-relative overflow-hidden">
+                    <div class="container position-relative bm-hero-container">
+                        <div class="row align-items-center">
                             <!-- Left Column -->
-                            <div class="col-12 col-lg-6 text-center text-lg-start">
+                            <div class="col-12 col-lg-6 col-xl-6 text-center text-lg-start bm-hero-content-col py-4 py-lg-5 pe-lg-4 pe-xl-5">
                                 <div class="bm-hero-pill-badge mb-3">
                                     <span>Skincare phù hợp hơn, làn da khỏe đẹp hơn</span>
                                 </div>
@@ -481,13 +481,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Right Column -->
-                            <div class="col-12 col-lg-6 text-center">
-                                <div class="position-relative mx-auto" style="max-width: 520px;">
-                                    <img src="/beautymatch/static/src/img/hero_model_cosmetics.webp" alt="BeautyMatch Skincare Routine" class="img-fluid bm-hero-art-img"/>
-                                </div>
-                            </div>
                         </div>
+                    </div>
+                    <!-- Right-bleed Hero Banner Image -->
+                    <div class="bm-hero-bleed-wrap">
+                        <img src="/beautymatch/static/src/img/hero_model_cosmetics.webp" alt="BeautyMatch Skincare Banner" class="bm-hero-bleed-img"/>
                     </div>
                 </section>
 

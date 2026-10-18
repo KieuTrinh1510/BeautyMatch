@@ -277,11 +277,27 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
         }
     }
 
-    // 1. HERO SECTION
+    // 1. HERO SECTION (Right-Bleed Banner)
     .bm-hero-section {
-        background: radial-gradient(circle at 75% 35%, #FBF6FC 0%, #FFFFFF 65%, #F8F3FA 100%);
-        padding: 40px 0 32px;
+        background: radial-gradient(circle at 25% 45%, #FFFFFF 0%, #FAF5FC 65%, #F4EBF7 100%);
+        position: relative;
+        overflow: hidden;
         border-bottom: 1px solid rgba(220, 206, 230, 0.4);
+
+        @media (min-width: 992px) {
+            min-height: 520px;
+            display: flex;
+            align-items: center;
+        }
+
+        .bm-hero-container {
+            z-index: 2;
+        }
+
+        .bm-hero-content-col {
+            position: relative;
+            z-index: 2;
+        }
 
         .bm-hero-pill-badge {
             display: inline-flex;
@@ -290,21 +306,21 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
             border: 1px solid #DFCEEC;
             color: #774C8B;
             border-radius: 50px;
-            padding: 4px 16px;
-            font-size: 0.78rem;
+            padding: 5px 18px;
+            font-size: 0.82rem;
             font-weight: 600;
             letter-spacing: 0.2px;
         }
 
         .bm-hero-heading {
-            font-size: 2.45rem;
+            font-size: 2.5rem;
             font-weight: 800;
             color: #361F44;
             line-height: 1.22;
             letter-spacing: -0.5px;
 
             @media (max-width: 576px) {
-                font-size: 1.55rem;
+                font-size: 1.65rem;
                 line-height: 1.25;
             }
 
@@ -317,9 +333,9 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
 
         .bm-hero-desc {
             color: #63576E;
-            font-size: 0.92rem;
-            line-height: 1.6;
-            max-width: 500px;
+            font-size: 0.95rem;
+            line-height: 1.65;
+            max-width: 520px;
         }
 
         .bm-btn-hero-primary {
@@ -328,9 +344,9 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
             background-color: #5D3770;
             color: #FFFFFF !important;
             border-radius: 50px;
-            padding: 10px 26px;
+            padding: 11px 28px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.92rem;
             text-decoration: none;
             box-shadow: 0 4px 14px rgba(93, 55, 112, 0.25);
             transition: all 0.2s ease;
@@ -349,9 +365,9 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
             color: #361F44 !important;
             border: 1px solid #D5C2E2;
             border-radius: 50px;
-            padding: 10px 24px;
+            padding: 11px 26px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.92rem;
             text-decoration: none;
             transition: all 0.2s ease;
 
@@ -364,35 +380,64 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
 
         .bm-hero-trust-bar {
             border-top: 1px solid rgba(220, 206, 230, 0.6);
-            padding-top: 16px;
+            padding-top: 18px;
 
             .bm-trust-item {
-                font-size: 0.72rem;
+                font-size: 0.76rem;
                 font-weight: 500;
                 color: #6E6278;
                 line-height: 1.25;
 
                 .bm-trust-icon {
-                    width: 28px;
-                    height: 28px;
+                    width: 30px;
+                    height: 30px;
                     border-radius: 8px;
                     background: #F3ECF8;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     color: #7B528D;
-                    font-size: 0.95rem;
+                    font-size: 1rem;
                     flex-shrink: 0;
                 }
             }
         }
 
-        .bm-hero-art-img {
-            max-height: 420px;
-            width: auto;
-            max-width: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 10px 25px rgba(143, 111, 168, 0.15));
+        // Right-Bleed Banner Image Wrap
+        .bm-hero-bleed-wrap {
+            position: relative;
+            width: 100%;
+            height: 360px;
+            overflow: hidden;
+
+            @media (min-width: 992px) {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                right: 0;
+                left: 50%;
+                width: 50%;
+                height: 100%;
+                z-index: 1;
+                border-top-left-radius: 36px;
+                border-bottom-left-radius: 36px;
+                box-shadow: -12px 0 35px rgba(110, 76, 126, 0.08);
+            }
+
+            @media (min-width: 1400px) {
+                left: 48%;
+                width: 52%;
+                border-top-left-radius: 44px;
+                border-bottom-left-radius: 44px;
+            }
+
+            .bm-hero-bleed-img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: center 25%;
+                display: block;
+            }
         }
     }
 
