@@ -23,11 +23,16 @@
 
                 <!-- 2. Cửa hàng (Dropdown với cấu trúc 4 nhóm chuẩn) -->
                 <li class="nav-item dropdown bm-nav-item-dropdown">
-                    <a href="/shop" t-attf-class="nav-link dropdown-toggle bm-nav-link #{'active' if curr_path.startswith('/shop') and not (curr_path.startswith('/shop/cart') or curr_path.startswith('/shop/checkout') or curr_path.startswith('/shop/confirmation') or curr_path.startswith('/shop/wishlist')) else ''}" data-bs-toggle="dropdown" aria-expanded="false">
-                        Cửa hàng
-                    </a>
-                    <div class="dropdown-menu bm-shop-dropdown shadow-lg border-0 p-3 mt-2 rounded-4">
-                        <div class="row g-3" style="min-width: 450px;">
+                    <div class="bm-nav-link-wrap d-flex align-items-center">
+                        <a href="/shop" t-attf-class="nav-link bm-nav-link #{'active' if curr_path.startswith('/shop') and not (curr_path.startswith('/shop/cart') or curr_path.startswith('/shop/checkout') or curr_path.startswith('/shop/confirmation') or curr_path.startswith('/shop/wishlist')) else ''}">
+                            Cửa hàng
+                        </a>
+                        <button type="button" class="btn p-0 bm-caret-btn d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Mở menu Cửa hàng">
+                            <i class="fa fa-angle-down bm-caret-icon"/>
+                        </button>
+                    </div>
+                    <div class="dropdown-menu bm-shop-dropdown shadow-lg border-0 p-3 rounded-4">
+                        <div class="row g-3" style="min-width: 460px;">
                             <!-- Nhóm 1 & 2 -->
                             <div class="col-6">
                                 <div class="bm-drop-group mb-3">
@@ -62,10 +67,15 @@
 
                 <!-- 3. Theo vấn đề da (Dropdown 4 tình trạng) -->
                 <li class="nav-item dropdown bm-nav-item-dropdown">
-                    <a href="/theo-van-de-da" t-attf-class="nav-link dropdown-toggle bm-nav-link #{'active' if curr_path == '/theo-van-de-da' else ''}" data-bs-toggle="dropdown" aria-expanded="false">
-                        Theo vấn đề da
-                    </a>
-                    <ul class="dropdown-menu bm-concern-dropdown border-0 shadow-lg p-2 mt-2 rounded-4" style="min-width: 220px;">
+                    <div class="bm-nav-link-wrap d-flex align-items-center">
+                        <a href="/theo-van-de-da" t-attf-class="nav-link bm-nav-link #{'active' if curr_path == '/theo-van-de-da' else ''}">
+                            Theo vấn đề da
+                        </a>
+                        <button type="button" class="btn p-0 bm-caret-btn d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Mở menu Theo vấn đề da">
+                            <i class="fa fa-angle-down bm-caret-icon"/>
+                        </button>
+                    </div>
+                    <ul class="dropdown-menu bm-concern-dropdown border-0 shadow-lg p-2 rounded-4" style="min-width: 230px;">
                         <li><a class="dropdown-item bm-drop-item rounded-2 py-2 px-3" href="/shop?concern=acne_oil"><i class="fa fa-tint text-primary me-2"/>Dầu &amp; mụn</a></li>
                         <li><a class="dropdown-item bm-drop-item rounded-2 py-2 px-3" href="/shop?concern=dryness"><i class="fa fa-leaf text-success me-2"/>Khô thiếu ẩm</a></li>
                         <li><a class="dropdown-item bm-drop-item rounded-2 py-2 px-3" href="/shop?concern=sensitivity"><i class="fa fa-heartbeat text-danger me-2"/>Nhạy cảm &amp; phục hồi</a></li>
@@ -95,6 +105,7 @@
                     <a href="/blog" t-attf-class="nav-link bm-nav-link #{'active' if curr_path.startswith('/blog') else ''}">Kiến thức</a>
                 </li>
             </ul>
+            <script type="text/javascript" src="/beautymatch/static/src/js/header_dropdown.js"/>
         </xpath>
 
         <!-- 1.3 Xóa số điện thoại demo khỏi header -->

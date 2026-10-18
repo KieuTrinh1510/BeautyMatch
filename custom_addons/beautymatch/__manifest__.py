@@ -67,6 +67,7 @@ Tính năng chính:
             'beautymatch/static/src/js/wishlist.js',
             'beautymatch/static/src/js/product_detail.js',
             'beautymatch/static/src/js/shop_filters.js',
+            'beautymatch/static/src/js/header_dropdown.js',
         ],
     },
     'installable': True,
