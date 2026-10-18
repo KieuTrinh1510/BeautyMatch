@@ -662,148 +662,148 @@
                             <!-- Product 1: Eucerin Sun Dry Touch -->
                             <div class="col">
                                 <div class="bm-product-card">
-                                    <div>
-                                        <div class="bm-prod-top">
-                                            <span class="bm-badge-ribbon bm-ribbon-coral">Bán chạy</span>
-                                            <a href="/shop/wishlist" class="bm-card-heart" title="Thêm vào danh sách yêu thích"><i class="fa fa-heart-o"/></a>
-                                        </div>
-                                        <div class="bm-prod-img-wrap">
-                                            <a href="/shop/euc-sdt-050-eucerin-sun-dry-touch-oil-control-spf50-82">
-                                                <img src="/beautymatch/static/src/img/products/eucerin_sun_dry_touch.webp" alt="Eucerin Sun Dry Touch Oil Control SPF50+"/>
-                                            </a>
-                                        </div>
-                                        <span class="bm-prod-brand">EUCERIN</span>
-                                        <h3 class="bm-prod-title">
-                                            <a href="/shop/euc-sdt-050-eucerin-sun-dry-touch-oil-control-spf50-82">
-                                                Eucerin Sun Dry Touch Oil Control SPF50+
-                                            </a>
-                                        </h3>
-                                        <div class="bm-prod-tags">
-                                            <span class="bm-prod-tag">Chống nắng</span>
-                                            <span class="bm-prod-tag">Kiểm soát dầu</span>
-                                        </div>
-                                        <div class="bm-prod-price">
-                                            520.000 đ
-                                        </div>
+                                    <div class="bm-prod-img-wrap position-relative">
+                                        <span class="bm-badge-ribbon bm-ribbon-coral">Bán chạy</span>
+                                        <a href="/shop/wishlist" class="bm-card-heart" title="Thêm vào danh sách yêu thích"><i class="fa fa-heart-o"/></a>
+                                        <a href="/shop/euc-sdt-050-eucerin-sun-dry-touch-oil-control-spf50-82" class="d-block w-100 h-100">
+                                            <img src="/beautymatch/static/src/img/products/eucerin_sun_dry_touch.webp" alt="Eucerin Sun Dry Touch Oil Control SPF50+"/>
+                                        </a>
                                     </div>
-                                    <form action="/shop/cart/update" method="post" class="w-100">
-                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                                        <input type="hidden" name="product_id" value="105"/>
-                                        <button type="submit" class="bm-btn-addtocart">
-                                            <i class="fa fa-shopping-cart me-2"/>Thêm vào giỏ hàng
-                                        </button>
-                                    </form>
+                                    <div class="bm-prod-info">
+                                        <div>
+                                            <span class="bm-prod-brand">EUCERIN</span>
+                                            <h3 class="bm-prod-title">
+                                                <a href="/shop/euc-sdt-050-eucerin-sun-dry-touch-oil-control-spf50-82">
+                                                    Eucerin Sun Dry Touch Oil Control SPF50+
+                                                </a>
+                                            </h3>
+                                            <div class="bm-prod-tags">
+                                                <span class="bm-prod-tag">Chống nắng</span>
+                                                <span class="bm-prod-tag">Kiểm soát dầu</span>
+                                            </div>
+                                            <div class="bm-prod-price">
+                                                520.000 đ
+                                            </div>
+                                        </div>
+                                        <form action="/shop/cart/update" method="post" class="w-100 mt-2">
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                            <input type="hidden" name="product_id" value="105"/>
+                                            <button type="submit" class="bm-btn-addtocart">
+                                                <i class="fa fa-shopping-cart me-2"/>Thêm vào giỏ hàng
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
 
                             <!-- Product 2: Cosrx Advanced Snail 96 -->
                             <div class="col">
                                 <div class="bm-product-card">
-                                    <div>
-                                        <div class="bm-prod-top">
-                                            <span class="bm-badge-ribbon bm-ribbon-orchid">Được yêu thích</span>
-                                            <a href="/shop/wishlist" class="bm-card-heart" title="Thêm vào danh sách yêu thích"><i class="fa fa-heart-o"/></a>
-                                        </div>
-                                        <div class="bm-prod-img-wrap">
-                                            <a href="/shop/csx-snl-100-cosrx-advanced-snail-96-mucin-power-essence-80">
-                                                <img src="/beautymatch/static/src/img/products/cosrx_snail_essence.webp" alt="Cosrx Advanced Snail 96 Mucin Power Essence"/>
-                                            </a>
-                                        </div>
-                                        <span class="bm-prod-brand">COSRX</span>
-                                        <h3 class="bm-prod-title">
-                                            <a href="/shop/csx-snl-100-cosrx-advanced-snail-96-mucin-power-essence-80">
-                                                Cosrx Advanced Snail 96 Mucin Power Essence
-                                            </a>
-                                        </h3>
-                                        <div class="bm-prod-tags">
-                                            <span class="bm-prod-tag">Phục hồi da</span>
-                                            <span class="bm-prod-tag">Cấp ẩm</span>
-                                        </div>
-                                        <div class="bm-prod-price">
-                                            350.000 đ
-                                        </div>
+                                    <div class="bm-prod-img-wrap position-relative">
+                                        <span class="bm-badge-ribbon bm-ribbon-orchid">Được yêu thích</span>
+                                        <a href="/shop/wishlist" class="bm-card-heart" title="Thêm vào danh sách yêu thích"><i class="fa fa-heart-o"/></a>
+                                        <a href="/shop/csx-snl-100-cosrx-advanced-snail-96-mucin-power-essence-80" class="d-block w-100 h-100">
+                                            <img src="/beautymatch/static/src/img/products/cosrx_snail_essence.webp" alt="Cosrx Advanced Snail 96 Mucin Power Essence"/>
+                                        </a>
                                     </div>
-                                    <form action="/shop/cart/update" method="post" class="w-100">
-                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                                        <input type="hidden" name="product_id" value="103"/>
-                                        <button type="submit" class="bm-btn-addtocart">
-                                            <i class="fa fa-shopping-cart me-2"/>Thêm vào giỏ hàng
-                                        </button>
-                                    </form>
+                                    <div class="bm-prod-info">
+                                        <div>
+                                            <span class="bm-prod-brand">COSRX</span>
+                                            <h3 class="bm-prod-title">
+                                                <a href="/shop/csx-snl-100-cosrx-advanced-snail-96-mucin-power-essence-80">
+                                                    Cosrx Advanced Snail 96 Mucin Power Essence
+                                                </a>
+                                            </h3>
+                                            <div class="bm-prod-tags">
+                                                <span class="bm-prod-tag">Phục hồi da</span>
+                                                <span class="bm-prod-tag">Cấp ẩm</span>
+                                            </div>
+                                            <div class="bm-prod-price">
+                                                350.000 đ
+                                            </div>
+                                        </div>
+                                        <form action="/shop/cart/update" method="post" class="w-100 mt-2">
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                            <input type="hidden" name="product_id" value="103"/>
+                                            <button type="submit" class="bm-btn-addtocart">
+                                                <i class="fa fa-shopping-cart me-2"/>Thêm vào giỏ hàng
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
 
                             <!-- Product 3: Anessa Perfect UV Sunscreen -->
                             <div class="col">
                                 <div class="bm-product-card">
-                                    <div>
-                                        <div class="bm-prod-top">
-                                            <span class="bm-badge-ribbon bm-ribbon-lavender">Mới</span>
-                                            <a href="/shop/wishlist" class="bm-card-heart" title="Thêm vào danh sách yêu thích"><i class="fa fa-heart-o"/></a>
-                                        </div>
-                                        <div class="bm-prod-img-wrap">
-                                            <a href="/shop/ane-puv-060-anessa-perfect-uv-sunscreen-skincare-milk-56">
-                                                <img src="/beautymatch/static/src/img/products/anessa_uv.webp" alt="Anessa Perfect UV Sunscreen Skincare Milk"/>
-                                            </a>
-                                        </div>
-                                        <span class="bm-prod-brand">ANESSA</span>
-                                        <h3 class="bm-prod-title">
-                                            <a href="/shop/ane-puv-060-anessa-perfect-uv-sunscreen-skincare-milk-56">
-                                                Anessa Perfect UV Sunscreen Skincare Milk
-                                            </a>
-                                        </h3>
-                                        <div class="bm-prod-tags">
-                                            <span class="bm-prod-tag">Chống nắng</span>
-                                            <span class="bm-prod-tag">Làm sáng da</span>
-                                        </div>
-                                        <div class="bm-prod-price">
-                                            660.000 đ
-                                        </div>
+                                    <div class="bm-prod-img-wrap position-relative">
+                                        <span class="bm-badge-ribbon bm-ribbon-lavender">Mới</span>
+                                        <a href="/shop/wishlist" class="bm-card-heart" title="Thêm vào danh sách yêu thích"><i class="fa fa-heart-o"/></a>
+                                        <a href="/shop/ane-puv-060-anessa-perfect-uv-sunscreen-skincare-milk-56" class="d-block w-100 h-100">
+                                            <img src="/beautymatch/static/src/img/products/anessa_uv.webp" alt="Anessa Perfect UV Sunscreen Skincare Milk"/>
+                                        </a>
                                     </div>
-                                    <form action="/shop/cart/update" method="post" class="w-100">
-                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                                        <input type="hidden" name="product_id" value="79"/>
-                                        <button type="submit" class="bm-btn-addtocart">
-                                            <i class="fa fa-shopping-cart me-2"/>Thêm vào giỏ hàng
-                                        </button>
-                                    </form>
+                                    <div class="bm-prod-info">
+                                        <div>
+                                            <span class="bm-prod-brand">ANESSA</span>
+                                            <h3 class="bm-prod-title">
+                                                <a href="/shop/ane-puv-060-anessa-perfect-uv-sunscreen-skincare-milk-56">
+                                                    Anessa Perfect UV Sunscreen Skincare Milk
+                                                </a>
+                                            </h3>
+                                            <div class="bm-prod-tags">
+                                                <span class="bm-prod-tag">Chống nắng</span>
+                                                <span class="bm-prod-tag">Làm sáng da</span>
+                                            </div>
+                                            <div class="bm-prod-price">
+                                                660.000 đ
+                                            </div>
+                                        </div>
+                                        <form action="/shop/cart/update" method="post" class="w-100 mt-2">
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                            <input type="hidden" name="product_id" value="79"/>
+                                            <button type="submit" class="bm-btn-addtocart">
+                                                <i class="fa fa-shopping-cart me-2"/>Thêm vào giỏ hàng
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
 
                             <!-- Product 4: CeraVe Moisturizing Cream -->
                             <div class="col">
                                 <div class="bm-product-card">
-                                    <div>
-                                        <div class="bm-prod-top">
-                                            <span class="bm-badge-ribbon bm-ribbon-rose">Cực hot</span>
-                                            <a href="/shop/wishlist" class="bm-card-heart" title="Thêm vào danh sách yêu thích"><i class="fa fa-heart-o"/></a>
-                                        </div>
-                                        <div class="bm-prod-img-wrap">
-                                            <a href="/shop/cv-mc-340-cerave-moisturizing-cream-53">
-                                                <img src="/beautymatch/static/src/img/products/cerave_moisturizing_cream.webp" alt="CeraVe Moisturizing Cream"/>
-                                            </a>
-                                        </div>
-                                        <span class="bm-prod-brand">CERAVE</span>
-                                        <h3 class="bm-prod-title">
-                                            <a href="/shop/cv-mc-340-cerave-moisturizing-cream-53">
-                                                CeraVe Moisturizing Cream
-                                            </a>
-                                        </h3>
-                                        <div class="bm-prod-tags">
-                                            <span class="bm-prod-tag">Dưỡng ẩm</span>
-                                            <span class="bm-prod-tag">Phục hồi da</span>
-                                        </div>
-                                        <div class="bm-prod-price">
-                                            420.000 đ <del>470.000 đ</del>
-                                        </div>
+                                    <div class="bm-prod-img-wrap position-relative">
+                                        <span class="bm-badge-ribbon bm-ribbon-rose">Cực hot</span>
+                                        <a href="/shop/wishlist" class="bm-card-heart" title="Thêm vào danh sách yêu thích"><i class="fa fa-heart-o"/></a>
+                                        <a href="/shop/cv-mc-340-cerave-moisturizing-cream-53" class="d-block w-100 h-100">
+                                            <img src="/beautymatch/static/src/img/products/cerave_moisturizing_cream.webp" alt="CeraVe Moisturizing Cream"/>
+                                        </a>
                                     </div>
-                                    <form action="/shop/cart/update" method="post" class="w-100">
-                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                                        <input type="hidden" name="product_id" value="76"/>
-                                        <button type="submit" class="bm-btn-addtocart">
-                                            <i class="fa fa-shopping-cart me-2"/>Thêm vào giỏ hàng
-                                        </button>
-                                    </form>
+                                    <div class="bm-prod-info">
+                                        <div>
+                                            <span class="bm-prod-brand">CERAVE</span>
+                                            <h3 class="bm-prod-title">
+                                                <a href="/shop/cv-mc-340-cerave-moisturizing-cream-53">
+                                                    CeraVe Moisturizing Cream
+                                                </a>
+                                            </h3>
+                                            <div class="bm-prod-tags">
+                                                <span class="bm-prod-tag">Dưỡng ẩm</span>
+                                                <span class="bm-prod-tag">Phục hồi da</span>
+                                            </div>
+                                            <div class="bm-prod-price">
+                                                420.000 đ <del>470.000 đ</del>
+                                            </div>
+                                        </div>
+                                        <form action="/shop/cart/update" method="post" class="w-100 mt-2">
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                            <input type="hidden" name="product_id" value="76"/>
+                                            <button type="submit" class="bm-btn-addtocart">
+                                                <i class="fa fa-shopping-cart me-2"/>Thêm vào giỏ hàng
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -813,9 +813,9 @@
                 <!-- ========================================== -->
                 <!-- 5. ROUTINE ("Xây dựng routine phù hợp")    -->
                 <!-- ========================================== -->
-                <section class="bm-section-routine py-4">
+                <section class="bm-section-routine py-5">
                     <div class="container">
-                        <div class="d-flex justify-content-between align-items-end mb-3">
+                        <div class="d-flex justify-content-between align-items-end mb-4">
                             <div>
                                 <h2 class="bm-section-title mb-1">Xây dựng routine phù hợp với bạn</h2>
                                 <p class="bm-section-sub mb-0">Một routine chuẩn xác và khoa học sẽ giúp bạn đạt hiệu quả chăm sóc da tốt nhất.</p>
@@ -898,9 +898,9 @@
                 <!-- ========================================== -->
                 <!-- 6. THÀNH PHẦN NỔI BẬT                      -->
                 <!-- ========================================== -->
-                <section class="bm-section-ingredients py-4">
+                <section class="bm-section-ingredients py-5">
                     <div class="container">
-                        <div class="d-flex justify-content-between align-items-end mb-3">
+                        <div class="d-flex justify-content-between align-items-end mb-4">
                             <div>
                                 <h2 class="bm-section-title mb-1">Thành phần nổi bật</h2>
                                 <p class="bm-section-sub mb-0">Khám phá các thành phần quan trọng giúp cải thiện làn da.</p>
@@ -981,10 +981,10 @@
                 <!-- ========================================== -->
                 <!-- 7. VÌ SAO CHỌN BEAUTYMATCH?                -->
                 <!-- ========================================== -->
-                <section class="bm-section-why py-4">
+                <section class="bm-section-why py-5">
                     <div class="container">
-                        <div class="text-center mb-4">
-                            <h2 class="bm-section-title mb-1">Vì sao chọn BeautyMatch?</h2>
+                        <div class="text-center mb-5">
+                            <h2 class="bm-section-title mb-2">Vì sao chọn BeautyMatch?</h2>
                             <p class="bm-section-sub mb-0">Chúng tôi đồng hành cùng bạn trên hành trình chăm sóc da thông minh và hiệu quả hơn.</p>
                         </div>
 

@@ -244,22 +244,22 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
 
     // Headings & Links in sections
     .bm-section-title {
-        font-size: 1.45rem;
+        font-size: 1.65rem;
         font-weight: 800;
-        color: #2F1B40;
+        color: #241335;
         letter-spacing: -0.3px;
     }
 
     .bm-section-sub {
-        font-size: 0.85rem;
-        color: #72657E;
+        font-size: 0.95rem;
+        color: #6C5D7B;
         line-height: 1.5;
     }
 
     .bm-link-viewall {
-        font-size: 0.82rem;
-        font-weight: 600;
-        color: #2F1B40;
+        font-size: 0.92rem;
+        font-weight: 650;
+        color: #241335;
         transition: color 0.15s ease;
         white-space: nowrap;
 
@@ -268,12 +268,12 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
         }
 
         i {
-            font-size: 0.75rem;
+            font-size: 0.82rem;
             transition: transform 0.15s ease;
         }
 
         &:hover i {
-            transform: translateX(3px);
+            transform: translateX(4px);
         }
     }
 
@@ -582,13 +582,14 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
     .bm-product-card {
         background: #FFFFFF;
         border: 1px solid #EDE4F2;
-        border-radius: 16px;
-        padding: 14px;
+        border-radius: 18px;
+        padding: 0;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         height: 100%;
         position: relative;
+        overflow: hidden;
         transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 
         &:hover {
@@ -597,16 +598,21 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
             box-shadow: 0 8px 24px rgba(110, 76, 126, 0.1);
         }
 
-        .bm-prod-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
+        .bm-prod-img-wrap {
+            height: 215px;
+            width: 100%;
+            position: relative;
+            background: #F7F6F9;
+            overflow: hidden;
 
             .bm-badge-ribbon {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                z-index: 2;
                 font-size: 0.68rem;
                 font-weight: 700;
-                padding: 3px 10px;
+                padding: 4px 10px;
                 border-radius: 50px;
                 line-height: 1;
 
@@ -629,36 +635,55 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
             }
 
             .bm-card-heart {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                z-index: 2;
                 color: #A396AD;
-                font-size: 0.95rem;
+                font-size: 0.92rem;
                 text-decoration: none;
-                transition: color 0.15s ease, transform 0.15s ease;
+                width: 28px;
+                height: 28px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.9);
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+                transition: color 0.15s ease, transform 0.15s ease, background-color 0.15s ease;
 
                 &:hover {
                     color: #C82D42;
-                    transform: scale(1.15);
+                    background: #FFFFFF;
+                    transform: scale(1.1);
                 }
             }
-        }
 
-        .bm-prod-img-wrap {
-            height: 145px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 10px;
-            overflow: hidden;
+            a {
+                display: block;
+                width: 100%;
+                height: 100%;
+            }
 
             img {
-                max-height: 135px;
-                max-width: 100%;
-                object-fit: contain;
-                transition: transform 0.25s ease;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+                transition: transform 0.28s ease;
             }
         }
 
         &:hover .bm-prod-img-wrap img {
-            transform: scale(1.04);
+            transform: scale(1.05);
+        }
+
+        .bm-prod-info {
+            padding: 12px 14px 14px 14px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
         }
 
         .bm-prod-brand {
@@ -749,93 +774,98 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
     // 5. ROUTINE
     .bm-routine-flow-card {
         background: #FFFFFF;
-        border: 1px solid #EBE2F1;
-        border-radius: 20px;
-        box-shadow: 0 4px 20px rgba(110, 76, 126, 0.05);
-        padding: 22px 28px;
+        border: 1.5px solid #EAE0F0;
+        border-radius: 24px;
+        box-shadow: 0 8px 30px rgba(110, 76, 126, 0.08);
+        padding: 32px 38px;
 
         .bm-routine-step-item {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 16px;
 
             .bm-step-img-box {
-                width: 48px;
-                height: 48px;
-                background: #F3ECF8;
+                width: 74px;
+                height: 74px;
+                background: #F6EDFB;
                 border-radius: 50%;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 overflow: hidden;
                 flex-shrink: 0;
+                box-shadow: 0 4px 14px rgba(110, 76, 126, 0.1);
 
                 img {
-                    max-height: 38px;
-                    max-width: 38px;
+                    max-height: 58px;
+                    max-width: 58px;
                     object-fit: contain;
                 }
             }
 
             .bm-step-text {
                 .bm-step-num {
-                    font-size: 0.68rem;
-                    font-weight: 700;
-                    color: #8F6FA8;
+                    font-size: 0.88rem;
+                    font-weight: 800;
+                    color: #814C94;
                     display: block;
                     line-height: 1;
-                    margin-bottom: 2px;
+                    margin-bottom: 4px;
+                    letter-spacing: 0.5px;
                 }
 
                 .bm-step-title {
-                    font-size: 0.84rem;
-                    font-weight: 700;
-                    color: #2F1B40;
-                    line-height: 1.2;
+                    font-size: 1.15rem;
+                    font-weight: 750;
+                    color: #241335;
+                    line-height: 1.25;
+                    margin-bottom: 3px;
                 }
 
                 .bm-step-desc {
-                    font-size: 0.68rem;
-                    color: #776C82;
-                    line-height: 1.25;
+                    font-size: 0.88rem;
+                    color: #695B77;
+                    line-height: 1.4;
                     display: block;
                 }
             }
         }
 
         .bm-step-arrow {
-            color: #CDB7DD;
-            font-size: 1.1rem;
-            padding: 0 4px;
+            color: #BFA6D3;
+            font-size: 1.5rem;
+            padding: 0 10px;
         }
     }
 
     // 6. THÀNH PHẦN NỔI BẬT
     .bm-ingredient-card {
         background: #FFFFFF;
-        border: 1px solid #EDE4F2;
-        border-radius: 16px;
-        padding: 12px 14px;
+        border: 1.5px solid #EAE0F0;
+        border-radius: 22px;
+        padding: 22px 22px;
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 18px;
         height: 100%;
         text-decoration: none;
-        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        box-shadow: 0 6px 20px rgba(110, 76, 126, 0.07);
+        transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
 
         &:hover {
-            transform: translateY(-2px);
-            border-color: #CBB4DB;
-            box-shadow: 0 6px 18px rgba(110, 76, 126, 0.08);
+            transform: translateY(-4px);
+            border-color: #B997CE;
+            box-shadow: 0 12px 32px rgba(110, 76, 126, 0.14);
         }
 
         .bm-ing-img-box {
-            width: 52px;
-            height: 52px;
-            border-radius: 12px;
+            width: 82px;
+            height: 82px;
+            border-radius: 18px;
             overflow: hidden;
             flex-shrink: 0;
             background: #F8F4FA;
+            box-shadow: 0 3px 12px rgba(110, 76, 126, 0.1);
 
             img {
                 width: 100%;
@@ -845,64 +875,75 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
         }
 
         .bm-ing-name {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #2F1B40;
+            font-size: 1.18rem;
+            font-weight: 750;
+            color: #241335;
         }
 
         .bm-ing-arrow {
-            font-size: 0.75rem;
-            color: #8F6FA8;
+            font-size: 1.05rem;
+            color: #7B528D;
+            transition: transform 0.18s ease;
+        }
+
+        &:hover .bm-ing-arrow {
+            transform: translate(2px, -2px);
+            color: #5D3770;
         }
 
         .bm-ing-desc {
-            font-size: 0.7rem;
-            color: #776C82;
-            line-height: 1.3;
+            font-size: 0.90rem;
+            color: #695B77;
+            line-height: 1.48;
+            margin-top: 5px;
         }
     }
 
     // 7. VÌ SAO CHỌN BEAUTYMATCH
     .bm-why-card {
         background: #FFFFFF;
-        border: 1px solid #EDE4F2;
-        border-radius: 16px;
-        padding: 16px;
+        border: 1.5px solid #EAE0F0;
+        border-radius: 22px;
+        padding: 28px 24px;
         display: flex;
         align-items: flex-start;
-        gap: 12px;
+        gap: 18px;
         height: 100%;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: 0 6px 20px rgba(110, 76, 126, 0.07);
+        transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
 
         &:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(110, 76, 126, 0.08);
+            transform: translateY(-4px);
+            border-color: #B997CE;
+            box-shadow: 0 12px 32px rgba(110, 76, 126, 0.14);
         }
 
         .bm-why-icon-box {
-            width: 42px;
-            height: 42px;
-            background: #F3ECF8;
-            border-radius: 12px;
+            width: 62px;
+            height: 62px;
+            background: #F4ECF8;
+            border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #6E4C7E;
-            font-size: 1.1rem;
+            font-size: 1.6rem;
             flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(110, 76, 126, 0.1);
         }
 
         .bm-why-title {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #2F1B40;
-            margin-bottom: 3px;
+            font-size: 1.16rem;
+            font-weight: 750;
+            color: #241335;
+            margin-bottom: 8px;
+            line-height: 1.3;
         }
 
         .bm-why-desc {
-            font-size: 0.71rem;
-            color: #776C82;
-            line-height: 1.35;
+            font-size: 0.92rem;
+            color: #695B77;
+            line-height: 1.55;
         }
     }
 
