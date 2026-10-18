@@ -245,20 +245,33 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
 
     // Headings & Links in sections
     .bm-section-title {
-        font-size: 1.65rem;
+        font-size: 32px;
         font-weight: 800;
         color: #241335;
         letter-spacing: -0.3px;
+        line-height: 1.25;
+
+        @media (max-width: 768px) {
+            font-size: 25px;
+        }
+
+        @media (max-width: 576px) {
+            font-size: 22px;
+        }
     }
 
     .bm-section-sub {
-        font-size: 0.95rem;
+        font-size: 16px;
         color: #6C5D7B;
         line-height: 1.5;
+
+        @media (max-width: 768px) {
+            font-size: 14.5px;
+        }
     }
 
     .bm-link-viewall {
-        font-size: 0.92rem;
+        font-size: 15.5px;
         font-weight: 650;
         color: #241335;
         transition: color 0.15s ease;
@@ -269,7 +282,7 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
         }
 
         i {
-            font-size: 0.82rem;
+            font-size: 14px;
             transition: transform 0.15s ease;
         }
 
@@ -446,6 +459,10 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
         box-shadow: 0 4px 20px rgba(110, 76, 126, 0.05);
         padding: 24px 28px;
 
+        @media (max-width: 576px) {
+            padding: 16px 14px;
+        }
+
         .bm-concern-item-card {
             background: #FFFFFF;
             border: 1px solid #EDE4F2;
@@ -487,22 +504,23 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
                 justify-content: space-between;
 
                 .bm-concern-name {
-                    font-size: 0.88rem;
+                    font-size: 17.5px;
                     font-weight: 700;
                     color: #2F1B40;
                     margin-bottom: 4px;
+                    line-height: 1.3;
                 }
 
                 .bm-concern-text {
-                    font-size: 0.72rem;
+                    font-size: 15px;
                     color: #776C82;
-                    line-height: 1.35;
+                    line-height: 1.4;
                     margin-bottom: 10px;
-                    min-height: 38px;
+                    min-height: 44px;
                 }
 
                 .bm-concern-action {
-                    font-size: 0.75rem;
+                    font-size: 15px;
                     font-weight: 600;
                     color: #7B528D;
                     text-decoration: none;
@@ -510,7 +528,7 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
                     align-items: center;
 
                     i {
-                        font-size: 0.7rem;
+                        font-size: 13px;
                         transition: transform 0.15s ease;
                     }
 
@@ -529,24 +547,42 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
         border-radius: 20px;
         padding: 34px 40px;
 
+        @media (max-width: 576px) {
+            padding: 24px 18px;
+        }
+
         .bm-quiz-title {
-            font-size: 1.55rem;
+            font-size: 31px;
             font-weight: 800;
             color: #361F44;
-            line-height: 1.15;
+            line-height: 1.2;
+            margin-bottom: 4px;
+
+            @media (max-width: 768px) {
+                font-size: 24px;
+            }
         }
 
         .bm-quiz-subtitle {
-            font-size: 1.25rem;
+            font-size: 25px;
             font-weight: 700;
             color: #5D3770;
+            line-height: 1.25;
+
+            @media (max-width: 768px) {
+                font-size: 20px;
+            }
         }
 
         .bm-quiz-desc {
-            font-size: 0.85rem;
+            font-size: 16px;
             color: #5E506B;
             line-height: 1.55;
-            max-width: 440px;
+            max-width: 460px;
+
+            @media (max-width: 768px) {
+                font-size: 14.5px;
+            }
         }
 
         .bm-btn-quiz {
@@ -555,9 +591,9 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
             background-color: #5D3770;
             color: #FFFFFF !important;
             border-radius: 50px;
-            padding: 10px 26px;
+            padding: 11px 28px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 15.5px;
             text-decoration: none;
             box-shadow: 0 4px 14px rgba(93, 55, 112, 0.25);
             transition: all 0.2s ease;
@@ -572,8 +608,8 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
         .bm-quiz-chip {
             background: #FFFFFF;
             border-radius: 50px;
-            padding: 6px 14px;
-            font-size: 0.76rem;
+            padding: 7px 16px;
+            font-size: 14.5px;
             font-weight: 500;
             color: #5D4968;
             box-shadow: 0 2px 8px rgba(110, 76, 126, 0.08);
@@ -582,6 +618,7 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
 
             i {
                 color: #8F6FA8;
+                font-size: 13px;
             }
         }
 
@@ -590,11 +627,11 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
             border: 1px solid #DFCEEC;
             border-radius: 14px;
             box-shadow: 0 4px 16px rgba(110, 76, 126, 0.1);
-            min-width: 170px;
+            min-width: 175px;
             padding: 16px 18px;
 
             .bm-plan-header {
-                font-size: 0.75rem;
+                font-size: 13.5px;
                 font-weight: 800;
                 color: #5D3770;
                 text-align: center;
@@ -605,16 +642,16 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
             }
 
             .bm-plan-item {
-                font-size: 0.72rem;
+                font-size: 13.5px;
                 color: #4A3E54;
                 display: flex;
                 align-items: center;
                 gap: 6px;
-                margin-bottom: 4px;
+                margin-bottom: 5px;
 
                 i {
                     color: #8F6FA8;
-                    font-size: 0.75rem;
+                    font-size: 13px;
                 }
             }
         }
@@ -732,22 +769,22 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
         }
 
         .bm-prod-brand {
-            font-size: 0.68rem;
+            font-size: 14.5px;
             font-weight: 700;
             color: #8C8197;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             display: block;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
         }
 
         .bm-prod-title {
-            font-size: 0.85rem;
+            font-size: 17.5px;
             font-weight: 700;
             color: #2F1B40;
             line-height: 1.3;
             margin-bottom: 8px;
-            height: 38px;
+            height: 46px;
             overflow: hidden;
             display: -webkit-box;
             -webkit-line-clamp: 2;
@@ -769,25 +806,26 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
             flex-wrap: wrap;
             gap: 4px;
             margin-bottom: 10px;
+            min-height: 26px;
 
             .bm-prod-tag {
                 background: #F3ECF8;
                 color: #6E4C7E;
                 border-radius: 50px;
-                padding: 2px 8px;
-                font-size: 0.65rem;
+                padding: 3px 9px;
+                font-size: 13.5px;
                 font-weight: 500;
             }
         }
 
         .bm-prod-price {
-            font-size: 1.05rem;
+            font-size: 22px;
             font-weight: 800;
             color: #2F1B40;
             margin-bottom: 12px;
 
             del {
-                font-size: 0.78rem;
+                font-size: 14.5px;
                 font-weight: normal;
                 color: #A396AD;
                 margin-left: 6px;
@@ -799,8 +837,8 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
             color: #FFFFFF;
             border: none;
             border-radius: 50px;
-            padding: 8px 0;
-            font-size: 0.8rem;
+            padding: 9px 0;
+            font-size: 15.5px;
             font-weight: 600;
             width: 100%;
             cursor: pointer;
@@ -808,6 +846,10 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
             align-items: center;
             justify-content: center;
             transition: all 0.2s ease;
+
+            i {
+                font-size: 14.5px;
+            }
 
             &:hover {
                 background-color: #4C2B5C;
@@ -817,21 +859,36 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
     }
 
     // 5. ROUTINE
+    .bm-section-routine {
+        padding-top: 48px;
+        padding-bottom: 24px;
+
+        @media (max-width: 768px) {
+            padding-top: 36px;
+            padding-bottom: 18px;
+        }
+    }
+
     .bm-routine-flow-card {
         background: #FFFFFF;
         border: 1.5px solid #EAE0F0;
         border-radius: 24px;
         box-shadow: 0 8px 30px rgba(110, 76, 126, 0.08);
-        padding: 32px 38px;
+        padding: 30px 34px;
+
+        @media (max-width: 576px) {
+            padding: 20px 16px;
+        }
 
         .bm-routine-step-item {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
+            min-width: 0;
 
             .bm-step-img-box {
-                width: 74px;
-                height: 74px;
+                width: 70px;
+                height: 70px;
                 background: #F6EDFB;
                 border-radius: 50%;
                 display: flex;
@@ -842,15 +899,17 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
                 box-shadow: 0 4px 14px rgba(110, 76, 126, 0.1);
 
                 img {
-                    max-height: 58px;
-                    max-width: 58px;
+                    max-height: 56px;
+                    max-width: 56px;
                     object-fit: contain;
                 }
             }
 
             .bm-step-text {
+                min-width: 0;
+
                 .bm-step-num {
-                    font-size: 0.88rem;
+                    font-size: 15.5px;
                     font-weight: 800;
                     color: #814C94;
                     display: block;
@@ -860,7 +919,7 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
                 }
 
                 .bm-step-title {
-                    font-size: 1.15rem;
+                    font-size: 18.5px;
                     font-weight: 750;
                     color: #241335;
                     line-height: 1.25;
@@ -868,9 +927,9 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
                 }
 
                 .bm-step-desc {
-                    font-size: 0.88rem;
+                    font-size: 15px;
                     color: #695B77;
-                    line-height: 1.4;
+                    line-height: 1.38;
                     display: block;
                 }
             }
@@ -878,20 +937,31 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
 
         .bm-step-arrow {
             color: #BFA6D3;
-            font-size: 1.5rem;
-            padding: 0 10px;
+            font-size: 1.4rem;
+            padding: 0 6px;
+            flex-shrink: 0;
         }
     }
 
     // 6. THÀNH PHẦN NỔI BẬT
+    .bm-section-ingredients {
+        padding-top: 28px;
+        padding-bottom: 48px;
+
+        @media (max-width: 768px) {
+            padding-top: 18px;
+            padding-bottom: 36px;
+        }
+    }
+
     .bm-ingredient-card {
         background: #FFFFFF;
         border: 1.5px solid #EAE0F0;
         border-radius: 22px;
-        padding: 22px 22px;
+        padding: 20px 20px;
         display: flex;
         align-items: center;
-        gap: 18px;
+        gap: 16px;
         height: 100%;
         text-decoration: none;
         box-shadow: 0 6px 20px rgba(110, 76, 126, 0.07);
@@ -904,8 +974,8 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
         }
 
         .bm-ing-img-box {
-            width: 82px;
-            height: 82px;
+            width: 78px;
+            height: 78px;
             border-radius: 18px;
             overflow: hidden;
             flex-shrink: 0;
@@ -920,13 +990,14 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
         }
 
         .bm-ing-name {
-            font-size: 1.18rem;
+            font-size: 18.5px;
             font-weight: 750;
             color: #241335;
+            line-height: 1.25;
         }
 
         .bm-ing-arrow {
-            font-size: 1.05rem;
+            font-size: 15px;
             color: #7B528D;
             transition: transform 0.18s ease;
         }
@@ -937,10 +1008,10 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
         }
 
         .bm-ing-desc {
-            font-size: 0.90rem;
+            font-size: 15px;
             color: #695B77;
-            line-height: 1.48;
-            margin-top: 5px;
+            line-height: 1.45;
+            margin-top: 4px;
         }
     }
 
@@ -949,10 +1020,10 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
         background: #FFFFFF;
         border: 1.5px solid #EAE0F0;
         border-radius: 22px;
-        padding: 28px 24px;
+        padding: 26px 22px;
         display: flex;
         align-items: flex-start;
-        gap: 18px;
+        gap: 16px;
         height: 100%;
         box-shadow: 0 6px 20px rgba(110, 76, 126, 0.07);
         transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
@@ -964,31 +1035,31 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
         }
 
         .bm-why-icon-box {
-            width: 62px;
-            height: 62px;
+            width: 60px;
+            height: 60px;
             background: #F4ECF8;
             border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #6E4C7E;
-            font-size: 1.6rem;
+            font-size: 1.55rem;
             flex-shrink: 0;
             box-shadow: 0 4px 12px rgba(110, 76, 126, 0.1);
         }
 
         .bm-why-title {
-            font-size: 1.16rem;
+            font-size: 18.5px;
             font-weight: 750;
             color: #241335;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             line-height: 1.3;
         }
 
         .bm-why-desc {
-            font-size: 0.92rem;
+            font-size: 15px;
             color: #695B77;
-            line-height: 1.55;
+            line-height: 1.5;
         }
     }
 
@@ -996,8 +1067,22 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
     .bm-cta-prefooter-card {
         background: linear-gradient(135deg, #653E78 0%, #7E5192 100%);
         border-radius: 20px;
-        padding: 24px 36px;
+        padding: 28px 38px;
         box-shadow: 0 8px 24px rgba(101, 62, 120, 0.22);
+
+        h3 {
+            font-size: 24px;
+            line-height: 1.3;
+        }
+
+        p {
+            font-size: 15px;
+        }
+
+        .btn {
+            font-size: 15px;
+            padding: 10px 22px;
+        }
 
         .bm-cta-flower-bg {
             position: absolute;

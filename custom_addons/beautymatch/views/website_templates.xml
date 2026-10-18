@@ -496,7 +496,7 @@
                 <section class="bm-section-concern py-4">
                     <div class="container">
                         <div class="bm-concern-card-wrapper">
-                            <div class="d-flex justify-content-between align-items-end mb-3">
+                            <div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-3">
                                 <div>
                                     <h2 class="bm-section-title mb-1">Bạn đang quan tâm điều gì?</h2>
                                     <p class="bm-section-sub mb-0">Chọn vấn đề da của bạn để khám phá sản phẩm phù hợp nhất.</p>
@@ -647,7 +647,7 @@
                 <!-- ========================================== -->
                 <section class="bm-section-featured py-4">
                     <div class="container">
-                        <div class="d-flex justify-content-between align-items-end mb-3">
+                        <div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-3">
                             <div>
                                 <h2 class="bm-section-title mb-1">Sản phẩm nổi bật</h2>
                                 <p class="bm-section-sub mb-0">Những sản phẩm được yêu thích và đánh giá cao tại BeautyMatch.</p>
@@ -812,9 +812,9 @@
                 <!-- ========================================== -->
                 <!-- 5. ROUTINE ("Xây dựng routine phù hợp")    -->
                 <!-- ========================================== -->
-                <section class="bm-section-routine py-5">
+                <section class="bm-section-routine">
                     <div class="container">
-                        <div class="d-flex justify-content-between align-items-end mb-4">
+                        <div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-4">
                             <div>
                                 <h2 class="bm-section-title mb-1">Xây dựng routine phù hợp với bạn</h2>
                                 <p class="bm-section-sub mb-0">Một routine chuẩn xác và khoa học sẽ giúp bạn đạt hiệu quả chăm sóc da tốt nhất.</p>
@@ -897,9 +897,9 @@
                 <!-- ========================================== -->
                 <!-- 6. THÀNH PHẦN NỔI BẬT                      -->
                 <!-- ========================================== -->
-                <section class="bm-section-ingredients py-5">
+                <section class="bm-section-ingredients">
                     <div class="container">
-                        <div class="d-flex justify-content-between align-items-end mb-4">
+                        <div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-4">
                             <div>
                                 <h2 class="bm-section-title mb-1">Thành phần nổi bật</h2>
                                 <p class="bm-section-sub mb-0">Khám phá các thành phần quan trọng giúp cải thiện làn da.</p>
@@ -1051,15 +1051,15 @@
                             </div>
                             <div class="row align-items-center position-relative" style="z-index: 2;">
                                 <div class="col-12 col-lg-7 ps-lg-5 mb-3 mb-lg-0 text-center text-lg-start">
-                                    <h3 class="fw-bold mb-1 fs-5 text-white">Đã sẵn sàng tìm skincare phù hợp với bạn?</h3>
-                                    <p class="mb-0 small text-white-50" style="font-size: 0.82rem;">Làm Beauty Quiz ngay để nhận gợi ý sản phẩm và routine thông minh hơn.</p>
+                                    <h3 class="fw-bold mb-1 text-white">Đã sẵn sàng tìm skincare phù hợp với bạn?</h3>
+                                    <p class="mb-0 text-white-50">Làm Beauty Quiz ngay để nhận gợi ý sản phẩm và routine thông minh hơn.</p>
                                 </div>
                                 <div class="col-12 col-lg-5 text-center text-lg-end">
                                     <div class="d-inline-flex flex-wrap gap-2 justify-content-center justify-content-lg-end">
-                                        <a href="/beauty-quiz" class="btn btn-light rounded-pill px-4 py-2 fw-bold" style="color: #5D3770; font-size: 0.82rem;">
+                                        <a href="/beauty-quiz" class="btn btn-light rounded-pill px-4 py-2 fw-bold" style="color: #5D3770;">
                                             Bắt đầu Beauty Quiz <i class="fa fa-arrow-right ms-1"/>
                                         </a>
-                                        <a href="/shop" class="btn btn-outline-light rounded-pill px-3 py-2 fw-semibold" style="font-size: 0.82rem;">
+                                        <a href="/shop" class="btn btn-outline-light rounded-pill px-3 py-2 fw-semibold">
                                             <i class="fa fa-shopping-bag me-1"/> Khám phá sản phẩm
                                         </a>
                                     </div>
