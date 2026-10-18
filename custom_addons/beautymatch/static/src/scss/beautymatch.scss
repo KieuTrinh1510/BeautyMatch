@@ -386,6 +386,11 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
     }
 }
 
+// 7.1.1 Shop Top Header Alignment (Align 'Tất cả sản phẩm' with sidebar top edge)
+.bm-shop-top-header {
+    padding-top: 11px !important;
+}
+
 // 7.2 Independent Sidebar Filter Panel
 .bm-sidebar-panel {
     width: 100% !important;
