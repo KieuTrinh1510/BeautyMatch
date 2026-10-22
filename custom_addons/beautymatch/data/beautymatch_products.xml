@@ -535,4 +535,208 @@
         <field name="beautymatch_is_featured" eval="True"/>
         <field name="beautymatch_is_quiz_recommended" eval="True"/>
     </record>
+
+    <!-- ======================================================== -->
+    <!-- 7. SẢN PHẨM BỔ SUNG MỞ RỘNG CỬA HÀNG (8 SẢN PHẨM MỚI)    -->
+    <!-- ======================================================== -->
+
+    <!-- 7.1 Sữa rửa mặt: SVR Sebiaclear Gel Moussant -->
+    <record id="product_template_svr_cleanser" model="product.template">
+        <field name="image_1920" type="base64" file="beautymatch/static/src/img/products/svr_gel_moussant.webp"/>
+        <field name="name">SVR Sebiaclear Gel Moussant</field>
+        <field name="beautymatch_brand">SVR</field>
+        <field name="default_code">SVR-SBC-200</field>
+        <field name="list_price">360000.0</field>
+        <field name="categ_id" ref="cat_skincare_cleanser"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_cleanser')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">oily</field>
+        <field name="beautymatch_skin_concern">acne_oil</field>
+        <field name="beautymatch_routine_step">cleanser</field>
+        <field name="beautymatch_usage_time">both</field>
+        <field name="beautymatch_origin">Pháp</field>
+        <field name="beautymatch_volume">200ml</field>
+        <field name="beautymatch_budget_level">mid</field>
+        <field name="beautymatch_key_ingredients">Gluconolactone, Niacinamide 4%, Mat SR 2%</field>
+        <field name="beautymatch_short_fit_reason">Gel rửa mặt không xà phòng làm sạch sâu bã nhờn, kiềm dầu và tẩy tế bào chết dịu nhẹ mà không gây khô da.</field>
+        <field name="beautymatch_is_featured" eval="True"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
+
+    <!-- 7.2 Serum: Paula's Choice 2% BHA Liquid Exfoliant -->
+    <record id="product_template_paula_bha" model="product.template">
+        <field name="image_1920" type="base64" file="beautymatch/static/src/img/products/paula_choice_bha.webp"/>
+        <field name="name">Paula's Choice Skin Perfecting 2% BHA Liquid Exfoliant</field>
+        <field name="beautymatch_brand">Paula's Choice</field>
+        <field name="default_code">PC-BHA-118</field>
+        <field name="list_price">890000.0</field>
+        <field name="categ_id" ref="cat_skincare_serum"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_serum')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">oily</field>
+        <field name="beautymatch_skin_concern">acne_oil</field>
+        <field name="beautymatch_routine_step">serum</field>
+        <field name="beautymatch_usage_time">pm</field>
+        <field name="beautymatch_origin">Mỹ</field>
+        <field name="beautymatch_volume">118ml</field>
+        <field name="beautymatch_budget_level">premium</field>
+        <field name="beautymatch_key_ingredients">Salicylic Acid (BHA) 2%, Chiết xuất trà xanh</field>
+        <field name="beautymatch_short_fit_reason">Dung dịch tẩy tế bào chết hóa học huyền thoại giúp thông thoáng lỗ chân lông, giảm mụn ẩn và mụn đầu đen hiệu quả.</field>
+        <field name="beautymatch_is_featured" eval="True"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
+
+    <!-- 7.3 Serum: Torriden DIVE-IN Low Molecular HA Serum -->
+    <record id="product_template_torriden_serum" model="product.template">
+        <field name="image_1920" type="base64" file="beautymatch/static/src/img/products/torriden_divein_serum.webp"/>
+        <field name="name">Torriden DIVE-IN Low Molecular Hyaluronic Acid Serum</field>
+        <field name="beautymatch_brand">Torriden</field>
+        <field name="default_code">TRD-DIV-050</field>
+        <field name="list_price">380000.0</field>
+        <field name="categ_id" ref="cat_skincare_serum"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_serum')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">dry</field>
+        <field name="beautymatch_skin_concern">dryness</field>
+        <field name="beautymatch_routine_step">serum</field>
+        <field name="beautymatch_usage_time">both</field>
+        <field name="beautymatch_origin">Hàn Quốc</field>
+        <field name="beautymatch_volume">50ml</field>
+        <field name="beautymatch_budget_level">mid</field>
+        <field name="beautymatch_key_ingredients">5 loại Hyaluronic Acid đa tầng, D-Panthenol B5, Allantoin</field>
+        <field name="beautymatch_short_fit_reason">Tinh chất cấp nước tức thì cho làn da mất nước, thẩm thấu nhanh không nhờn dính, làm dịu da căng rát.</field>
+        <field name="beautymatch_is_featured" eval="True"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
+
+    <!-- 7.4 Toner: Round Lab 1025 Dokdo Toner -->
+    <record id="product_template_roundlab_toner" model="product.template">
+        <field name="image_1920" type="base64" file="beautymatch/static/src/img/products/round_lab_dokdo_toner.webp"/>
+        <field name="name">Round Lab 1025 Dokdo Toner</field>
+        <field name="beautymatch_brand">Round Lab</field>
+        <field name="default_code">RL-DKD-200</field>
+        <field name="list_price">320000.0</field>
+        <field name="categ_id" ref="cat_skincare_toner"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_toner')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">sensitive</field>
+        <field name="beautymatch_skin_concern">sensitivity</field>
+        <field name="beautymatch_routine_step">toner</field>
+        <field name="beautymatch_usage_time">both</field>
+        <field name="beautymatch_origin">Hàn Quốc</field>
+        <field name="beautymatch_volume">200ml</field>
+        <field name="beautymatch_budget_level">mid</field>
+        <field name="beautymatch_key_ingredients">Nước biển sâu Ulleungdo, HATCHA-007, Panthenol, Allantoin</field>
+        <field name="beautymatch_short_fit_reason">Nước cân bằng số 1 Hàn Quốc giúp tẩy tế bào chết dịu nhẹ và bổ sung 72 khoáng chất tự nhiên nuôi dưỡng làn da.</field>
+        <field name="beautymatch_is_featured" eval="False"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
+
+    <!-- 7.5 Chống nắng: Bioré UV Aqua Rich Watery Essence SPF50+ -->
+    <record id="product_template_biore_sunscreen" model="product.template">
+        <field name="image_1920" type="base64" file="beautymatch/static/src/img/products/biore_aqua_rich.webp"/>
+        <field name="name">Bioré UV Aqua Rich Watery Essence SPF50+ PA++++</field>
+        <field name="beautymatch_brand">Bioré</field>
+        <field name="default_code">BIO-AQR-050</field>
+        <field name="list_price">215000.0</field>
+        <field name="categ_id" ref="cat_skincare_sunscreen"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_sunscreen')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">combination</field>
+        <field name="beautymatch_skin_concern">dullness</field>
+        <field name="beautymatch_routine_step">sunscreen</field>
+        <field name="beautymatch_usage_time">am</field>
+        <field name="beautymatch_origin">Nhật Bản</field>
+        <field name="beautymatch_volume">50g</field>
+        <field name="beautymatch_budget_level">budget</field>
+        <field name="beautymatch_key_ingredients">Màng lọc Micro Defense, Hyaluronic Acid, Chiết xuất sữa ong chúa</field>
+        <field name="beautymatch_short_fit_reason">Chống nắng màng nước bảo vệ đến từng vi điểm siêu nhỏ, kết cấu mỏng nhẹ tan trên da như nước không để lại vệt trắng.</field>
+        <field name="beautymatch_is_featured" eval="True"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
+
+    <!-- 7.6 Serum: Innisfree Green Tea Seed Hyaluronic Serum -->
+    <record id="product_template_innisfree_serum" model="product.template">
+        <field name="image_1920" type="base64" file="beautymatch/static/src/img/products/innisfree_green_tea.webp"/>
+        <field name="name">Innisfree Green Tea Seed Hyaluronic Serum</field>
+        <field name="beautymatch_brand">Innisfree</field>
+        <field name="default_code">INF-GTS-080</field>
+        <field name="list_price">490000.0</field>
+        <field name="categ_id" ref="cat_skincare_serum"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_serum')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">combination</field>
+        <field name="beautymatch_skin_concern">dryness</field>
+        <field name="beautymatch_routine_step">serum</field>
+        <field name="beautymatch_usage_time">both</field>
+        <field name="beautymatch_origin">Hàn Quốc</field>
+        <field name="beautymatch_volume">80ml</field>
+        <field name="beautymatch_budget_level">mid</field>
+        <field name="beautymatch_key_ingredients">Mầm trà xanh Jeju Beauty Green Tea, 5 loại Hyaluronic Acid</field>
+        <field name="beautymatch_short_fit_reason">Tinh chất dưỡng ẩm mầm trà xanh củng cố hàng rào bảo vệ da, phục hồi độ ẩm sâu và ngăn ngừa mất nước.</field>
+        <field name="beautymatch_is_featured" eval="False"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
+
+    <!-- 7.7 Toner: Kiehl's Calendula Herbal-Extract Alcohol-Free Toner -->
+    <record id="product_template_kiehls_toner" model="product.template">
+        <field name="image_1920" type="base64" file="beautymatch/static/src/img/products/kiehls_calendula_toner.webp"/>
+        <field name="name">Kiehl's Calendula Herbal-Extract Alcohol-Free Toner</field>
+        <field name="beautymatch_brand">Kiehl's</field>
+        <field name="default_code">KHL-CAL-250</field>
+        <field name="list_price">980000.0</field>
+        <field name="categ_id" ref="cat_skincare_toner"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_toner')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">oily</field>
+        <field name="beautymatch_skin_concern">sensitivity</field>
+        <field name="beautymatch_routine_step">toner</field>
+        <field name="beautymatch_usage_time">both</field>
+        <field name="beautymatch_origin">Mỹ</field>
+        <field name="beautymatch_volume">250ml</field>
+        <field name="beautymatch_budget_level">premium</field>
+        <field name="beautymatch_key_ingredients">Cánh hoa cúc Calendula thật, Allantoin, Rễ ngưu bàng</field>
+        <field name="beautymatch_short_fit_reason">Nước cân bằng hoa cúc trứ danh giúp làm dịu nốt mụn sưng, cân bằng dầu thừa và phục hồi da nhạy cảm.</field>
+        <field name="beautymatch_is_featured" eval="True"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
+
+    <!-- 7.8 Serum: Obagi Clinical Kinetin+ Rejuvenating Serum -->
+    <record id="product_template_obagi_serum" model="product.template">
+        <field name="image_1920" type="base64" file="beautymatch/static/src/img/products/obagi_kinetin_serum.webp"/>
+        <field name="name">Obagi Clinical Kinetin+ Rejuvenating Serum</field>
+        <field name="beautymatch_brand">Obagi</field>
+        <field name="default_code">OBG-KIN-030</field>
+        <field name="list_price">1350000.0</field>
+        <field name="categ_id" ref="cat_skincare_serum"/>
+        <field name="public_categ_ids" eval="[(6, 0, [ref('public_category_serum')])]"/>
+        <field name="website_published" eval="True"/>
+        <field name="sale_ok" eval="True"/>
+        <field name="is_storable" eval="True"/>
+        <field name="beautymatch_skin_type">sensitive</field>
+        <field name="beautymatch_skin_concern">barrier</field>
+        <field name="beautymatch_routine_step">serum</field>
+        <field name="beautymatch_usage_time">both</field>
+        <field name="beautymatch_origin">Mỹ</field>
+        <field name="beautymatch_volume">30ml</field>
+        <field name="beautymatch_budget_level">premium</field>
+        <field name="beautymatch_key_ingredients">Phức hợp Kinetin+ Zeatin, Peptide, Hyaluronic Acid</field>
+        <field name="beautymatch_short_fit_reason">Serum phục hồi chuyên sâu và làm trẻ hóa làn da nhạy cảm, thúc đẩy tái tạo tế bào và giảm nếp nhăn li ti.</field>
+        <field name="beautymatch_is_featured" eval="False"/>
+        <field name="beautymatch_is_quiz_recommended" eval="True"/>
+    </record>
 </odoo>

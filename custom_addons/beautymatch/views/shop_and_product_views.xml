@@ -410,11 +410,14 @@
 
     <template id="beautymatch_products_item" inherit_id="website_sale.products_item" name="BeautyMatch Clean Product Card">
         <xpath expr="//form" position="replace">
-            <form t-attf-class="oe_product_cart bm-product-card h-100 d-flex flex-column bg-white position-relative"
+            <form action="/beautymatch/cart/add" method="post"
+                  t-attf-class="oe_product_cart bm-product-card h-100 d-flex flex-column bg-white position-relative js_bm_cart_form"
                   t-att-data-publish="product.website_published and 'on' or 'off'"
                   role="article"
                   t-att-aria-label="product.name">
                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <t t-set="product_variant_id" t-value="product._get_first_possible_variant_id()"/>
+                <input type="hidden" name="product_id" t-att-value="product_variant_id"/>
 
                 <!-- Extra actions (Nút xóa khỏi Wishlist o_wish_rm khi đang ở trang Wishlist) -->
                 <t t-if="extra_actions">
@@ -502,36 +505,36 @@
                         </t>
                     </div>
 
-                    <!-- Giá và Nút Thao Tác (margin-top: auto để luôn thẳng hàng đáy) -->
-                    <div class="bm-card-footer mt-auto pt-2 border-top d-flex align-items-center justify-content-between">
-                        <div class="bm-card-price">
-                            <t t-if="product_price">
-                                <t t-out="product_price"/>
-                            </t>
-                            <t t-else="">
-                                <t t-set="template_price_vals" t-value="get_product_prices(product) if get_product_prices else {'price_reduce': combination_info['price'] if combination_info else product.list_price}"/>
-                                <span class="fw-bold fs-6 bm-price-text"
-                                      t-out="template_price_vals['price_reduce']"
-                                      t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
-                            </t>
+                    <!-- Giá và Nút Thao Tác (đồng bộ với sản phẩm nổi bật) -->
+                    <div class="bm-card-footer mt-auto pt-2 border-top">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <div class="bm-card-price">
+                                <t t-if="product_price">
+                                    <t t-out="product_price"/>
+                                </t>
+                                <t t-else="">
+                                    <t t-set="template_price_vals" t-value="get_product_prices(product) if get_product_prices else {'price_reduce': combination_info['price'] if combination_info else product.list_price}"/>
+                                    <span class="fw-bold fs-6 bm-price-text"
+                                          t-out="template_price_vals['price_reduce']"
+                                          t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                                </t>
+                            </div>
+                            <a t-att-href="product_href" class="bm-button-view shadow-sm text-decoration-none">
+                                Chi tiết <i class="fa fa-angle-right ms-1 small"/>
+                            </a>
                         </div>
-                        <div class="d-flex align-items-center gap-2">
-                            <t t-if="product_actions">
-                                <t t-out="product_actions"/>
-                            </t>
-                            <t t-else="">
-                                <button type="button"
-                                        class="btn btn-sm bm-card-add-cart-btn js_bm_quick_add_cart shadow-sm"
-                                        t-att-data-product-id="product._get_first_possible_variant_id()"
-                                        t-att-data-product-template-id="product.id"
-                                        title="Thêm vào giỏ">
-                                    <i class="fa fa-shopping-cart"/>
-                                </button>
-                                <a t-att-href="product_href" class="btn btn-sm bm-button-view shadow-sm">
-                                    Xem sản phẩm <i class="fa fa-arrow-right ms-1 small"/>
-                                </a>
-                            </t>
-                        </div>
+                        <t t-if="product_actions">
+                            <t t-out="product_actions"/>
+                        </t>
+                        <t t-else="">
+                            <button t-if="product_variant_id"
+                                    type="submit"
+                                    class="bm-btn-addtocart w-100"
+                                    t-att-data-product-id="product_variant_id"
+                                    t-att-data-product-template-id="product.id">
+                                <i class="fa fa-shopping-cart me-1"/>Thêm giỏ hàng
+                            </button>
+                        </t>
                     </div>
                 </div>
             </form>
@@ -576,7 +579,7 @@
     <!-- 5.3 Nâng cấp khối Decision Support và Vì sao phù hợp? -->
     <template id="beautymatch_product_decision_support" inherit_id="website_sale.product" name="BeautyMatch Decision Support &amp; Review Integration">
         <xpath expr="//div[@id='o_wsale_product_details_content']" position="inside">
-            <div class="bm-decision-support-box mt-4 p-4 rounded-4 shadow-sm bg-white border">
+            <div class="bm-decision-support-box mt-2 p-4 rounded-4 shadow-sm bg-white border">
                 <!-- Tiêu đề Section 1 -->
                 <div class="d-flex align-items-center mb-3 pb-2 border-bottom">
                     <span class="bm-badge bm-badge-primary me-2">

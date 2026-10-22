@@ -153,6 +153,15 @@ class ProductTemplate(models.Model):
             'product_template_cosrx_essence',
             'product_template_bioderma_cream',
             'product_template_eucerin_sunscreen',
+            # 8 sản phẩm mở rộng cửa hàng mới
+            'product_template_svr_cleanser',
+            'product_template_paula_bha',
+            'product_template_torriden_serum',
+            'product_template_roundlab_toner',
+            'product_template_biore_sunscreen',
+            'product_template_innisfree_serum',
+            'product_template_kiehls_toner',
+            'product_template_obagi_serum',
         ]
 
         Quant = self.env['stock.quant']

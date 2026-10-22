@@ -291,6 +291,24 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
         }
     }
 
+    // Mở rộng bề ngang cho các khối div nội dung trang chủ (trừ hero banner và bottom prefooter)
+    .bm-section-home-vouchers,
+    .bm-section-concern,
+    .bm-section-quiz,
+    .bm-section-featured,
+    .bm-section-routine,
+    .bm-section-ingredients,
+    .bm-section-why {
+        > .container {
+            max-width: 1440px !important;
+            width: 100% !important;
+
+            @media (min-width: 1600px) {
+                max-width: 1540px !important;
+            }
+        }
+    }
+
     // 1. HERO SECTION (Seamless Panoramic Banner)
     .bm-hero-section {
         background: #F5F0F9;
@@ -446,6 +464,252 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
                     color: #7B528D;
                     font-size: 1rem;
                     flex-shrink: 0;
+                }
+            }
+        }
+    }
+
+    // 1.5. VOUCHER BANNERS TRANG CHỦ (WELCOME10 & BEAUTY50)
+    .bm-section-home-vouchers {
+        position: relative;
+        z-index: 2;
+
+        .bm-home-voucher-card {
+            cursor: pointer;
+            height: 100%;
+            min-height: 132px;
+            border-radius: 18px;
+            padding: 16px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+            position: relative;
+            overflow: hidden;
+
+            &:hover {
+                transform: translateY(-3px);
+
+                .bm-voucher-img {
+                    transform: scale(1.06) rotate(-2deg);
+                }
+            }
+
+            .bm-voucher-left {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                min-width: 0;
+                flex-grow: 1;
+            }
+
+            .bm-voucher-img-wrap {
+                width: 86px;
+                height: 86px;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .bm-voucher-img {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+                filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.08));
+                transition: transform 0.3s ease;
+            }
+
+            .bm-voucher-text-group {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                min-width: 0;
+
+                .bm-voucher-subhead {
+                    font-size: 13.5px;
+                    font-weight: 600;
+                    line-height: 1.3;
+                    margin-bottom: 2px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                .bm-voucher-headline {
+                    font-size: 26px;
+                    font-weight: 800;
+                    line-height: 1.15;
+                    letter-spacing: -0.4px;
+                    white-space: nowrap;
+                }
+
+                .bm-voucher-detail {
+                    font-size: 13px;
+                    font-weight: 500;
+                    line-height: 1.3;
+                    margin-top: 2px;
+                    white-space: nowrap;
+                }
+            }
+
+            .bm-voucher-btn-wrap {
+                flex-shrink: 0;
+            }
+
+            .bm-voucher-btn {
+                display: inline-flex;
+                align-items: center;
+                font-size: 13.5px;
+                font-weight: 700;
+                padding: 9px 18px;
+                border-radius: 50px;
+                text-decoration: none;
+                white-space: nowrap;
+                transition: all 0.2s ease;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+                &:hover {
+                    transform: translateX(2px);
+                }
+            }
+
+            // Banner 1: Hồng Pastel - WELCOME10
+            &.bm-voucher-pink {
+                background: linear-gradient(135deg, #FFF1F4 0%, #FFE4EC 100%);
+                border: 1px solid rgba(255, 175, 192, 0.5);
+                box-shadow: 0 4px 18px rgba(224, 62, 101, 0.06);
+
+                &:hover {
+                    border-color: #FFAEC0;
+                    box-shadow: 0 8px 24px rgba(224, 62, 101, 0.12);
+                }
+
+                .bm-voucher-subhead {
+                    color: #8C4757;
+                }
+
+                .bm-voucher-headline {
+                    color: #D62C55;
+                }
+
+                .bm-voucher-detail {
+                    color: #B05C6E;
+                }
+
+                .bm-voucher-btn-pink {
+                    background: #FFFFFF;
+                    color: #D62C55;
+                    border: 1.5px solid #FFBDCB;
+
+                    &:hover {
+                        background: #D62C55;
+                        color: #FFFFFF;
+                        border-color: #D62C55;
+                        box-shadow: 0 4px 14px rgba(214, 44, 85, 0.28);
+                    }
+                }
+            }
+
+            // Banner 2: Tím Lavender - BEAUTY50
+            &.bm-voucher-purple {
+                background: linear-gradient(135deg, #F8F3FC 0%, #ECE0F7 100%);
+                border: 1px solid rgba(143, 111, 168, 0.35);
+                box-shadow: 0 4px 18px rgba(110, 76, 126, 0.06);
+
+                &:hover {
+                    border-color: #BF9FD6;
+                    box-shadow: 0 8px 24px rgba(110, 76, 126, 0.12);
+                }
+
+                .bm-voucher-subhead {
+                    color: #5B3A6E;
+                }
+
+                .bm-voucher-headline {
+                    color: #733B93;
+                }
+
+                .bm-voucher-btn-purple {
+                    background: #FFFFFF;
+                    color: #733B93;
+                    border: 1.5px solid #D2B7E2;
+
+                    &:hover {
+                        background: #733B93;
+                        color: #FFFFFF;
+                        border-color: #733B93;
+                        box-shadow: 0 4px 14px rgba(115, 59, 147, 0.28);
+                    }
+                }
+            }
+        }
+
+        // Responsive Breakpoints
+        @media (max-width: 991.98px) {
+            .bm-home-voucher-card {
+                padding: 13px 16px;
+                gap: 12px;
+                min-height: 125px;
+
+                .bm-voucher-left {
+                    gap: 12px;
+                }
+
+                .bm-voucher-img-wrap {
+                    width: 74px;
+                    height: 74px;
+                }
+
+                .bm-voucher-text-group {
+                    .bm-voucher-subhead {
+                        font-size: 12.5px;
+                    }
+
+                    .bm-voucher-headline {
+                        font-size: 22px;
+                    }
+
+                    .bm-voucher-detail {
+                        font-size: 12px;
+                    }
+                }
+
+                .bm-voucher-btn {
+                    padding: 8px 14px;
+                    font-size: 12.5px;
+                }
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .bm-home-voucher-card {
+                min-height: auto;
+                padding: 14px 16px;
+
+                .bm-voucher-img-wrap {
+                    width: 68px;
+                    height: 68px;
+                }
+
+                .bm-voucher-text-group {
+                    .bm-voucher-subhead {
+                        font-size: 12px;
+                    }
+
+                    .bm-voucher-headline {
+                        font-size: 20px;
+                    }
+
+                    .bm-voucher-detail {
+                        font-size: 11.5px;
+                    }
+                }
+
+                .bm-voucher-btn {
+                    padding: 7px 12px;
+                    font-size: 12px;
                 }
             }
         }
@@ -657,11 +921,46 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
         }
     }
 
-    // 4. SẢN PHẨM NỔI BẬT
+    // 4. SẢN PHẨM NỔI BẬT (5 sản phẩm mỗi hàng, card nhỏ gọn)
+    .bm-section-featured {
+        .bm-featured-grid-5 {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 16px;
+
+            > .col {
+                width: 100% !important;
+                max-width: 100% !important;
+                flex: none !important;
+                padding: 0 !important;
+            }
+
+            @media (max-width: 1280px) {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                gap: 14px;
+            }
+
+            @media (max-width: 992px) {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 12px;
+            }
+
+            @media (max-width: 768px) {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
+            }
+
+            @media (max-width: 480px) {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 8px;
+            }
+        }
+    }
+
     .bm-product-card {
         background: #FFFFFF;
         border: 1px solid #EDE4F2;
-        border-radius: 18px;
+        border-radius: 14px;
         padding: 0;
         display: flex;
         flex-direction: column;
@@ -674,11 +973,11 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
         &:hover {
             transform: translateY(-3px);
             border-color: #CBB4DB;
-            box-shadow: 0 8px 24px rgba(110, 76, 126, 0.1);
+            box-shadow: 0 6px 18px rgba(110, 76, 126, 0.08);
         }
 
         .bm-prod-img-wrap {
-            height: 215px;
+            height: 160px;
             width: 100%;
             position: relative;
             background: #F7F6F9;
@@ -686,12 +985,12 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
 
             .bm-badge-ribbon {
                 position: absolute;
-                top: 10px;
-                left: 10px;
+                top: 8px;
+                left: 8px;
                 z-index: 2;
-                font-size: 0.68rem;
+                font-size: 0.62rem;
                 font-weight: 700;
-                padding: 4px 10px;
+                padding: 3px 8px;
                 border-radius: 50px;
                 line-height: 1;
 
@@ -718,26 +1017,38 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
 
             .bm-card-heart {
                 position: absolute;
-                top: 10px;
-                right: 10px;
+                top: 8px;
+                right: 8px;
                 z-index: 2;
                 color: #A396AD;
-                font-size: 0.92rem;
+                font-size: 0.8rem;
                 text-decoration: none;
-                width: 28px;
-                height: 28px;
+                width: 26px;
+                height: 26px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 border-radius: 50%;
-                background: rgba(255, 255, 255, 0.9);
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+                background: rgba(255, 255, 255, 0.92);
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+                border: none;
+                padding: 0;
+                outline: none;
+                cursor: pointer;
                 transition: color 0.15s ease, transform 0.15s ease, background-color 0.15s ease;
 
                 &:hover {
                     color: #C82D42;
                     background: #FFFFFF;
                     transform: scale(1.1);
+                }
+
+                &.o_in_wishlist, &.text-danger {
+                    color: #C82D42 !important;
+
+                    .fa {
+                        color: #C82D42 !important;
+                    }
                 }
             }
 
@@ -761,7 +1072,7 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
         }
 
         .bm-prod-info {
-            padding: 12px 14px 14px 14px;
+            padding: 10px 10px 12px 10px;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
@@ -769,22 +1080,22 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
         }
 
         .bm-prod-brand {
-            font-size: 14.5px;
+            font-size: 11px;
             font-weight: 700;
             color: #8C8197;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
             display: block;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
 
         .bm-prod-title {
-            font-size: 17.5px;
-            font-weight: 700;
+            font-size: 13.5px;
+            font-weight: 600;
             color: #2F1B40;
-            line-height: 1.3;
-            margin-bottom: 8px;
-            height: 46px;
+            line-height: 1.35;
+            margin-bottom: 5px;
+            height: 36px;
             overflow: hidden;
             display: -webkit-box;
             -webkit-line-clamp: 2;
@@ -804,31 +1115,31 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
         .bm-prod-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 4px;
-            margin-bottom: 10px;
-            min-height: 26px;
+            gap: 3px;
+            margin-bottom: 6px;
+            min-height: 20px;
 
             .bm-prod-tag {
                 background: #F3ECF8;
                 color: #6E4C7E;
                 border-radius: 50px;
-                padding: 3px 9px;
-                font-size: 13.5px;
+                padding: 2px 7px;
+                font-size: 11px;
                 font-weight: 500;
             }
         }
 
         .bm-prod-price {
-            font-size: 22px;
-            font-weight: 800;
+            font-size: 16px;
+            font-weight: 700;
             color: #2F1B40;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
 
             del {
-                font-size: 14.5px;
+                font-size: 12px;
                 font-weight: normal;
                 color: #A396AD;
-                margin-left: 6px;
+                margin-left: 4px;
             }
         }
 
@@ -837,8 +1148,8 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
             color: #FFFFFF;
             border: none;
             border-radius: 50px;
-            padding: 9px 0;
-            font-size: 15.5px;
+            padding: 6.5px 0;
+            font-size: 12.5px;
             font-weight: 600;
             width: 100%;
             cursor: pointer;
@@ -848,12 +1159,13 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
             transition: all 0.2s ease;
 
             i {
-                font-size: 14.5px;
+                font-size: 12px;
+                margin-right: 4px;
             }
 
             &:hover {
                 background-color: #4C2B5C;
-                box-shadow: 0 4px 12px rgba(93, 55, 112, 0.3);
+                box-shadow: 0 4px 10px rgba(93, 55, 112, 0.25);
             }
         }
     }
@@ -889,19 +1201,23 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
             .bm-step-img-box {
                 width: 70px;
                 height: 70px;
-                background: #F6EDFB;
-                border-radius: 50%;
+                background: transparent !important;
+                border-radius: 50% !important;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                overflow: hidden;
+                overflow: hidden !important;
                 flex-shrink: 0;
-                box-shadow: 0 4px 14px rgba(110, 76, 126, 0.1);
+                box-shadow: 0 4px 14px rgba(110, 76, 126, 0.12);
 
                 img {
-                    max-height: 56px;
-                    max-width: 56px;
-                    object-fit: contain;
+                    width: 100% !important;
+                    height: 100% !important;
+                    max-width: 100% !important;
+                    max-height: 100% !important;
+                    object-fit: cover !important;
+                    border-radius: 50% !important;
+                    display: block;
                 }
             }
 
@@ -1653,26 +1969,53 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
         }
     }
 
-    .bm-button-view {
-        background: linear-gradient(135deg, #8F6FA8, #6E4C7E);
+    .bm-btn-addtocart {
+        background-color: #5D3770;
         color: #FFFFFF !important;
         border: none;
+        border-radius: 50px;
+        padding: 6.5px 0;
+        font-size: 12.5px;
+        font-weight: 600;
+        width: 100%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        text-decoration: none !important;
+
+        i {
+            font-size: 12px;
+            margin-right: 4px;
+        }
+
+        &:hover {
+            background-color: #4C2B5C;
+            box-shadow: 0 4px 10px rgba(93, 55, 112, 0.25);
+            color: #FFFFFF !important;
+        }
+    }
+
+    .bm-button-view {
+        background: #F8F4FA;
+        color: #6E4C7E !important;
+        border: 1px solid #EAE0F0;
         border-radius: 20px;
-        padding: 5px 11px;
-        font-size: 0.76rem;
+        padding: 3px 10px;
+        font-size: 0.74rem;
         font-weight: 600;
         text-decoration: none !important;
         display: inline-flex;
         align-items: center;
         white-space: nowrap;
-        gap: 4px;
+        gap: 3px;
         transition: all 0.2s ease;
 
         &:hover {
-            background: linear-gradient(135deg, #7E5F98, #5A3D68);
+            background: #6E4C7E;
             color: #FFFFFF !important;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(110, 76, 126, 0.28);
+            border-color: #6E4C7E;
         }
     }
 }
@@ -1680,8 +2023,24 @@ $bm-shadow-hover: 0 8px 24px rgba(110, 76, 126, 0.13);
 
 // 7.3 Product Detail Page Support & Decision Block
 .bm-decision-support-box {
+    margin-top: 0.5rem !important;
     border-radius: 20px !important;
     border: 1px solid #ECE3F2 !important;
+}
+
+// Giảm khoảng cách thưa giữa phần CTA/Chính sách và khối "Phù Hợp Với Bạn Khi"
+.o_wsale_product_details_content_section_cta {
+    margin-bottom: 0.5rem !important;
+}
+
+// Ẩn section Contact Us rỗng thừa của Odoo (vốn gây ra đường kẻ ngang thừa và khoảng trắng thưa lớn)
+.o_wsale_product_details_content_section_contact:has(#contact_us_wrapper.d-none),
+.o_wsale_product_details_content_section_contact:not(:has(a:not(.d-none))),
+.o_wsale_product_details_content_section_contact:empty {
+    display: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
 }
 
 .o_wsale_product_information {
@@ -2773,4 +3132,292 @@ header#top {
 
 .bm-sort-dropdown .dropdown-toggle::after {
     display: none !important;
+}
+
+// ========================================================
+// BEAUTYMATCH SHOPEE-STYLE CHECKOUT & PAYMENT STYLING
+// ========================================================
+
+.bm-checkout-container {
+    .bm-checkout-card {
+        background-color: #FFFFFF;
+        border: 1px solid #E6DCED;
+        border-radius: 14px;
+        box-shadow: 0 2px 12px rgba(110, 76, 126, 0.05);
+        padding: 1.25rem;
+        transition: box-shadow 0.2s ease;
+
+        &:hover {
+            box-shadow: 0 4px 18px rgba(110, 76, 126, 0.09);
+        }
+
+        &.bm-address-card {
+            border-top: 3.5px solid #8F6FA8;
+            background: linear-gradient(to bottom, #FDFAFF, #FFFFFF 20%);
+        }
+
+        .bm-card-header {
+            border-bottom: 1px solid #F3ECF8;
+            padding-bottom: 0.75rem;
+
+            .bm-header-icon-badge {
+                width: 34px;
+                height: 34px;
+                border-radius: 50%;
+                background-color: #F3ECF8;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.95rem;
+            }
+        }
+    }
+
+    // Shopee-style Voucher Ticket
+    .bm-voucher-ticket {
+        background-color: #FAFAFC;
+        border: 1px dashed #CDB7DD;
+        transition: all 0.2s ease-in-out;
+
+        &:hover:not(.disabled) {
+            border-color: #8F6FA8;
+            background-color: #FAF6FC;
+            cursor: pointer;
+        }
+
+        &.is-active {
+            border: 1.5px solid #8F6FA8 !important;
+            background-color: #FAF5FC !important;
+        }
+
+        &.disabled {
+            background-color: #F8F9FA;
+            border-color: #E2E8F0;
+            cursor: not-allowed;
+        }
+    }
+
+    .bm-table-products {
+        thead th {
+            background-color: #FAF8FB;
+            font-weight: 600;
+            color: #6c757d;
+            border-top: none;
+            padding-top: 0.6rem;
+            padding-bottom: 0.6rem;
+        }
+
+        tbody td {
+            vertical-align: middle;
+        }
+    }
+}
+
+// Color Utility Classes for Checkout
+.text-purple {
+    color: #6E4C7E !important;
+}
+
+.bg-purple-subtle {
+    background-color: #F3ECF8 !important;
+    color: #6E4C7E !important;
+}
+
+.bg-purple-subtle-light {
+    background-color: #FAF5FC !important;
+}
+
+.border-purple {
+    border-color: #8F6FA8 !important;
+}
+
+.btn-purple {
+    background: linear-gradient(135deg, #8F6FA8, #6E4C7E) !important;
+    border-color: #6E4C7E !important;
+    color: #FFFFFF !important;
+    font-weight: 600;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: linear-gradient(135deg, #7E5F97, #5C3D6C) !important;
+        color: #FFFFFF !important;
+        transform: translateY(-1px);
+    }
+}
+
+.btn-outline-purple {
+    border-color: #8F6FA8 !important;
+    color: #6E4C7E !important;
+    background: transparent;
+
+    &:hover {
+        background-color: #8F6FA8 !important;
+        color: #FFFFFF !important;
+    }
+}
+
+// Order Summary Card in Right Column
+body.o_website_sale_checkout {
+    // Ẩn bảng sản phẩm thừa ở cột phải vì đã có bảng chi tiết ở cột trái
+    .o_total_card .o_cart_products_table,
+    .o_total_card [name="cart_summary_info"] {
+        display: none !important;
+    }
+
+    // Ẩn form nhập mã voucher thủ công cũ
+    .show_coupon,
+    .coupon_form,
+    form[name="coupon_code"],
+    #coupon_box,
+    div[name="coupon_code"],
+    tr.oe_website_sale_gift_card,
+    .oe_website_sale_gift_card {
+        display: none !important;
+    }
+
+    // Tinh chỉnh card tóm tắt đơn hàng bên phải
+    .o_total_card {
+        border-radius: 14px !important;
+        border: 1px solid #E6DCED !important;
+        box-shadow: 0 4px 18px rgba(110, 76, 126, 0.08) !important;
+
+        .card-body {
+            &::before {
+                content: "Tóm tắt đơn hàng";
+                display: block;
+                font-size: 1.15rem;
+                font-weight: 700;
+                color: #2B2430;
+                margin-bottom: 1rem;
+                padding-bottom: 0.5rem;
+                border-bottom: 1.5px solid #F3ECF8;
+            }
+        }
+
+        // Tinh chỉnh dòng tổng tiền
+        tr[name="order_total"] {
+            border-top: 1.5px dashed #CDB7DD !important;
+            td {
+                padding-top: 0.85rem !important;
+                font-size: 1.15rem !important;
+                font-weight: 800 !important;
+                color: #6E4C7E !important;
+            }
+        }
+
+        // Nút Đặt hàng
+        button[name="o_payment_submit_button"] {
+            background: linear-gradient(135deg, #8F6FA8, #6E4C7E) !important;
+            border: none !important;
+            border-radius: 12px !important;
+            font-size: 1.1rem !important;
+            font-weight: 700 !important;
+            padding: 14px 28px !important;
+            box-shadow: 0 4px 16px rgba(110, 76, 126, 0.28) !important;
+            transition: all 0.2s ease !important;
+
+            &:hover:not(:disabled) {
+                background: linear-gradient(135deg, #7E5F97, #5C3D6C) !important;
+                transform: translateY(-2px) !important;
+                box-shadow: 0 6px 20px rgba(110, 76, 126, 0.35) !important;
+            }
+        }
+    }
+
+    // Ẩn nút "hoặc Back to address" vì địa chỉ đã hiển thị và đổi trực tiếp ở đầu trang
+    .o_cta_navigation_container {
+        .opacity-75,
+        a[href*='/shop/checkout'] {
+            display: none !important;
+        }
+    }
+
+    // Voucher ticket styling
+    .bm-voucher-ticket {
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.2s ease;
+
+        &:not(.disabled):hover {
+            border-color: #8F6FA8 !important;
+            background-color: #FAF5FC !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(110, 76, 126, 0.12);
+        }
+
+        &.disabled {
+            cursor: not-allowed;
+            background-color: #F8F9FA !important;
+        }
+    }
+}
+
+// Mobile Checkout 1-column Layout (Shopee Style)
+@media (max-width: 991.98px) {
+    body.o_website_sale_checkout {
+        // Ẩn thanh bottom-bar lơ lửng che mất nội dung
+        .o_mobile_summary {
+            display: none !important;
+        }
+
+        // Hiển thị card Tóm tắt đơn hàng và Đặt hàng nối tiếp ngay sau Phương thức thanh toán
+        .offset-xxl-1.col-12.col-lg-5,
+        div:has(> .o_total_card) {
+            display: block !important;
+            width: 100% !important;
+            margin-top: 1rem !important;
+            margin-bottom: 2.5rem !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+
+        .o_total_card {
+            display: block !important;
+        }
+    }
+}
+
+// Ẩn hoàn toàn form nhập mã voucher cũ trong giỏ hàng
+.coupon_form,
+.oe_website_sale_gift_card,
+tr.oe_website_sale_gift_card {
+    display: none !important;
+}
+
+// Shopee-style Address Management Styles
+.bm-address-item-card {
+    cursor: pointer;
+    border: 1px solid #E9ECEF;
+    background: #FFFFFF;
+    transition: all 0.2s ease;
+
+    &:hover {
+        border-color: #CDB7DD !important;
+        background-color: #FCFAFD !important;
+    }
+
+    &.border-purple {
+        border-color: #8F6FA8 !important;
+        background-color: #F8F4FA !important;
+    }
+
+    .form-check-input {
+        accent-color: #8F6FA8;
+        border-color: #CDB7DD;
+        width: 1.15em;
+        height: 1.15em;
+
+        &:checked {
+            background-color: #8F6FA8;
+            border-color: #8F6FA8;
+        }
+    }
+}
+
+.bg-purple-subtle-light {
+    background-color: #F8F4FA !important;
+}
+
+.hover-border-purple:hover {
+    border-color: #8F6FA8 !important;
 }

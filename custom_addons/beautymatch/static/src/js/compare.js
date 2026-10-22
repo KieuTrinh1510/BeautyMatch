@@ -232,20 +232,6 @@
         }
     }
 
-    // Quick add to cart
-    async function quickAddToCart(variantId, templateId) {
-        try {
-            await jsonRpc('/shop/cart/add', {
-                product_template_id: parseInt(templateId || variantId),
-                product_id: parseInt(variantId),
-                quantity: 1,
-            });
-            window.location.href = '/shop/cart';
-        } catch (e) {
-            window.location.href = '/shop/cart';
-        }
-    }
-
     // ========================================================
     // EVENT DELEGATION TRỰC TIẾP TRÊN DOCUMENT (KHÔNG CHỜ DOMContentLoaded)
     // ========================================================
@@ -273,16 +259,6 @@
             e.preventDefault();
             e.stopPropagation();
             clearAllCompare();
-            return;
-        }
-
-        const cartBtn = e.target.closest('.js_bm_quick_add_cart');
-        if (cartBtn) {
-            e.preventDefault();
-            e.stopPropagation();
-            const vId = cartBtn.dataset.productId;
-            const tId = cartBtn.dataset.productTemplateId;
-            if (vId) quickAddToCart(vId, tId);
             return;
         }
     });

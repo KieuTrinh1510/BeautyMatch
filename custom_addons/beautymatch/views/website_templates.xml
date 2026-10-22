@@ -491,6 +491,56 @@
                 </section>
 
                 <!-- ========================================== -->
+                <!-- 1.5. KHU VỰC VOUCHER ƯU ĐÃI TRANG CHỦ      -->
+                <!-- ========================================== -->
+                <section class="bm-section-home-vouchers py-2 my-1">
+                    <div class="container">
+                        <div class="row g-3 align-items-stretch">
+                            <!-- Banner 1: WELCOME10 (Hồng Pastel) -->
+                            <div class="col-12 col-md-6">
+                                <div class="bm-home-voucher-card bm-voucher-pink" onclick="window.location.href='/shop'">
+                                    <div class="bm-voucher-left">
+                                        <div class="bm-voucher-img-wrap">
+                                            <img src="/beautymatch/static/src/img/voucher_gift_pink.webp" alt="Hộp quà ưu đãi" class="bm-voucher-img" loading="lazy"/>
+                                        </div>
+                                        <div class="bm-voucher-text-group">
+                                            <span class="bm-voucher-subhead">Ưu đãi cho bạn mới</span>
+                                            <span class="bm-voucher-headline">Giảm 10%</span>
+                                            <span class="bm-voucher-detail">Đơn hàng đầu tiên</span>
+                                        </div>
+                                    </div>
+                                    <div class="bm-voucher-btn-wrap">
+                                        <a href="/shop" class="bm-voucher-btn bm-voucher-btn-pink" onclick="event.stopPropagation();">
+                                            Khám phá ưu đãi <i class="fa fa-arrow-right ms-1"/>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Banner 2: BEAUTY50 (Tím Lavender) -->
+                            <div class="col-12 col-md-6">
+                                <div class="bm-home-voucher-card bm-voucher-purple" onclick="window.location.href='/shop'">
+                                    <div class="bm-voucher-left">
+                                        <div class="bm-voucher-img-wrap">
+                                            <img src="/beautymatch/static/src/img/voucher_bag_purple.webp" alt="Túi quà ưu đãi" class="bm-voucher-img" loading="lazy"/>
+                                        </div>
+                                        <div class="bm-voucher-text-group">
+                                            <span class="bm-voucher-subhead">Ưu đãi đơn hàng từ 700.000đ</span>
+                                            <span class="bm-voucher-headline">Giảm 50.000đ</span>
+                                        </div>
+                                    </div>
+                                    <div class="bm-voucher-btn-wrap">
+                                        <a href="/shop" class="bm-voucher-btn bm-voucher-btn-purple" onclick="event.stopPropagation();">
+                                            Xem chi tiết <i class="fa fa-arrow-right ms-1"/>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========================================== -->
                 <!-- 2. VẤN ĐỀ DA ("Bạn đang quan tâm điều gì?") -->
                 <!-- ========================================== -->
                 <section class="bm-section-concern py-4">
@@ -657,13 +707,24 @@
                             </a>
                         </div>
 
-                        <div class="row g-3 row-cols-1 row-cols-sm-2 row-cols-md-4">
+                        <t t-set="bm_current_wishes" t-value="request.env['product.wishlist'].current() if request else []"/>
+                        <t t-set="bm_wish_tmpl_ids" t-value="bm_current_wishes.mapped('product_id.product_tmpl_id.id') if bm_current_wishes else []"/>
+
+                        <div class="bm-featured-grid-5">
                             <!-- Product 1: Eucerin Sun Dry Touch -->
                             <div class="col">
-                                <div class="bm-product-card">
+                                <t t-set="in_wish_1" t-value="82 in bm_wish_tmpl_ids"/>
+                                <div class="bm-product-card js_product">
                                     <div class="bm-prod-img-wrap position-relative">
                                         <span class="bm-badge-ribbon bm-ribbon-coral">Bán chạy</span>
-                                        <a href="/shop/wishlist" class="bm-card-heart" title="Thêm vào danh sách yêu thích"><i class="fa fa-heart-o"/></a>
+                                        <button type="button"
+                                                t-attf-class="btn p-0 bm-card-heart js_bm_wishlist_toggle #{in_wish_1 and 'o_in_wishlist text-danger' or ''}"
+                                                data-product-template-id="82"
+                                                data-product-product-id="105"
+                                                t-att-data-in-wish="in_wish_1 and '1' or '0'"
+                                                title="Yêu thích">
+                                            <i t-attf-class="fa #{in_wish_1 and 'fa-heart text-danger' or 'fa-heart-o'}"/>
+                                        </button>
                                         <a href="/shop/euc-sdt-050-eucerin-sun-dry-touch-oil-control-spf50-82" class="d-block w-100 h-100">
                                             <img src="/beautymatch/static/src/img/products/eucerin_sun_dry_touch.webp" alt="Eucerin Sun Dry Touch Oil Control SPF50+"/>
                                         </a>
@@ -684,11 +745,11 @@
                                                 520.000 đ
                                             </div>
                                         </div>
-                                        <form action="/shop/cart/update" method="post" class="w-100 mt-2">
+                                        <form action="/beautymatch/cart/add" method="post" class="w-100 mt-2 js_bm_cart_form">
                                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                             <input type="hidden" name="product_id" value="105"/>
                                             <button type="submit" class="bm-btn-addtocart">
-                                                <i class="fa fa-shopping-cart me-2"/>Thêm vào giỏ hàng
+                                                <i class="fa fa-shopping-cart me-1"/>Thêm giỏ hàng
                                             </button>
                                         </form>
                                     </div>
@@ -697,10 +758,18 @@
 
                             <!-- Product 2: Cosrx Advanced Snail 96 -->
                             <div class="col">
-                                <div class="bm-product-card">
+                                <t t-set="in_wish_2" t-value="80 in bm_wish_tmpl_ids"/>
+                                <div class="bm-product-card js_product">
                                     <div class="bm-prod-img-wrap position-relative">
                                         <span class="bm-badge-ribbon bm-ribbon-orchid">Được yêu thích</span>
-                                        <a href="/shop/wishlist" class="bm-card-heart" title="Thêm vào danh sách yêu thích"><i class="fa fa-heart-o"/></a>
+                                        <button type="button"
+                                                t-attf-class="btn p-0 bm-card-heart js_bm_wishlist_toggle #{in_wish_2 and 'o_in_wishlist text-danger' or ''}"
+                                                data-product-template-id="80"
+                                                data-product-product-id="103"
+                                                t-att-data-in-wish="in_wish_2 and '1' or '0'"
+                                                title="Yêu thích">
+                                            <i t-attf-class="fa #{in_wish_2 and 'fa-heart text-danger' or 'fa-heart-o'}"/>
+                                        </button>
                                         <a href="/shop/csx-snl-100-cosrx-advanced-snail-96-mucin-power-essence-80" class="d-block w-100 h-100">
                                             <img src="/beautymatch/static/src/img/products/cosrx_snail_essence.webp" alt="Cosrx Advanced Snail 96 Mucin Power Essence"/>
                                         </a>
@@ -721,11 +790,11 @@
                                                 350.000 đ
                                             </div>
                                         </div>
-                                        <form action="/shop/cart/update" method="post" class="w-100 mt-2">
+                                        <form action="/beautymatch/cart/add" method="post" class="w-100 mt-2 js_bm_cart_form">
                                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                             <input type="hidden" name="product_id" value="103"/>
                                             <button type="submit" class="bm-btn-addtocart">
-                                                <i class="fa fa-shopping-cart me-2"/>Thêm vào giỏ hàng
+                                                <i class="fa fa-shopping-cart me-1"/>Thêm giỏ hàng
                                             </button>
                                         </form>
                                     </div>
@@ -734,10 +803,18 @@
 
                             <!-- Product 3: Anessa Perfect UV Sunscreen -->
                             <div class="col">
-                                <div class="bm-product-card">
+                                <t t-set="in_wish_3" t-value="56 in bm_wish_tmpl_ids"/>
+                                <div class="bm-product-card js_product">
                                     <div class="bm-prod-img-wrap position-relative">
                                         <span class="bm-badge-ribbon bm-ribbon-lavender">Mới</span>
-                                        <a href="/shop/wishlist" class="bm-card-heart" title="Thêm vào danh sách yêu thích"><i class="fa fa-heart-o"/></a>
+                                        <button type="button"
+                                                t-attf-class="btn p-0 bm-card-heart js_bm_wishlist_toggle #{in_wish_3 and 'o_in_wishlist text-danger' or ''}"
+                                                data-product-template-id="56"
+                                                data-product-product-id="79"
+                                                t-att-data-in-wish="in_wish_3 and '1' or '0'"
+                                                title="Yêu thích">
+                                            <i t-attf-class="fa #{in_wish_3 and 'fa-heart text-danger' or 'fa-heart-o'}"/>
+                                        </button>
                                         <a href="/shop/ane-puv-060-anessa-perfect-uv-sunscreen-skincare-milk-56" class="d-block w-100 h-100">
                                             <img src="/beautymatch/static/src/img/products/anessa_uv.webp" alt="Anessa Perfect UV Sunscreen Skincare Milk"/>
                                         </a>
@@ -758,11 +835,11 @@
                                                 660.000 đ
                                             </div>
                                         </div>
-                                        <form action="/shop/cart/update" method="post" class="w-100 mt-2">
+                                        <form action="/beautymatch/cart/add" method="post" class="w-100 mt-2 js_bm_cart_form">
                                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                             <input type="hidden" name="product_id" value="79"/>
                                             <button type="submit" class="bm-btn-addtocart">
-                                                <i class="fa fa-shopping-cart me-2"/>Thêm vào giỏ hàng
+                                                <i class="fa fa-shopping-cart me-1"/>Thêm giỏ hàng
                                             </button>
                                         </form>
                                     </div>
@@ -771,10 +848,18 @@
 
                             <!-- Product 4: CeraVe Moisturizing Cream -->
                             <div class="col">
-                                <div class="bm-product-card">
+                                <t t-set="in_wish_4" t-value="53 in bm_wish_tmpl_ids"/>
+                                <div class="bm-product-card js_product">
                                     <div class="bm-prod-img-wrap position-relative">
                                         <span class="bm-badge-ribbon bm-ribbon-rose">Cực hot</span>
-                                        <a href="/shop/wishlist" class="bm-card-heart" title="Thêm vào danh sách yêu thích"><i class="fa fa-heart-o"/></a>
+                                        <button type="button"
+                                                t-attf-class="btn p-0 bm-card-heart js_bm_wishlist_toggle #{in_wish_4 and 'o_in_wishlist text-danger' or ''}"
+                                                data-product-template-id="53"
+                                                data-product-product-id="76"
+                                                t-att-data-in-wish="in_wish_4 and '1' or '0'"
+                                                title="Yêu thích">
+                                            <i t-attf-class="fa #{in_wish_4 and 'fa-heart text-danger' or 'fa-heart-o'}"/>
+                                        </button>
                                         <a href="/shop/cv-mc-340-cerave-moisturizing-cream-53" class="d-block w-100 h-100">
                                             <img src="/beautymatch/static/src/img/products/cerave_moisturizing_cream.webp" alt="CeraVe Moisturizing Cream"/>
                                         </a>
@@ -795,11 +880,281 @@
                                                 420.000 đ <del>470.000 đ</del>
                                             </div>
                                         </div>
-                                        <form action="/shop/cart/update" method="post" class="w-100 mt-2">
+                                        <form action="/beautymatch/cart/add" method="post" class="w-100 mt-2 js_bm_cart_form">
                                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                             <input type="hidden" name="product_id" value="76"/>
                                             <button type="submit" class="bm-btn-addtocart">
-                                                <i class="fa fa-shopping-cart me-2"/>Thêm vào giỏ hàng
+                                                <i class="fa fa-shopping-cart me-1"/>Thêm giỏ hàng
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Product 5: The Ordinary Niacinamide 10% + Zinc 1% -->
+                            <div class="col">
+                                <t t-set="in_wish_5" t-value="50 in bm_wish_tmpl_ids"/>
+                                <div class="bm-product-card js_product">
+                                    <div class="bm-prod-img-wrap position-relative">
+                                        <span class="bm-badge-ribbon bm-ribbon-coral">Bán chạy</span>
+                                        <button type="button"
+                                                t-attf-class="btn p-0 bm-card-heart js_bm_wishlist_toggle #{in_wish_5 and 'o_in_wishlist text-danger' or ''}"
+                                                data-product-template-id="50"
+                                                data-product-product-id="73"
+                                                t-att-data-in-wish="in_wish_5 and '1' or '0'"
+                                                title="Yêu thích">
+                                            <i t-attf-class="fa #{in_wish_5 and 'fa-heart text-danger' or 'fa-heart-o'}"/>
+                                        </button>
+                                        <a href="/shop/to-nia-030-the-ordinary-niacinamide-10-zinc-1-50" class="d-block w-100 h-100">
+                                            <img src="/beautymatch/static/src/img/products/ordinary_niacinamide.webp" alt="The Ordinary Niacinamide 10% + Zinc 1%"/>
+                                        </a>
+                                    </div>
+                                    <div class="bm-prod-info">
+                                        <div>
+                                            <span class="bm-prod-brand">THE ORDINARY</span>
+                                            <h3 class="bm-prod-title">
+                                                <a href="/shop/to-nia-030-the-ordinary-niacinamide-10-zinc-1-50">
+                                                    The Ordinary Niacinamide 10% + Zinc 1%
+                                                </a>
+                                            </h3>
+                                            <div class="bm-prod-tags">
+                                                <span class="bm-prod-tag">Giảm thâm mụn</span>
+                                                <span class="bm-prod-tag">Kiềm dầu</span>
+                                            </div>
+                                            <div class="bm-prod-price">
+                                                210.000 đ
+                                            </div>
+                                        </div>
+                                        <form action="/beautymatch/cart/add" method="post" class="w-100 mt-2 js_bm_cart_form">
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                            <input type="hidden" name="product_id" value="73"/>
+                                            <button type="submit" class="bm-btn-addtocart">
+                                                <i class="fa fa-shopping-cart me-1"/>Thêm giỏ hàng
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Product 6: La Roche-Posay Cicaplast Baume B5+ -->
+                            <div class="col">
+                                <t t-set="in_wish_6" t-value="54 in bm_wish_tmpl_ids"/>
+                                <div class="bm-product-card js_product">
+                                    <div class="bm-prod-img-wrap position-relative">
+                                        <span class="bm-badge-ribbon bm-ribbon-orchid">Phục hồi</span>
+                                        <button type="button"
+                                                t-attf-class="btn p-0 bm-card-heart js_bm_wishlist_toggle #{in_wish_6 and 'o_in_wishlist text-danger' or ''}"
+                                                data-product-template-id="54"
+                                                data-product-product-id="77"
+                                                t-att-data-in-wish="in_wish_6 and '1' or '0'"
+                                                title="Yêu thích">
+                                            <i t-attf-class="fa #{in_wish_6 and 'fa-heart text-danger' or 'fa-heart-o'}"/>
+                                        </button>
+                                        <a href="/shop/lrp-b5p-040-la-roche-posay-cicaplast-baume-b5-54" class="d-block w-100 h-100">
+                                            <img src="/beautymatch/static/src/img/products/cicaplast_b5.webp" alt="La Roche-Posay Cicaplast Baume B5+"/>
+                                        </a>
+                                    </div>
+                                    <div class="bm-prod-info">
+                                        <div>
+                                            <span class="bm-prod-brand">LA ROCHE-POSAY</span>
+                                            <h3 class="bm-prod-title">
+                                                <a href="/shop/lrp-b5p-040-la-roche-posay-cicaplast-baume-b5-54">
+                                                    La Roche-Posay Cicaplast Baume B5+
+                                                </a>
+                                            </h3>
+                                            <div class="bm-prod-tags">
+                                                <span class="bm-prod-tag">Phục hồi da</span>
+                                                <span class="bm-prod-tag">Làm dịu kích ứng</span>
+                                            </div>
+                                            <div class="bm-prod-price">
+                                                380.000 đ
+                                            </div>
+                                        </div>
+                                        <form action="/beautymatch/cart/add" method="post" class="w-100 mt-2 js_bm_cart_form">
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                            <input type="hidden" name="product_id" value="77"/>
+                                            <button type="submit" class="bm-btn-addtocart">
+                                                <i class="fa fa-shopping-cart me-1"/>Thêm giỏ hàng
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Product 7: Skin Aqua UV Super Moisture Gel -->
+                            <div class="col">
+                                <t t-set="in_wish_7" t-value="58 in bm_wish_tmpl_ids"/>
+                                <div class="bm-product-card js_product">
+                                    <div class="bm-prod-img-wrap position-relative">
+                                        <span class="bm-badge-ribbon bm-ribbon-lavender">Mới</span>
+                                        <button type="button"
+                                                t-attf-class="btn p-0 bm-card-heart js_bm_wishlist_toggle #{in_wish_7 and 'o_in_wishlist text-danger' or ''}"
+                                                data-product-template-id="58"
+                                                data-product-product-id="81"
+                                                t-att-data-in-wish="in_wish_7 and '1' or '0'"
+                                                title="Yêu thích">
+                                            <i t-attf-class="fa #{in_wish_7 and 'fa-heart text-danger' or 'fa-heart-o'}"/>
+                                        </button>
+                                        <a href="/shop/sa-uvm-110-skin-aqua-uv-super-moisture-gel-58" class="d-block w-100 h-100">
+                                            <img src="/beautymatch/static/src/img/products/skin_aqua_uv.webp" alt="Skin Aqua UV Super Moisture Gel"/>
+                                        </a>
+                                    </div>
+                                    <div class="bm-prod-info">
+                                        <div>
+                                            <span class="bm-prod-brand">SKIN AQUA</span>
+                                            <h3 class="bm-prod-title">
+                                                <a href="/shop/sa-uvm-110-skin-aqua-uv-super-moisture-gel-58">
+                                                    Skin Aqua UV Super Moisture Gel
+                                                </a>
+                                            </h3>
+                                            <div class="bm-prod-tags">
+                                                <span class="bm-prod-tag">Chống nắng</span>
+                                                <span class="bm-prod-tag">Cấp ẩm</span>
+                                            </div>
+                                            <div class="bm-prod-price">
+                                                220.000 đ
+                                            </div>
+                                        </div>
+                                        <form action="/beautymatch/cart/add" method="post" class="w-100 mt-2 js_bm_cart_form">
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                            <input type="hidden" name="product_id" value="81"/>
+                                            <button type="submit" class="bm-btn-addtocart">
+                                                <i class="fa fa-shopping-cart me-1"/>Thêm giỏ hàng
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Product 8: Thayers Witch Hazel Toner -->
+                            <div class="col">
+                                <t t-set="in_wish_8" t-value="79 in bm_wish_tmpl_ids"/>
+                                <div class="bm-product-card js_product">
+                                    <div class="bm-prod-img-wrap position-relative">
+                                        <span class="bm-badge-ribbon bm-ribbon-rose">Yêu thích</span>
+                                        <button type="button"
+                                                t-attf-class="btn p-0 bm-card-heart js_bm_wishlist_toggle #{in_wish_8 and 'o_in_wishlist text-danger' or ''}"
+                                                data-product-template-id="79"
+                                                data-product-product-id="102"
+                                                t-att-data-in-wish="in_wish_8 and '1' or '0'"
+                                                title="Yêu thích">
+                                            <i t-attf-class="fa #{in_wish_8 and 'fa-heart text-danger' or 'fa-heart-o'}"/>
+                                        </button>
+                                        <a href="/shop/thy-rose-355-thayers-witch-hazel-alcohol-free-toner-rose-petal-79" class="d-block w-100 h-100">
+                                            <img src="/beautymatch/static/src/img/products/thayers_rose_toner.webp" alt="Thayers Witch Hazel Toner Rose Petal"/>
+                                        </a>
+                                    </div>
+                                    <div class="bm-prod-info">
+                                        <div>
+                                            <span class="bm-prod-brand">THAYERS</span>
+                                            <h3 class="bm-prod-title">
+                                                <a href="/shop/thy-rose-355-thayers-witch-hazel-alcohol-free-toner-rose-petal-79">
+                                                    Thayers Witch Hazel Toner (Rose Petal)
+                                                </a>
+                                            </h3>
+                                            <div class="bm-prod-tags">
+                                                <span class="bm-prod-tag">Cân bằng pH</span>
+                                                <span class="bm-prod-tag">Dịu nhẹ</span>
+                                            </div>
+                                            <div class="bm-prod-price">
+                                                290.000 đ
+                                            </div>
+                                        </div>
+                                        <form action="/beautymatch/cart/add" method="post" class="w-100 mt-2 js_bm_cart_form">
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                            <input type="hidden" name="product_id" value="102"/>
+                                            <button type="submit" class="bm-btn-addtocart">
+                                                <i class="fa fa-shopping-cart me-1"/>Thêm giỏ hàng
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Product 9: SVR Sebiaclear Gel Moussant -->
+                            <div class="col">
+                                <t t-set="in_wish_9" t-value="89 in bm_wish_tmpl_ids"/>
+                                <div class="bm-product-card js_product">
+                                    <div class="bm-prod-img-wrap position-relative">
+                                        <span class="bm-badge-ribbon bm-ribbon-coral">Kiềm dầu</span>
+                                        <button type="button"
+                                                t-attf-class="btn p-0 bm-card-heart js_bm_wishlist_toggle #{in_wish_9 and 'o_in_wishlist text-danger' or ''}"
+                                                data-product-template-id="89"
+                                                data-product-product-id="112"
+                                                t-att-data-in-wish="in_wish_9 and '1' or '0'"
+                                                title="Yêu thích">
+                                            <i t-attf-class="fa #{in_wish_9 and 'fa-heart text-danger' or 'fa-heart-o'}"/>
+                                        </button>
+                                        <a href="/shop/svr-sbc-200-svr-sebiaclear-gel-moussant-89" class="d-block w-100 h-100">
+                                            <img src="/beautymatch/static/src/img/products/svr_gel_moussant.webp" alt="SVR Sebiaclear Gel Moussant"/>
+                                        </a>
+                                    </div>
+                                    <div class="bm-prod-info">
+                                        <div>
+                                            <span class="bm-prod-brand">SVR</span>
+                                            <h3 class="bm-prod-title">
+                                                <a href="/shop/svr-sbc-200-svr-sebiaclear-gel-moussant-89">
+                                                    SVR Sebiaclear Gel Moussant
+                                                </a>
+                                            </h3>
+                                            <div class="bm-prod-tags">
+                                                <span class="bm-prod-tag">Làm sạch</span>
+                                                <span class="bm-prod-tag">Kiềm dầu</span>
+                                            </div>
+                                            <div class="bm-prod-price">
+                                                380.000 đ
+                                            </div>
+                                        </div>
+                                        <form action="/beautymatch/cart/add" method="post" class="w-100 mt-2 js_bm_cart_form">
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                            <input type="hidden" name="product_id" value="112"/>
+                                            <button type="submit" class="bm-btn-addtocart">
+                                                <i class="fa fa-shopping-cart me-1"/>Thêm giỏ hàng
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Product 10: Paula's Choice 2% BHA Liquid Exfoliant -->
+                            <div class="col">
+                                <t t-set="in_wish_10" t-value="90 in bm_wish_tmpl_ids"/>
+                                <div class="bm-product-card js_product">
+                                    <div class="bm-prod-img-wrap position-relative">
+                                        <span class="bm-badge-ribbon bm-ribbon-orchid">Tẩy da chết</span>
+                                        <button type="button"
+                                                t-attf-class="btn p-0 bm-card-heart js_bm_wishlist_toggle #{in_wish_10 and 'o_in_wishlist text-danger' or ''}"
+                                                data-product-template-id="90"
+                                                data-product-product-id="113"
+                                                t-att-data-in-wish="in_wish_10 and '1' or '0'"
+                                                title="Yêu thích">
+                                            <i t-attf-class="fa #{in_wish_10 and 'fa-heart text-danger' or 'fa-heart-o'}"/>
+                                        </button>
+                                        <a href="/shop/pc-bha-118-paula-s-choice-skin-perfecting-2-bha-liquid-exfoliant-90" class="d-block w-100 h-100">
+                                            <img src="/beautymatch/static/src/img/products/paula_choice_bha.webp" alt="Paula's Choice Skin Perfecting 2% BHA Liquid Exfoliant"/>
+                                        </a>
+                                    </div>
+                                    <div class="bm-prod-info">
+                                        <div>
+                                            <span class="bm-prod-brand">PAULA'S CHOICE</span>
+                                            <h3 class="bm-prod-title">
+                                                <a href="/shop/pc-bha-118-paula-s-choice-skin-perfecting-2-bha-liquid-exfoliant-90">
+                                                    Paula's Choice 2% BHA Liquid Exfoliant
+                                                </a>
+                                            </h3>
+                                            <div class="bm-prod-tags">
+                                                <span class="bm-prod-tag">Giảm mụn</span>
+                                                <span class="bm-prod-tag">Mờ thâm</span>
+                                            </div>
+                                            <div class="bm-prod-price">
+                                                890.000 đ
+                                            </div>
+                                        </div>
+                                        <form action="/beautymatch/cart/add" method="post" class="w-100 mt-2 js_bm_cart_form">
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                            <input type="hidden" name="product_id" value="113"/>
+                                            <button type="submit" class="bm-btn-addtocart">
+                                                <i class="fa fa-shopping-cart me-1"/>Thêm giỏ hàng
                                             </button>
                                         </form>
                                     </div>
@@ -828,8 +1183,8 @@
                             <div class="d-flex flex-wrap flex-lg-nowrap align-items-center justify-content-between gap-3">
                                 <!-- Step 01 -->
                                 <div class="bm-routine-step-item">
-                                    <div class="bm-step-img-box">
-                                        <img src="/beautymatch/static/src/img/routine_step_01.webp" alt="Làm sạch"/>
+                                    <div class="bm-step-img-box" style="background: transparent !important; border-radius: 50% !important; overflow: hidden !important; width: 70px !important; height: 70px !important;">
+                                        <img src="/beautymatch/static/src/img/routine_step_01.webp" alt="Làm sạch" class="rounded-circle" style="width: 100% !important; height: 100% !important; object-fit: cover !important; border-radius: 50% !important; display: block;"/>
                                     </div>
                                     <div class="bm-step-text">
                                         <span class="bm-step-num">01</span>
@@ -841,8 +1196,8 @@
 
                                 <!-- Step 02 -->
                                 <div class="bm-routine-step-item">
-                                    <div class="bm-step-img-box">
-                                        <img src="/beautymatch/static/src/img/routine_step_02.webp" alt="Cân bằng"/>
+                                    <div class="bm-step-img-box" style="background: transparent !important; border-radius: 50% !important; overflow: hidden !important; width: 70px !important; height: 70px !important;">
+                                        <img src="/beautymatch/static/src/img/routine_step_02.webp" alt="Cân bằng" class="rounded-circle" style="width: 100% !important; height: 100% !important; object-fit: cover !important; border-radius: 50% !important; display: block;"/>
                                     </div>
                                     <div class="bm-step-text">
                                         <span class="bm-step-num">02</span>
@@ -854,8 +1209,8 @@
 
                                 <!-- Step 03 -->
                                 <div class="bm-routine-step-item">
-                                    <div class="bm-step-img-box">
-                                        <img src="/beautymatch/static/src/img/routine_step_03.webp" alt="Serum"/>
+                                    <div class="bm-step-img-box" style="background: transparent !important; border-radius: 50% !important; overflow: hidden !important; width: 70px !important; height: 70px !important;">
+                                        <img src="/beautymatch/static/src/img/routine_step_03.webp" alt="Serum" class="rounded-circle" style="width: 100% !important; height: 100% !important; object-fit: cover !important; border-radius: 50% !important; display: block;"/>
                                     </div>
                                     <div class="bm-step-text">
                                         <span class="bm-step-num">03</span>
@@ -867,8 +1222,8 @@
 
                                 <!-- Step 04 -->
                                 <div class="bm-routine-step-item">
-                                    <div class="bm-step-img-box">
-                                        <img src="/beautymatch/static/src/img/routine_step_04.webp" alt="Dưỡng ẩm"/>
+                                    <div class="bm-step-img-box" style="background: transparent !important; border-radius: 50% !important; overflow: hidden !important; width: 70px !important; height: 70px !important;">
+                                        <img src="/beautymatch/static/src/img/routine_step_04.webp" alt="Dưỡng ẩm" class="rounded-circle" style="width: 100% !important; height: 100% !important; object-fit: cover !important; border-radius: 50% !important; display: block;"/>
                                     </div>
                                     <div class="bm-step-text">
                                         <span class="bm-step-num">04</span>
@@ -880,8 +1235,8 @@
 
                                 <!-- Step 05 -->
                                 <div class="bm-routine-step-item">
-                                    <div class="bm-step-img-box">
-                                        <img src="/beautymatch/static/src/img/routine_step_05.webp" alt="Chống nắng"/>
+                                    <div class="bm-step-img-box" style="background: transparent !important; border-radius: 50% !important; overflow: hidden !important; width: 70px !important; height: 70px !important;">
+                                        <img src="/beautymatch/static/src/img/routine_step_05.webp" alt="Chống nắng" class="rounded-circle" style="width: 100% !important; height: 100% !important; object-fit: cover !important; border-radius: 50% !important; display: block;"/>
                                     </div>
                                     <div class="bm-step-text">
                                         <span class="bm-step-num">05</span>

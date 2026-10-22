@@ -16,6 +16,7 @@ from odoo.addons.website.controllers.main import Website  # type: ignore
 from odoo.addons.website_sale.controllers.main import WebsiteSale  # type: ignore
 # pyrefly: ignore[missing-import]
 from odoo.addons.website_sale.controllers.cart import Cart  # type: ignore
+from odoo.tools.translate import _lt  # type: ignore
 
 _logger = logging.getLogger(__name__)
 
@@ -26,16 +27,62 @@ class BeautyMatchWebsite(Website):
     def index(self, **kw):
         """Trang chủ chuyên biệt của BeautyMatch (Dedicated Homepage)"""
         ProductTemplate = request.env['product.template'].sudo()
-        # Lấy tối đa 4 sản phẩm nổi bật được cấu hình beautymatch_is_featured
+        # Lấy 10 sản phẩm nổi bật được cấu hình beautymatch_is_featured (2 hàng x 5 sản phẩm)
         featured_products = ProductTemplate.search([
             ('website_published', '=', True),
             ('sale_ok', '=', True),
             ('beautymatch_is_featured', '=', True),
-        ], limit=4, order='sequence, id desc')
+        ], limit=10, order='sequence, id desc')
 
         return request.render('beautymatch.homepage', {
             'featured_products': featured_products,
         })
+
+    @http.route(['/beautymatch/cart/add', '/shop/cart/bm_add'], type='http', auth='public', methods=['POST', 'GET'], website=True, sitemap=False, csrf=False)
+    def quick_add_to_cart(self, product_id=None, quantity=1, redirect_to='/shop/cart', **kw):
+        """Thêm nhanh sản phẩm vào giỏ hàng qua HTTP (hỗ trợ cả form POST truyền thống lẫn AJAX)."""
+        if not product_id:
+            return request.redirect('/shop')
+        try:
+            product_id = int(product_id)
+            quantity = int(quantity or 1)
+        except (ValueError, TypeError):
+            return request.redirect('/shop')
+
+        order_sudo = request.cart or request.website._create_cart()
+        if request.session.get('bm_retained_cart_id'):
+            retained_id = request.session.get('bm_retained_cart_id')
+            retained_order = request.env['sale.order'].sudo().browse(retained_id).exists()
+            if retained_order and retained_order.state == 'draft':
+                if order_sudo and order_sudo.id != retained_order.id:
+                    for line in retained_order.order_line:
+                        line.write({'order_id': order_sudo.id, 'bm_is_selected': False})
+                    retained_order.sudo().unlink()
+                    request.session.pop('bm_retained_cart_id', None)
+            else:
+                request.session.pop('bm_retained_cart_id', None)
+
+        product = request.env['product.product'].sudo().browse(product_id).exists()
+        if product and product.sale_ok:
+            order_sudo.with_context(skip_cart_verification=True)._cart_add(
+                product_id=product.id,
+                quantity=quantity,
+            )
+            request.session['website_sale_cart_quantity'] = int(order_sudo.cart_quantity)
+
+        # Nếu là AJAX request
+        if request.httprequest.headers.get('X-Requested-With') == 'XMLHttpRequest' or kw.get('ajax'):
+            import json
+            return request.make_response(
+                json.dumps({
+                    'status': 'success',
+                    'cart_quantity': int(order_sudo.cart_quantity),
+                    'product_name': product.name if product else '',
+                }),
+                headers=[('Content-Type', 'application/json')]
+            )
+
+        return request.redirect(redirect_to or '/shop/cart')
 
 
 class BeautyMatchWebsiteSale(WebsiteSale):
@@ -279,6 +326,439 @@ class BeautyMatchWebsiteSale(WebsiteSale):
             request.session.touch()
 
         return super().product(product, category=category, search=search, **kwargs)
+
+    @http.route(
+        '/shop/checkout', type='http', methods=['GET', 'POST'], auth='public', website=True, sitemap=False
+    )
+    def shop_checkout(self, try_skip_step=None, **query_params):
+        """Chuyển hướng thông minh đến trang thanh toán thống nhất Shopee-style (/shop/payment).
+        Chỉ thanh toán các sản phẩm được tích chọn (bm_is_selected=True).
+        Các sản phẩm không chọn được bảo toàn sang retained_order để giữ lại trong giỏ hàng.
+        """
+        order_sudo = request.cart
+        if not order_sudo or not order_sudo.order_line:
+            return request.redirect('/shop/cart')
+
+        prod_lines = order_sudo.order_line.filtered(
+            lambda l: not l.is_reward_line and not l.is_delivery and not l.reward_id
+        )
+        selected_lines = prod_lines.filtered('bm_is_selected')
+        unselected_lines = prod_lines.filtered(lambda l: not l.bm_is_selected)
+
+        # 1. Nếu không có sản phẩm nào được chọn -> quay lại giỏ hàng
+        if not selected_lines:
+            return request.redirect('/shop/cart')
+
+        # 2. Nếu có sản phẩm KHÔNG chọn -> tách sang retained_order để bảo toàn trong giỏ
+        if unselected_lines:
+            retained_order = False
+            if request.session.get('bm_retained_cart_id'):
+                retained_order = request.env['sale.order'].sudo().browse(request.session['bm_retained_cart_id']).exists()
+                if not retained_order or retained_order.state != 'draft':
+                    retained_order = False
+
+            if not retained_order:
+                retained_order = request.env['sale.order'].sudo().create({
+                    'partner_id': order_sudo.partner_id.id,
+                    'partner_invoice_id': order_sudo.partner_invoice_id.id,
+                    'partner_shipping_id': order_sudo.partner_shipping_id.id,
+                    'pricelist_id': order_sudo.pricelist_id.id,
+                    'company_id': order_sudo.company_id.id,
+                    'website_id': order_sudo.website_id.id,
+                    'team_id': order_sudo.team_id.id,
+                    'state': 'draft',
+                    'bm_is_retained_cart': True,
+                })
+
+            unselected_lines.write({'order_id': retained_order.id})
+            request.session['bm_retained_cart_id'] = retained_order.id
+
+        # 3. Dọn dẹp voucher / rewards cũ để tính toán mới chính xác trên các sản phẩm đã chọn
+        order_sudo._clean_beautymatch_rewards()
+        order_sudo._recompute_prices()
+
+        request.session['sale_last_order_id'] = order_sudo.id
+
+        if redirection := self._check_cart(order_sudo):
+            return redirection
+
+        return request.redirect('/shop/payment')
+
+    def _check_addresses(self, order_sudo):
+        """Cho phép vào thẳng /shop/payment để khách hàng xem và cập nhật địa chỉ trực tiếp trên modal"""
+        return None
+
+    @http.route('/shop/payment', type='http', auth='public', website=True, sitemap=False, list_as_website_content=_lt("Shop Payment"))
+    def shop_payment(self, **post):
+        """Trang thanh toán BeautyMatch.
+        Kiểm tra backend nghiêm ngặt:
+        1. Phải có ít nhất 1 sản phẩm được chọn (bm_is_selected=True).
+        2. Nếu 0 sản phẩm được chọn -> chặn truy cập, chuyển hướng về /shop/cart (TC08).
+        3. Nếu có sản phẩm chưa chọn nhưng chưa được tách (do khách vào thẳng /shop/payment) -> tách sang retained_order.
+        """
+        order_sudo = request.cart
+        if not order_sudo or not order_sudo.order_line:
+            return request.redirect('/shop/cart')
+
+        prod_lines = order_sudo.order_line.filtered(
+            lambda l: not l.is_reward_line and not l.is_delivery and not l.reward_id
+        )
+        selected_lines = prod_lines.filtered('bm_is_selected')
+        unselected_lines = prod_lines.filtered(lambda l: not l.bm_is_selected)
+
+        # 1. Chặn truy cập nếu không có sản phẩm nào được chọn
+        if not selected_lines:
+            return request.redirect('/shop/cart')
+
+        # 2. Nếu có sản phẩm chưa chọn -> tách sang retained_order
+        if unselected_lines:
+            retained_order = False
+            if request.session.get('bm_retained_cart_id'):
+                retained_order = request.env['sale.order'].sudo().browse(request.session['bm_retained_cart_id']).exists()
+                if not retained_order or retained_order.state != 'draft':
+                    retained_order = False
+
+            if not retained_order:
+                retained_order = request.env['sale.order'].sudo().create({
+                    'partner_id': order_sudo.partner_id.id,
+                    'partner_invoice_id': order_sudo.partner_invoice_id.id,
+                    'partner_shipping_id': order_sudo.partner_shipping_id.id,
+                    'pricelist_id': order_sudo.pricelist_id.id,
+                    'company_id': order_sudo.company_id.id,
+                    'website_id': order_sudo.website_id.id,
+                    'team_id': order_sudo.team_id.id,
+                    'state': 'draft',
+                    'bm_is_retained_cart': True,
+                })
+
+            unselected_lines.write({'order_id': retained_order.id})
+            request.session['bm_retained_cart_id'] = retained_order.id
+            order_sudo._clean_beautymatch_rewards()
+            order_sudo._recompute_prices()
+
+        return super().shop_payment(**post)
+
+    @http.route(['/shop/confirmation'], type='http', auth="public", website=True, sitemap=False, list_as_website_content=_lt("Shop Confirmation"))
+    def shop_payment_confirmation(self, **post):
+        """Xác nhận đơn hàng và kích hoạt lại các sản phẩm chưa thanh toán vào giỏ hàng"""
+        res = super().shop_payment_confirmation(**post)
+
+        if request.session.get('bm_retained_cart_id'):
+            retained_id = request.session.pop('bm_retained_cart_id')
+            retained_order = request.env['sale.order'].sudo().browse(retained_id).exists()
+            if retained_order and retained_order.state == 'draft':
+                request.session['sale_order_id'] = retained_order.id
+                request.session['website_sale_cart_quantity'] = retained_order.cart_quantity
+                request.cart = retained_order
+                retained_order.order_line.write({'bm_is_selected': True})
+
+        return res
+
+    def _get_shop_payment_values(self, order, **kwargs):
+        values = super()._get_shop_payment_values(order, **kwargs)
+
+        values['submit_button_label'] = 'Đặt hàng'
+        values['bm_voucher_info'] = order._get_beautymatch_voucher_summary()
+
+        if order._has_deliverable_products():
+            available_dms = order._get_delivery_methods()
+            values['delivery_methods'] = available_dms
+            if not order.carrier_id and available_dms:
+                preferred = order._get_preferred_delivery_method(available_dms) or available_dms[0]
+                rate = preferred.rate_shipment(order)
+                order._set_delivery_method(preferred, rate=rate)
+
+        partner_sudo = order.partner_id
+        is_public = request.website.is_public_user()
+        if partner_sudo and not is_public:
+            commercial = partner_sudo.commercial_partner_id
+            addrs = request.env['res.partner'].sudo().search([
+                '|',
+                ('id', '=', commercial.id),
+                ('parent_id', '=', commercial.id),
+            ], order='bm_is_default_shipping desc, id desc')
+            valid_addrs = addrs.filtered(lambda a: a.type in ('delivery', 'contact') and a.active)
+            if valid_addrs and not any(a.bm_is_default_shipping for a in valid_addrs):
+                default_target = valid_addrs.filtered(lambda a: a.id == commercial.id) or valid_addrs[0]
+                default_target.sudo().write({'bm_is_default_shipping': True})
+            values['delivery_addresses'] = valid_addrs or commercial
+            # Đảm bảo đơn hàng trỏ tới một địa chỉ giao hàng hợp lệ
+            if not order.partner_shipping_id or (valid_addrs and order.partner_shipping_id not in valid_addrs):
+                default_addr = valid_addrs.filtered(lambda a: a.bm_is_default_shipping) or valid_addrs[0]
+                order.sudo().write({'partner_shipping_id': default_addr.id})
+        else:
+            values['delivery_addresses'] = order.partner_shipping_id or order.partner_id
+
+        return values
+
+    @http.route('/shop/beautymatch/apply_voucher', type='jsonrpc', auth='public', website=True)
+    def beautymatch_apply_voucher(self, code=None, **kwargs):
+        """Áp dụng hoặc gỡ bỏ 1 trong 2 voucher BeautyMatch (WELCOME10 / BEAUTY50)"""
+        order_sudo = request.cart
+        if not order_sudo:
+            return {'error': 'Không tìm thấy thông tin giỏ hàng.'}
+
+        result = order_sudo._apply_beautymatch_single_voucher(code)
+        if result.get('error'):
+            return result
+
+        v_info = order_sudo._get_beautymatch_voucher_summary()
+        amount_delivery_formatted = 'Miễn phí' if order_sudo.amount_delivery == 0.0 else f"{order_sudo.amount_delivery:,.0f} ₫"
+        reward_formatted = f"-{v_info['reward_amount']:,.0f} ₫" if v_info['reward_amount'] > 0 else "0 ₫"
+
+        return {
+            'success': True,
+            'applied_code': v_info['applied_code'],
+            'reward_amount': reward_formatted,
+            'has_reward': (v_info['reward_amount'] > 0),
+            'amount_untaxed': f"{order_sudo.amount_untaxed:,.0f} ₫",
+            'amount_delivery': amount_delivery_formatted,
+            'is_delivery_free': (order_sudo.amount_delivery == 0.0),
+            'amount_total': f"{order_sudo.amount_total:,.0f} ₫",
+            'vouchers': v_info['vouchers'],
+        }
+
+    @http.route('/shop/beautymatch/update_shipping_address', type='jsonrpc', auth='public', website=True)
+    def beautymatch_update_shipping_address(self, partner_id=None, **kwargs):
+        """Chọn địa chỉ nhận hàng cho đơn hàng hiện tại"""
+        order_sudo = request.cart
+        if not order_sudo:
+            return {'error': 'Không tìm thấy giỏ hàng.'}
+
+        if not partner_id:
+            return {'error': 'Mã địa chỉ không hợp lệ.'}
+
+        partner_sudo = request.env['res.partner'].sudo().browse(int(partner_id)).exists()
+        if not partner_sudo:
+            return {'error': 'Không tìm thấy địa chỉ được chọn.'}
+
+        order_sudo.sudo().write({'partner_shipping_id': partner_sudo.id})
+
+        if order_sudo.carrier_id:
+            try:
+                rate = order_sudo.carrier_id.rate_shipment(order_sudo)
+                if rate.get('success'):
+                    order_sudo.set_delivery_line(order_sudo.carrier_id, rate['price'])
+            except Exception as e:
+                _logger.warning("Error re-rating shipment: %s", e)
+        order_sudo._update_programs_and_rewards()
+
+        return {'success': True}
+
+    @http.route('/shop/beautymatch/save_address', type='jsonrpc', auth='public', website=True)
+    def beautymatch_save_address(self, address_id=None, name='', phone='', street='', city=None, email=None, is_default=False, **kwargs):
+        """Lưu (tạo mới hoặc cập nhật) địa chỉ nhận hàng theo phong cách Shopee"""
+        order_sudo = request.cart
+        if not order_sudo:
+            return {'error': 'Không tìm thấy giỏ hàng.'}
+
+        name = (name or '').strip()
+        phone = (phone or '').strip()
+        street = (street or '').strip()
+        city = (city or 'Hà Nội').strip()
+        email = (email or '').strip()
+
+        if not name or not phone or not street:
+            return {'error': 'Vui lòng điền đầy đủ Họ tên, Số điện thoại và Địa chỉ cụ thể.'}
+
+        commercial = order_sudo.partner_id.commercial_partner_id
+        is_public = request.website.is_public_user()
+
+        if address_id:
+            # Chế độ Sửa địa chỉ có sẵn
+            target = request.env['res.partner'].sudo().browse(int(address_id)).exists()
+            if not target:
+                return {'error': 'Không tìm thấy địa chỉ cần sửa.'}
+            update_vals = {
+                'name': name,
+                'phone': phone,
+                'street': street,
+                'city': city,
+            }
+            if email:
+                update_vals['email'] = email
+            target.write(update_vals)
+            partner = target
+        else:
+            # Chế độ Thêm địa chỉ mới
+            if is_public or not commercial:
+                partner = request.env['res.partner'].sudo().create({
+                    'name': name,
+                    'phone': phone,
+                    'street': street,
+                    'city': city,
+                    'email': email,
+                    'type': 'delivery',
+                })
+                order_sudo.sudo().write({
+                    'partner_id': partner.id,
+                    'partner_invoice_id': partner.id,
+                })
+            else:
+                partner = request.env['res.partner'].sudo().create({
+                    'name': name,
+                    'phone': phone,
+                    'street': street,
+                    'city': city,
+                    'email': email or commercial.email or '',
+                    'type': 'delivery',
+                    'parent_id': commercial.id,
+                })
+
+        # Đặt làm địa chỉ mặc định nếu người dùng chọn
+        if is_default:
+            partner.bm_set_as_default_shipping()
+
+        # Luôn đặt địa chỉ vừa lưu làm địa chỉ giao hàng cho đơn hiện tại
+        order_sudo.sudo().write({'partner_shipping_id': partner.id})
+
+        if order_sudo.carrier_id:
+            try:
+                rate = order_sudo.carrier_id.rate_shipment(order_sudo)
+                if rate.get('success'):
+                    order_sudo.set_delivery_line(order_sudo.carrier_id, rate['price'])
+            except Exception as e:
+                _logger.warning("Error re-rating shipment: %s", e)
+        order_sudo._update_programs_and_rewards()
+
+        return {'success': True, 'address_id': partner.id}
+
+    @http.route('/shop/beautymatch/set_default_address', type='jsonrpc', auth='public', website=True)
+    def beautymatch_set_default_address(self, address_id, **kwargs):
+        """Đặt một địa chỉ làm địa chỉ nhận hàng mặc định của tài khoản"""
+        if not address_id:
+            return {'error': 'Mã địa chỉ không hợp lệ.'}
+        target = request.env['res.partner'].sudo().browse(int(address_id)).exists()
+        if not target:
+            return {'error': 'Không tìm thấy địa chỉ.'}
+        target.bm_set_as_default_shipping()
+
+        order_sudo = request.cart
+        if order_sudo:
+            order_sudo.sudo().write({'partner_shipping_id': target.id})
+            if order_sudo.carrier_id:
+                try:
+                    rate = order_sudo.carrier_id.rate_shipment(order_sudo)
+                    if rate.get('success'):
+                        order_sudo.set_delivery_line(order_sudo.carrier_id, rate['price'])
+                except Exception as e:
+                    _logger.warning("Error re-rating shipment: %s", e)
+            order_sudo._update_programs_and_rewards()
+
+        return {'success': True}
+
+
+class BeautyMatchCart(Cart):
+    """Mở rộng giỏ hàng BeautyMatch hỗ trợ chọn sản phẩm thanh toán kiểu Shopee"""
+
+    def _restore_retained_cart(self):
+        """Khôi phục các sản phẩm retained cart nếu khách quay lại từ checkout"""
+        if request.session.get('bm_retained_cart_id'):
+            retained_id = request.session.get('bm_retained_cart_id')
+            retained_order = request.env['sale.order'].sudo().browse(retained_id).exists()
+            if retained_order and retained_order.state == 'draft':
+                order = request.cart
+                if order and order.state == 'draft' and order.id != retained_order.id:
+                    for line in retained_order.order_line:
+                        line.write({'order_id': order.id, 'bm_is_selected': False})
+                    retained_order.sudo().unlink()
+                    request.session.pop('bm_retained_cart_id', None)
+                    order._clean_beautymatch_rewards()
+                    order._recompute_prices()
+            else:
+                request.session.pop('bm_retained_cart_id', None)
+
+    @http.route(route='/shop/cart', type='http', auth='public', website=True, sitemap=False)
+    def cart(self, id=None, access_token=None, revive_method='', **post):
+        """Trang giỏ hàng BeautyMatch. Khôi phục các sản phẩm retained cart nếu khách quay lại từ checkout"""
+        self._restore_retained_cart()
+        res = super().cart(id=id, access_token=access_token, revive_method=revive_method, **post)
+        if hasattr(res, 'qcontext'):
+            res.qcontext['hide_promotions'] = True
+        return res
+
+    @http.route(
+        route='/shop/cart/update',
+        type='jsonrpc',
+        auth='public',
+        methods=['POST'],
+        website=True,
+        sitemap=False
+    )
+    def update_cart(self, line_id, quantity, product_id=None, **kwargs):
+        """Cập nhật số lượng sản phẩm trong giỏ hàng. Bảo toàn trạng thái chọn và cập nhật số liệu chuẩn"""
+        values = super().update_cart(line_id, quantity, product_id=product_id, **kwargs)
+        order = request.cart
+        if order:
+            prod_lines = order.order_line.filtered(
+                lambda l: not l.is_reward_line and not l.is_delivery and not l.reward_id
+            )
+            selected_lines = prod_lines.filtered('bm_is_selected')
+            selected_count = len(selected_lines)
+            total_count = len(prod_lines)
+            all_selected = bool(prod_lines and selected_count == total_count)
+            currency = order.currency_id
+
+            selected_subtotal = sum(l.price_subtotal for l in selected_lines)
+            selected_tax = sum(l.price_tax for l in selected_lines)
+            selected_total = sum(l.price_total for l in selected_lines)
+
+            values['selected_count'] = selected_count
+            values['total_count'] = total_count
+            values['all_selected'] = all_selected
+            values['selected_subtotal'] = selected_subtotal
+            values['selected_subtotal_formatted'] = currency.format(selected_subtotal) if currency else f"{selected_subtotal:,.0f} ₫"
+            values['selected_tax'] = selected_tax
+            values['selected_tax_formatted'] = currency.format(selected_tax) if currency else f"{selected_tax:,.0f} ₫"
+            values['selected_total'] = selected_total
+            values['selected_total_formatted'] = currency.format(selected_total) if currency else f"{selected_total:,.0f} ₫"
+        return values
+
+    @http.route('/shop/cart/update_selection', type='jsonrpc', auth='public', website=True)
+    def cart_update_selection(self, line_id=None, selected=None, select_all=None, **kw):
+        """Cập nhật trạng thái chọn sản phẩm trong giỏ hàng (Shopee style)"""
+        order = request.cart
+        if not order:
+            return {'error': 'Không tìm thấy giỏ hàng.'}
+
+        prod_lines = order.order_line.filtered(
+            lambda l: not l.is_reward_line and not l.is_delivery and not l.reward_id
+        )
+
+        if select_all is not None:
+            prod_lines.write({'bm_is_selected': bool(select_all)})
+        elif line_id is not None:
+            target_line = prod_lines.filtered(lambda l: l.id == int(line_id))
+            if target_line:
+                target_line.write({'bm_is_selected': bool(selected)})
+
+        selected_lines = prod_lines.filtered('bm_is_selected')
+        selected_count = len(selected_lines)
+        total_count = len(prod_lines)
+        all_selected = bool(prod_lines and selected_count == total_count)
+
+        selected_subtotal = sum(l.price_subtotal for l in selected_lines)
+        selected_tax = sum(l.price_tax for l in selected_lines)
+        selected_total = sum(l.price_total for l in selected_lines)
+
+        currency = order.currency_id
+        subtotal_formatted = currency.format(selected_subtotal) if currency else f"{selected_subtotal:,.0f} ₫"
+        tax_formatted = currency.format(selected_tax) if currency else f"{selected_tax:,.0f} ₫"
+        total_formatted = currency.format(selected_total) if currency else f"{selected_total:,.0f} ₫"
+
+        return {
+            'success': True,
+            'selected_count': selected_count,
+            'total_count': total_count,
+            'selected_subtotal': selected_subtotal,
+            'selected_subtotal_formatted': subtotal_formatted,
+            'selected_tax': selected_tax,
+            'selected_tax_formatted': tax_formatted,
+            'selected_total': selected_total,
+            'selected_total_formatted': total_formatted,
+            'all_selected': all_selected,
+        }
+
 
 
 class BeautyMatchController(http.Controller):

@@ -183,4 +183,96 @@
             handleWishlistToggle(btn);
         }
     });
+
+    // Hàm dùng chung: Thêm giỏ hàng nhanh (AJAX) không reload trang, cập nhật header badge và toast
+    async function executeQuickAddToCart(btn, productId, form) {
+        if (!productId && form) {
+            productId = form.querySelector('[name="product_id"]')?.value;
+        }
+        if (!productId) return;
+
+        const originalHtml = btn ? btn.innerHTML : '';
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa fa-spinner fa-spin me-1"></i> Đang thêm...';
+        }
+
+        try {
+            const formData = form ? new FormData(form) : new FormData();
+            if (!formData.has('product_id')) {
+                formData.append('product_id', productId);
+            }
+            formData.append('ajax', '1');
+
+            const response = await fetch('/beautymatch/cart/add', {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: formData,
+            });
+
+            const data = await response.json();
+            if (data && data.status === 'success') {
+                if (btn) {
+                    btn.innerHTML = '<i class="fa fa-check me-1"></i> Đã thêm!';
+                    btn.style.backgroundColor = '#2E7D32';
+                }
+
+                // Cập nhật số lượng giỏ hàng trên header
+                const cartBadges = document.querySelectorAll('.my_cart_quantity');
+                cartBadges.forEach(badge => {
+                    badge.textContent = data.cart_quantity;
+                    badge.classList.remove('d-none');
+                });
+
+                showWishlistToast(`Đã thêm "${data.product_name || 'sản phẩm'}" vào giỏ hàng!`, true);
+
+                setTimeout(() => {
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.innerHTML = originalHtml;
+                        btn.style.backgroundColor = '';
+                    }
+                }, 1600);
+            } else {
+                window.location.href = '/shop/cart';
+            }
+        } catch (err) {
+            console.warn('AJAX cart add fallback:', err);
+            if (form) {
+                form.submit();
+            } else {
+                window.location.href = `/beautymatch/cart/add?product_id=${productId}`;
+            }
+        }
+    }
+
+    // 1. Lắng nghe Submit form trên toàn bộ thẻ sản phẩm
+    document.addEventListener('submit', function (e) {
+        const form = e.target.closest('.js_bm_cart_form');
+        if (!form) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        const btn = form.querySelector('.bm-btn-addtocart, .js_bm_quick_add_cart');
+        const pId = form.querySelector('[name="product_id"]')?.value || (btn && btn.dataset.productId);
+        executeQuickAddToCart(btn, pId, form);
+    });
+
+    // 2. Lắng nghe Click trực tiếp trên bất kỳ nút Thêm giỏ hàng nào (cửa hàng, trang so sánh, v.v.)
+    document.addEventListener('click', function (e) {
+        const btn = e.target.closest('.bm-btn-addtocart, .js_bm_quick_add_cart');
+        if (!btn) return;
+
+        const form = btn.closest('.js_bm_cart_form');
+        // Nếu nút nằm trong form, event submit sẽ tự kích hoạt, chỉ xử lý click trực tiếp nếu không nằm trong form hoặc button type="button"
+        if (!form || btn.type === 'button') {
+            e.preventDefault();
+            e.stopPropagation();
+            const pId = btn.dataset.productId || (form && form.querySelector('[name="product_id"]')?.value);
+            executeQuickAddToCart(btn, pId, form);
+        }
+    });
 })();

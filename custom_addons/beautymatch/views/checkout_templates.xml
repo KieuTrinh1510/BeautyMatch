@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ======================================================== -->
+    <!-- BEAUTYMATCH - REDESIGN CHECKOUT & PAYMENT SHOPEE-STYLE   -->
+    <!-- ======================================================== -->
+
+    <template id="beautymatch_payment_inherit" inherit_id="website_sale.payment" name="BeautyMatch Shopee Style Checkout &amp; Payment" priority="20">
+        <!-- Replace left column content with 5 Shopee-style sections -->
+        <xpath expr="//h4[@t-else='']" position="replace"/>
+        <xpath expr="//div[@id='address_on_payment']" position="replace"/>
+
+        <xpath expr="//div[@name='website_sale_non_free_cart']" position="replace">
+            <div id="bm_checkout_shopee_wrapper" class="bm-checkout-container mb-4" t-if="not errors and website_sale_order.amount_total">
+                <t t-set="bm_v_data" t-value="website_sale_order._get_beautymatch_voucher_summary()"/>
+
+                <!-- ================================================= -->
+                <!-- 1. ĐỊA CHỈ NHẬN HÀNG (SHIPPING ADDRESS)           -->
+                <!-- ================================================= -->
+                <div class="bm-checkout-card bm-address-card mb-3" id="bm_card_address">
+                    <div class="bm-card-header d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="bm-header-icon-badge">
+                                <i class="fa fa-map-marker text-purple"/>
+                            </span>
+                            <h5 class="fw-bold mb-0 text-dark">Địa chỉ nhận hàng</h5>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-purple rounded-pill px-3 fw-semibold" id="bm_btn_open_address_modal" data-bs-toggle="modal" data-bs-target="#bmAddressModal">
+                            <i class="fa fa-pencil me-1"/>Thay đổi
+                        </button>
+                    </div>
+
+                    <div class="bm-card-body pt-3">
+                        <t t-set="shipping_partner" t-value="website_sale_order.partner_shipping_id or website_sale_order.partner_id"/>
+                        <t t-if="shipping_partner and (shipping_partner.name or shipping_partner.street)">
+                            <div class="bm-address-info-box p-3 rounded-3 bg-light border">
+                                <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
+                                    <strong class="text-dark fs-6" id="bm_addr_name" t-out="shipping_partner.name or 'Quý khách'"/>
+                                    <span class="text-muted d-none d-sm-inline">|</span>
+                                    <span class="fw-bold text-purple" id="bm_addr_phone" t-out="shipping_partner.phone or 'Chưa cập nhật SĐT'"/>
+                                    <t t-if="shipping_partner.bm_is_default_shipping">
+                                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill small px-2">Mặc định</span>
+                                    </t>
+                                    <span class="badge bg-purple-subtle text-purple rounded-pill px-2 py-1 small">Địa chỉ nhận hàng</span>
+                                </div>
+                                <div class="text-secondary small mt-1" id="bm_addr_full">
+                                    <i class="fa fa-home text-muted me-1"/>
+                                    <t t-if="shipping_partner.street">
+                                        <t t-out="shipping_partner.street"/>
+                                    </t>
+                                    <t t-if="shipping_partner.city">
+                                        , <t t-out="shipping_partner.city"/>
+                                    </t>
+                                    <t t-if="shipping_partner.state_id">
+                                        , <t t-out="shipping_partner.state_id.name"/>
+                                    </t>
+                                </div>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="alert alert-warning mb-0 d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fa fa-exclamation-triangle me-1"/>
+                                    <strong>Chưa có thông tin nhận hàng:</strong> Vui lòng bấm "Thay đổi" để cập nhật tên, số điện thoại và địa chỉ nhận hàng.
+                                </div>
+                                <button type="button" class="btn btn-sm btn-purple rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#bmAddressModal">
+                                    Nhập địa chỉ
+                                </button>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+
+                <!-- Modal Thay Đổi Địa Chỉ (Shopee Style) -->
+                <div class="modal fade" id="bmAddressModal" tabindex="-1" aria-labelledby="bmAddressModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content rounded-4 border-0 shadow">
+                            <div class="modal-header border-bottom pb-3">
+                                <h5 class="modal-title fw-bold text-dark" id="bmAddressModalLabel">
+                                    <i class="fa fa-map-marker text-purple me-2"/><span id="bm_modal_title">Địa chỉ của tôi</span>
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"/>
+                            </div>
+                            <div class="modal-body p-4">
+                                <!-- VIEW 1: DANH SÁCH ĐỊA CHỈ (Shopee Style) -->
+                                <div id="bm_address_list_view">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="text-muted small fw-semibold">Địa chỉ nhận hàng:</span>
+                                        <button type="button" class="btn btn-sm btn-outline-purple rounded-pill px-3 fw-semibold" id="bm_btn_open_add_address">
+                                            <i class="fa fa-plus me-1"/>Thêm địa chỉ mới
+                                        </button>
+                                    </div>
+
+                                    <!-- Danh sách các thẻ địa chỉ -->
+                                    <div class="bm-address-cards-list mb-3 d-flex flex-column gap-2" id="bm_address_container">
+                                        <t t-set="commercial_id" t-value="website_sale_order.partner_id.commercial_partner_id.id if website_sale_order.partner_id else 0"/>
+                                        <t t-set="has_any_default" t-value="delivery_addresses and any(a.bm_is_default_shipping for a in delivery_addresses)"/>
+                                        <t t-if="delivery_addresses">
+                                            <t t-foreach="delivery_addresses" t-as="addr">
+                                                <t t-set="is_cur" t-value="addr.id == website_sale_order.partner_shipping_id.id"/>
+                                                <t t-set="is_def" t-value="bool(addr.bm_is_default_shipping or (addr.id == commercial_id and not has_any_default))"/>
+                                                <div t-attf-class="bm-address-item-card p-3 rounded-3 border d-flex justify-content-between align-items-start gap-3 transition #{'border-purple bg-purple-subtle-light shadow-xs' if is_cur else 'bg-white hover-border-purple'}" t-att-data-address-id="addr.id">
+                                                    <div class="form-check d-flex align-items-start gap-2 mb-0 flex-grow-1">
+                                                        <input class="form-check-input mt-1 bm-radio-addr cursor-pointer" type="radio" name="bm_selected_partner_id" t-att-value="addr.id" t-att-checked="is_cur" t-att-id="'addr_radio_' + str(addr.id)"/>
+                                                    <label t-att-for="'addr_radio_' + str(addr.id)" class="form-check-label w-100 cursor-pointer">
+                                                        <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
+                                                            <strong class="text-dark" t-out="addr.name"/>
+                                                            <span class="text-muted d-none d-sm-inline">|</span>
+                                                            <span class="text-purple fw-semibold" t-out="addr.phone or 'Chưa có SĐT'"/>
+                                                            <t t-if="is_def">
+                                                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill small px-2">Mặc định</span>
+                                                            </t>
+                                                            <t t-if="is_cur">
+                                                                <span class="badge bg-purple-subtle text-purple rounded-pill small px-2">Đang chọn</span>
+                                                            </t>
+                                                        </div>
+                                                        <div class="text-secondary small">
+                                                            <i class="fa fa-map-marker text-muted me-1"/>
+                                                            <t t-out="addr.street"/><t t-if="addr.city">, <t t-out="addr.city"/></t>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class="d-flex flex-column align-items-end gap-1 flex-shrink-0">
+                                                    <button type="button" class="btn btn-link text-purple p-0 small text-decoration-none fw-semibold bm-btn-edit-addr"
+                                                            t-att-data-id="addr.id"
+                                                            t-att-data-name="addr.name"
+                                                            t-att-data-phone="addr.phone or ''"
+                                                            t-att-data-street="addr.street or ''"
+                                                            t-att-data-city="addr.city or ''"
+                                                            t-att-data-email="addr.email or ''"
+                                                            t-att-data-default="'1' if is_def else '0'">
+                                                        Cập nhật
+                                                    </button>
+                                                    <t t-if="not is_def">
+                                                        <button type="button" class="btn btn-link text-muted p-0 small text-decoration-none bm-btn-set-default" t-att-data-id="addr.id">
+                                                            Thiết lập mặc định
+                                                        </button>
+                                                    </t>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="text-center py-4 bg-light rounded-3 border">
+                                            <i class="fa fa-map-marker text-muted fa-2x mb-2 d-block"/>
+                                            <p class="text-muted small mb-2">Bạn chưa có địa chỉ nhận hàng nào được lưu.</p>
+                                            <button type="button" class="btn btn-sm btn-purple rounded-pill px-3" id="bm_btn_add_first_addr">
+                                                <i class="fa fa-plus me-1"/>Thêm địa chỉ mới
+                                            </button>
+                                        </div>
+                                    </t>
+                                </div>
+
+                                    <div class="modal-footer px-0 pb-0 pt-3 border-top d-flex justify-content-end gap-2">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Hủy</button>
+                                        <button type="button" class="btn btn-sm btn-purple rounded-pill px-4 fw-semibold" id="bm_btn_confirm_select_addr">
+                                            <i class="fa fa-check me-1"/>Xác nhận
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- VIEW 2: FORM THÊM / CẬP NHẬT ĐỊA CHỈ (Shopee Style) -->
+                                <div id="bm_address_form_view" class="d-none">
+                                    <div class="d-flex align-items-center gap-2 mb-3">
+                                        <button type="button" class="btn btn-sm btn-link text-dark p-0 me-1" id="bm_btn_back_to_addr_list">
+                                            <i class="fa fa-arrow-left fa-lg"/>
+                                        </button>
+                                        <h6 class="fw-bold mb-0 text-dark" id="bm_form_view_title">Địa chỉ mới</h6>
+                                    </div>
+
+                                    <form id="bm_inline_address_form" class="row g-3">
+                                        <input type="hidden" name="bm_input_address_id" id="bm_input_address_id" value=""/>
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label small text-muted mb-1">Họ và tên người nhận *</label>
+                                            <input type="text" class="form-control form-control-sm rounded-3" name="bm_input_name" id="bm_input_name" placeholder="Nguyễn Văn A" required="required"/>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label small text-muted mb-1">Số điện thoại *</label>
+                                            <input type="tel" class="form-control form-control-sm rounded-3" name="bm_input_phone" id="bm_input_phone" placeholder="0901234567" required="required"/>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label small text-muted mb-1">Địa chỉ cụ thể (Số nhà, Tên đường, Phường/Xã) *</label>
+                                            <input type="text" class="form-control form-control-sm rounded-3" name="bm_input_street" id="bm_input_street" placeholder="123 Đường Nguyễn Huệ, Phường Bến Nghé" required="required"/>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label small text-muted mb-1">Tỉnh / Thành phố *</label>
+                                            <input type="text" class="form-control form-control-sm rounded-3" name="bm_input_city" id="bm_input_city" placeholder="TP. Hồ Chí Minh" required="required"/>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label small text-muted mb-1">Email nhận thông báo</label>
+                                            <input type="email" class="form-control form-control-sm rounded-3" name="bm_input_email" id="bm_input_email" placeholder="example@email.com"/>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-check mt-1">
+                                                <input class="form-check-input cursor-pointer" type="checkbox" id="bm_input_is_default" style="accent-color: #8F6FA8;"/>
+                                                <label class="form-check-label small text-dark cursor-pointer fw-semibold" for="bm_input_is_default">
+                                                    Đặt làm địa chỉ nhận hàng mặc định (Địa chỉ chính)
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mt-3 text-end border-top pt-3">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill me-2 px-3" id="bm_btn_cancel_addr_form">Trở lại</button>
+                                            <button type="button" class="btn btn-sm btn-purple rounded-pill px-4 fw-semibold" id="bm_btn_save_inline_address">
+                                                <i class="fa fa-save me-1"/>Hoàn thành
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================================================= -->
+                <!-- 2. DANH SÁCH SẢN PHẨM (ORDER ITEMS SHOPEE-STYLE)  -->
+                <!-- ================================================= -->
+                <div class="bm-checkout-card mb-3" id="bm_card_products">
+                    <div class="bm-card-header d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="bm-header-icon-badge">
+                                <i class="fa fa-shopping-bag text-purple"/>
+                            </span>
+                            <h5 class="fw-bold mb-0 text-dark">Sản phẩm của bạn</h5>
+                            <span class="badge bg-purple-subtle text-purple rounded-pill small px-2 py-1">
+                                <t t-out="len(website_sale_order.order_line.filtered(lambda l: not l.is_reward_line and not l.is_delivery))"/> món
+                            </span>
+                        </div>
+                        <a href="/shop/cart" class="text-purple small text-decoration-none fw-semibold hover-underline">
+                            <i class="fa fa-pencil me-1"/>Chỉnh sửa giỏ hàng
+                        </a>
+                    </div>
+
+                    <div class="bm-card-body pt-3">
+                        <!-- Desktop Table -->
+                        <div class="table-responsive d-none d-md-block">
+                            <table class="table bm-table-products align-middle mb-0">
+                                <thead>
+                                    <tr class="text-muted small border-bottom">
+                                        <th style="width: 50%;" class="ps-2">Sản phẩm</th>
+                                        <th class="text-center" style="width: 16%;">Đơn giá</th>
+                                        <th class="text-center" style="width: 14%;">Số lượng</th>
+                                        <th class="text-end pe-2" style="width: 20%;">Thành tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="website_sale_order.order_line.filtered(lambda l: not l.is_reward_line and not l.is_delivery)" t-as="line">
+                                        <tr class="border-bottom">
+                                            <td class="ps-2 py-3">
+                                                <div class="d-flex align-items-center gap-3">
+                                                    <img t-att-src="'/web/image/product.product/%s/image_128' % line.product_id.id" class="rounded-3 border bm-prod-thumbnail" alt="Product" style="width: 64px; height: 64px; object-fit: contain; background: #fff;"/>
+                                                    <div>
+                                                        <small class="text-muted text-uppercase fw-semibold" style="font-size: 0.75rem;" t-out="line.product_id.beautymatch_brand or line.product_template_id.beautymatch_brand or 'BeautyMatch'"/>
+                                                        <div class="fw-bold text-dark text-truncate" style="max-width: 300px;" t-out="line.product_id.name"/>
+                                                        <t t-if="line.product_id.product_template_attribute_value_ids">
+                                                            <span class="badge bg-light text-muted border small mt-1">
+                                                                <t t-out="', '.join(line.product_id.product_template_attribute_value_ids.mapped('name'))"/>
+                                                            </span>
+                                                        </t>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center text-muted small py-3">
+                                                <span t-out="line.price_unit" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}"/>
+                                            </td>
+                                            <td class="text-center fw-bold text-dark py-3">
+                                                x<t t-out="int(line.product_uom_qty)"/>
+                                            </td>
+                                            <td class="text-end pe-2 fw-bold text-purple py-3">
+                                                <span t-out="line.price_subtotal" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Mobile Card List -->
+                        <div class="d-md-none bm-mobile-product-list">
+                            <t t-foreach="website_sale_order.order_line.filtered(lambda l: not l.is_reward_line and not l.is_delivery)" t-as="line">
+                                <div class="p-2 border rounded-3 mb-2 d-flex gap-2 align-items-center bg-white">
+                                    <img t-att-src="'/web/image/product.product/%s/image_128' % line.product_id.id" class="rounded-2 border" style="width: 50px; height: 50px; object-fit: contain; background: #fff;" alt="Product"/>
+                                    <div class="flex-grow-1 overflow-hidden">
+                                        <small class="text-muted d-block text-truncate" style="font-size: 0.7rem;" t-out="line.product_id.beautymatch_brand or 'BeautyMatch'"/>
+                                        <strong class="text-dark small d-block text-truncate" t-out="line.product_id.name"/>
+                                        <div class="d-flex justify-content-between align-items-center mt-1">
+                                            <span class="text-muted small">x<t t-out="int(line.product_uom_qty)"/></span>
+                                            <span class="fw-bold text-purple small" t-out="line.price_subtotal" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================================================= -->
+                <!-- 3. VOUCHER BEAUTYMATCH (SHOPEE SELECTOR)         -->
+                <!-- ================================================= -->
+                <div class="bm-checkout-card mb-3" id="bm_card_vouchers">
+                    <div class="bm-card-header d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="bm-header-icon-badge">
+                                <i class="fa fa-ticket text-purple"/>
+                            </span>
+                            <div>
+                                <h5 class="fw-bold mb-0 text-dark">Ưu đãi BeautyMatch</h5>
+                                <small class="text-muted">Chọn 1 voucher tối ưu nhất cho đơn hàng (không áp dụng đồng thời 2 mã)</small>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-link text-danger text-decoration-none p-0 d-none" id="bm_btn_clear_voucher">
+                            <i class="fa fa-times-circle me-1"/>Bỏ chọn mã
+                        </button>
+                    </div>
+
+                    <div class="bm-card-body pt-3">
+                        <div class="row g-3" id="bm_voucher_cards_container">
+                            <t t-foreach="bm_v_data['vouchers']" t-as="vc">
+                                <div class="col-12 col-md-6">
+                                    <div t-attf-class="bm-voucher-ticket p-3 rounded-3 border position-relative h-100 transition #{'is-active border-purple bg-purple-subtle-light shadow-sm' if vc['is_applied'] else ('disabled opacity-60' if not vc['is_eligible'] else 'hover-shadow')}">
+                                        <div class="d-flex align-items-start gap-3">
+                                            <div class="bm-voucher-badge-block text-center rounded-3 p-2 text-white" style="background: linear-gradient(135deg, #8F6FA8, #6E4C7E); min-width: 75px;">
+                                                <i class="fa fa-gift fa-lg mb-1 d-block"/>
+                                                <span class="badge bg-white text-purple fw-bold px-1 py-0 small" style="font-size: 0.68rem;" t-out="vc['discount_badge']"/>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                                    <span class="badge bg-purple-subtle text-purple fw-bold font-monospace px-2 py-1" t-out="vc['code']"/>
+                                                    <div class="form-check m-0 p-0">
+                                                        <input class="form-check-input bm-radio-voucher cursor-pointer" type="radio" name="bm_voucher_radio" t-att-value="vc['code']" t-att-checked="vc['is_applied']" t-att-disabled="not vc['is_eligible']" t-att-id="'voucher_' + vc['code']"/>
+                                                    </div>
+                                                </div>
+                                                <strong class="d-block text-dark small" t-out="vc['description']"/>
+                                                <div class="mt-2">
+                                                    <t t-if="vc['is_applied']">
+                                                        <span class="badge bg-success-subtle text-success small">
+                                                            <i class="fa fa-check-circle me-1"/>Đang áp dụng
+                                                        </span>
+                                                    </t>
+                                                    <t t-if="not vc['is_applied'] and vc['is_eligible']">
+                                                        <span class="text-success small fw-semibold">
+                                                            <i class="fa fa-check me-1"/><t t-out="vc['reason']"/>
+                                                        </span>
+                                                    </t>
+                                                    <t t-if="not vc['is_applied'] and not vc['is_eligible']">
+                                                        <span class="text-danger small fw-semibold">
+                                                            <i class="fa fa-exclamation-circle me-1"/><t t-out="vc['reason']"/>
+                                                        </span>
+                                                    </t>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                        <div id="bm_voucher_alert_msg" class="mt-2"/>
+                    </div>
+                </div>
+
+                <!-- ================================================= -->
+                <!-- 4. PHƯƠNG THỨC VẬN CHUYỂN                         -->
+                <!-- ================================================= -->
+                <div class="bm-checkout-card mb-3" id="bm_card_shipping">
+                    <div class="bm-card-header d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="bm-header-icon-badge">
+                                <i class="fa fa-truck text-purple"/>
+                            </span>
+                            <h5 class="fw-bold mb-0 text-dark">Phương thức vận chuyển</h5>
+                        </div>
+                        <span class="badge bg-light text-muted small">Toàn quốc</span>
+                    </div>
+
+                    <div class="bm-card-body pt-3">
+                        <t t-if="delivery_methods">
+                            <div class="list-group gap-2">
+                                <t t-foreach="delivery_methods" t-as="dm">
+                                    <label t-attf-class="list-group-item list-group-item-action rounded-3 border p-3 d-flex justify-content-between align-items-center cursor-pointer #{'border-purple bg-purple-subtle-light' if dm.id == website_sale_order.carrier_id.id else ''}">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <input class="form-check-input mt-0 bm-delivery-radio" type="radio" name="bm_delivery_carrier" t-att-value="dm.id" t-att-checked="dm.id == website_sale_order.carrier_id.id or dm_first"/>
+                                            <div>
+                                                <strong class="text-dark d-block" t-out="dm.name"/>
+                                                <small class="text-muted">Dự kiến nhận hàng trong 2 - 3 ngày làm việc</small>
+                                                <small class="text-purple d-block mt-1 fst-italic">
+                                                    * Miễn phí vận chuyển cho đơn hàng từ 500.000đ sau giảm giá
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div class="text-end">
+                                            <t t-if="website_sale_order.amount_delivery == 0.0 and dm.id == website_sale_order.carrier_id.id">
+                                                <span class="badge bg-success text-white px-2 py-1 fs-6">Miễn phí</span>
+                                                <small class="text-muted text-decoration-line-through d-block mt-1">30.000 ₫</small>
+                                            </t>
+                                            <t t-else="">
+                                                <span class="fw-bold text-dark fs-6">30.000 ₫</span>
+                                            </t>
+                                        </div>
+                                    </label>
+                                </t>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="p-3 bg-light rounded-3 border d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong class="text-dark d-block">Giao hàng tiêu chuẩn BeautyMatch</strong>
+                                    <small class="text-muted">Nhận hàng trong 2-3 ngày làm việc</small>
+                                </div>
+                                <span class="fw-bold text-purple">30.000 ₫</span>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+
+                <!-- ================================================= -->
+                <!-- 5. PHƯƠNG THỨC THANH TOÁN (PAYMENT METHODS)       -->
+                <!-- ================================================= -->
+                <div class="bm-checkout-card mb-3" id="bm_card_payment">
+                    <div class="bm-card-header d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="bm-header-icon-badge">
+                                <i class="fa fa-credit-card text-purple"/>
+                            </span>
+                            <h5 class="fw-bold mb-0 text-dark">Phương thức thanh toán</h5>
+                        </div>
+                        <span class="badge bg-purple-subtle text-purple small">Bảo mật 100%</span>
+                    </div>
+
+                    <div class="bm-card-body pt-3">
+                        <div id="payment_method" class="o_not_editable">
+                            <t t-call="payment.form"/>
+                        </div>
+                        <t t-if="not (payment_methods_sudo or tokens_sudo)" t-set="hide_payment_button" t-value="True"/>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Đồng bộ layout cho Mobile: Ẩn bottom bar lơ lửng, hiển thị Tóm tắt đơn hàng & Đặt hàng liền mạch -->
+    <template id="beautymatch_checkout_layout_fix" inherit_id="website_sale.checkout_layout" name="BeautyMatch Checkout Layout Mobile" priority="25">
+        <xpath expr="//div[hasclass('o_mobile_summary')]" position="replace"/>
+        <xpath expr="//div[hasclass('o_total_card')]/parent::div" position="attributes">
+            <attribute name="class" add="d-block" remove="d-none d-lg-block"/>
+        </xpath>
+        <xpath expr="//div[hasclass('o_total_card')]//div[hasclass('d-none', 'd-lg-block')]" position="attributes">
+            <attribute name="class" add="d-block" remove="d-none d-lg-block"/>
+        </xpath>
+        <xpath expr="//div[hasclass('o_total_card')]" position="before">
+            <t t-set="hide_promotions" t-value="True"/>
+        </xpath>
+    </template>
+
+    <!-- ======================================================== -->
+    <!-- 4. TRANG GIỎ HÀNG (/shop/cart): SHOPEE SELECTION         -->
+    <!-- ======================================================== -->
+
+    <!-- Cải tiến danh sách giỏ hàng: Thêm checkbox chọn sản phẩm và Chọn tất cả -->
+    <template id="beautymatch_cart_lines_inherit" inherit_id="website_sale.cart_lines" name="BeautyMatch Shopee Cart Lines" priority="20">
+        <!-- Chèn thanh Chọn tất cả trước danh sách sản phẩm -->
+        <xpath expr="//div[@id='cart_products']" position="before">
+            <div t-if="website_sale_order and website_sale_order.website_order_line" class="bm-cart-select-all-header card mb-3 border rounded-3 p-3 bg-white shadow-xs">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="form-check d-flex align-items-center gap-2 mb-0">
+                        <input type="checkbox"
+                               class="form-check-input cursor-pointer"
+                               id="bm_select_all_cart"
+                               style="width: 1.25rem; height: 1.25rem; accent-color: #8F6FA8;"
+                               t-att-checked="'checked' if website_sale_order.bm_all_selected else None"/>
+                        <label for="bm_select_all_cart" class="form-check-label fw-bold text-dark cursor-pointer mb-0">
+                            Chọn tất cả (<span id="bm_cart_total_count"><t t-out="website_sale_order.bm_total_selectable_count"/></span> sản phẩm)
+                        </label>
+                    </div>
+                    <div class="text-muted small">
+                        Đã chọn: <strong class="text-purple" id="bm_cart_selected_count"><t t-out="website_sale_order.bm_selected_count"/></strong> sản phẩm
+                    </div>
+                </div>
+            </div>
+        </xpath>
+
+        <!-- Chèn Checkbox từng dòng sản phẩm trước ảnh sản phẩm -->
+        <xpath expr="//div[hasclass('o_cart_product_image')]" position="before">
+            <div class="bm-cart-line-checkbox-container d-flex align-items-center me-2">
+                <input type="checkbox"
+                       class="form-check-input bm-cart-line-checkbox cursor-pointer"
+                       t-att-data-line-id="line.id"
+                       t-att-checked="'checked' if line.bm_is_selected else None"
+                       style="width: 1.25rem; height: 1.25rem; accent-color: #8F6FA8;"/>
+            </div>
+        </xpath>
+
+        <!-- Bổ sung thương hiệu phía trên tên sản phẩm -->
+        <xpath expr="//h6[contains(@t-out, 'line._get_line_header()')]" position="before">
+            <div t-if="line.product_id.beautymatch_brand" class="small text-muted fw-semibold mb-0" style="font-size: 0.75rem;">
+                <t t-out="line.product_id.beautymatch_brand"/>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Ẩn hoàn toàn form nhập mã voucher cũ trong website_sale_loyalty -->
+    <template id="beautymatch_hide_loyalty_code_form" inherit_id="website_sale_loyalty.modify_code_form" priority="30">
+        <xpath expr="//tr[hasclass('oe_website_sale_gift_card')]" position="replace"/>
+    </template>
+
+    <!-- Ẩn coupon form trong website_sale.coupon_form -->
+    <template id="beautymatch_hide_coupon_form" inherit_id="website_sale.coupon_form" priority="30">
+        <xpath expr="//form[@name='coupon_code']" position="replace"/>
+    </template>
+
+    <!-- Bảng tổng tiền: Đồng bộ tạm tính, thuế và tổng thanh toán theo sản phẩm được chọn khi ở giỏ hàng -->
+    <template id="beautymatch_total_inherit" inherit_id="website_sale.total" priority="25">
+        <!-- Tùy chỉnh dòng Subtotal để hiển thị chính xác theo sản phẩm đã chọn khi ở giỏ hàng -->
+        <xpath expr="//tr[@name='o_order_total_untaxed']//span[@t-field='website_sale_order.amount_untaxed']" position="replace">
+            <span id="bm_cart_amount_untaxed" class="monetary_field fw-bold text-dark" style="white-space: nowrap;">
+                <t t-if="request.httprequest.path.startswith('/shop/cart') or current_website_checkout_step_href == '/shop/cart'">
+                    <t t-out="website_sale_order.bm_selected_subtotal" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}"/>
+                </t>
+                <t t-else="">
+                    <t t-out="website_sale_order.amount_untaxed" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}"/>
+                </t>
+            </span>
+        </xpath>
+
+        <!-- Tùy chỉnh dòng Thuế để hiển thị theo sản phẩm được chọn khi ở giỏ hàng -->
+        <xpath expr="//tr[@name='o_order_total_taxes']//span[@t-field='website_sale_order.amount_tax']" position="replace">
+            <span id="bm_cart_amount_tax" class="monetary_field" style="white-space: nowrap;">
+                <t t-if="request.httprequest.path.startswith('/shop/cart') or current_website_checkout_step_href == '/shop/cart'">
+                    <t t-out="website_sale_order.bm_selected_tax" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}"/>
+                </t>
+                <t t-else="">
+                    <t t-out="website_sale_order.amount_tax" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}"/>
+                </t>
+            </span>
+        </xpath>
+
+        <!-- Tùy chỉnh dòng Order Total trên giỏ hàng -->
+        <xpath expr="//tr[@name='o_order_total']//strong[@t-field='website_sale_order.amount_total']" position="replace">
+            <strong id="bm_cart_amount_total" class="monetary_field fw-bold text-purple" style="white-space: nowrap;">
+                <t t-if="request.httprequest.path.startswith('/shop/cart') or current_website_checkout_step_href == '/shop/cart'">
+                    <t t-out="website_sale_order.bm_selected_total" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}"/>
+                </t>
+                <t t-else="">
+                    <t t-out="website_sale_order.amount_total" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}"/>
+                </t>
+            </strong>
+        </xpath>
+    </template>
+
+    <!-- Nút Thanh toán trên trang Giỏ hàng (/shop/cart): Hiển thị số sản phẩm được chọn và vô hiệu nếu chọn 0 -->
+    <template id="beautymatch_cart_navigation_button" inherit_id="website_sale.navigation_buttons" priority="25">
+        <xpath expr="//a[@name='website_sale_main_button']" position="replace">
+            <t t-if="request.httprequest.path.startswith('/shop/cart') or current_website_checkout_step_href == '/shop/cart'">
+                <a role="button"
+                   name="website_sale_main_button"
+                   id="bm_btn_cart_checkout"
+                   t-attf-class="btn btn-purple w-100 py-3 fw-bold rounded-3 shadow-sm #{(not website_sale_order.bm_selected_count or not website_sale_order._is_cart_ready()) and 'disabled'}"
+                   t-att-aria-disabled="(not website_sale_order.bm_selected_count or not website_sale_order._is_cart_ready()) and 'true' or None"
+                   t-att-data-selected-count="website_sale_order.bm_selected_count"
+                   href="/shop/checkout">
+                    <span>Thanh toán (<span id="bm_btn_checkout_count"><t t-out="website_sale_order.bm_selected_count"/></span> sản phẩm)</span>
+                    <i class="fa fa-arrow-right ms-2"/>
+                </a>
+            </t>
+            <t t-else="">
+                <a role="button" name="website_sale_main_button"
+                    t-attf-class="btn btn-primary #{not website_sale_order._is_cart_ready() and 'disabled'} w-100"
+                    t-att-href="next_website_checkout_step_href">
+                    <span t-field="next_website_checkout_step.main_button_label"/>
+                    <i class="fa fa-angle-right ms-2 fw-light"/>
+                </a>
+            </t>
+        </xpath>
+    </template>
+
+</odoo>

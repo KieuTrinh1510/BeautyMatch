@@ -6,3 +6,4 @@ from . import delivery_carrier
 from . import payment_provider
 from . import sale_order
 from . import payment_transaction
+from . import res_partner
