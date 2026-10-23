@@ -194,6 +194,7 @@ export class BeautyMatchCheckout extends Interaction {
         this.initVoucher();
         this.initAddress();
         this.initDelivery();
+        this.initPayment();
     }
 
     initVoucher() {
@@ -492,6 +493,61 @@ export class BeautyMatchCheckout extends Interaction {
                 }
             });
         });
+    }
+
+    initPayment() {
+        const enablePaymentOption = () => {
+            const radios = document.querySelectorAll('input[name="o_payment_radio"]');
+            const submitBtn = document.querySelector('button[name="o_payment_submit_button"]');
+            if (!radios.length) return;
+
+            let checkedRadio = document.querySelector('input[name="o_payment_radio"]:checked');
+            if (!checkedRadio) {
+                // Tự động chọn phương thức thanh toán đầu tiên
+                radios[0].checked = true;
+                checkedRadio = radios[0];
+                checkedRadio.dispatchEvent(new Event("change", { bubbles: true }));
+            }
+
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.removeAttribute("disabled");
+            }
+        };
+
+        enablePaymentOption();
+        setTimeout(enablePaymentOption, 150);
+        setTimeout(enablePaymentOption, 500);
+
+        // Lắng nghe thay đổi radio để luôn mở khóa nút đặt hàng
+        document.addEventListener("change", (e) => {
+            if (e.target && e.target.name === "o_payment_radio") {
+                const submitBtn = document.querySelector('button[name="o_payment_submit_button"]');
+                if (submitBtn) {
+                    setTimeout(() => {
+                        submitBtn.disabled = false;
+                        submitBtn.removeAttribute("disabled");
+                    }, 50);
+                }
+            }
+        });
+
+        // Bắt sự kiện click vào nút Đặt hàng để đảm bảo luôn có phương thức được chọn và submit thành công
+        document.addEventListener("click", (e) => {
+            const submitBtn = e.target.closest('button[name="o_payment_submit_button"]');
+            if (!submitBtn) return;
+
+            const checkedRadio = document.querySelector('input[name="o_payment_radio"]:checked');
+            if (!checkedRadio) {
+                const firstRadio = document.querySelector('input[name="o_payment_radio"]');
+                if (firstRadio) {
+                    firstRadio.checked = true;
+                    firstRadio.dispatchEvent(new Event("change", { bubbles: true }));
+                }
+            }
+            submitBtn.disabled = false;
+            submitBtn.removeAttribute("disabled");
+        }, true);
     }
 }
 

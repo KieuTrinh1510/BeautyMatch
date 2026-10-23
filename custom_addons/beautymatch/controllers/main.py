@@ -466,6 +466,22 @@ class BeautyMatchWebsiteSale(WebsiteSale):
         """Cho phép vào thẳng /shop/payment để khách hàng xem và cập nhật địa chỉ trực tiếp trên modal"""
         return None
 
+    def _get_shop_payment_values(self, order, **kwargs):
+        values = super()._get_shop_payment_values(order, **kwargs)
+        try:
+            pms = values.get('payment_methods_sudo')
+            if not values.get('selected_method_id') and pms:
+                cod_method = pms.filtered(
+                    lambda m: (m.code or '') == 'custom' or 'cod' in (m.code or '').lower() or 'nhận hàng' in (m.name or '').lower()
+                )
+                if cod_method:
+                    values['selected_method_id'] = cod_method[0].id
+                else:
+                    values['selected_method_id'] = pms[0].id
+        except Exception as e:
+            _logger.warning("Error pre-selecting payment method: %s", e)
+        return values
+
     @http.route('/shop/payment', type='http', auth='public', website=True, sitemap=False, list_as_website_content=_lt("Shop Payment"))
     def shop_payment(self, **post):
         """Trang thanh toán BeautyMatch.
@@ -513,6 +529,20 @@ class BeautyMatchWebsiteSale(WebsiteSale):
             request.session['bm_retained_cart_id'] = retained_order.id
             order_sudo._clean_beautymatch_rewards()
             order_sudo._recompute_prices()
+
+        # 3. Đảm bảo đơn hàng luôn có carrier để tính cước giao hàng và hiển thị COD
+        try:
+            if not order_sudo.carrier_id:
+                carrier = request.env.ref('beautymatch.beautymatch_delivery_carrier_standard', raise_if_not_found=False)
+                if not carrier:
+                    carrier = request.env['delivery.carrier'].sudo().search([('active', '=', True)], limit=1)
+                if carrier:
+                    if hasattr(order_sudo, '_set_delivery_method'):
+                        order_sudo._set_delivery_method(carrier)
+                    else:
+                        order_sudo.carrier_id = carrier.id
+        except Exception as e:
+            _logger.warning("Error assigning default delivery carrier: %s", e)
 
         return super().shop_payment(**post)
 
