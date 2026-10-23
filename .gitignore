@@ -32,3 +32,7 @@ Thumbs.db
 # Logs & Databases
 *.log
 *.sqlite3
+
+# Local Odoo Runner
+odoo-bin
+odoo.conf

@@ -3349,6 +3349,33 @@ body.o_website_sale_checkout {
             cursor: not-allowed;
             background-color: #F8F9FA !important;
         }
+
+        .bm-voucher-badge-block {
+            width: 92px;
+            min-width: 92px;
+            flex-shrink: 0;
+            padding: 8px 4px !important;
+            border-radius: 10px;
+
+            .fa-gift {
+                font-size: 1.35rem;
+                margin-bottom: 3px;
+            }
+
+            .badge {
+                display: inline-block;
+                max-width: 100%;
+                font-size: 0.62rem !important;
+                font-weight: 700;
+                letter-spacing: -0.3px;
+                padding: 3px 5px !important;
+                border-radius: 50rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            }
+        }
     }
 }
 

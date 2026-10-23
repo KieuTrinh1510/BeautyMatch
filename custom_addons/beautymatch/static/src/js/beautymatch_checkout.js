@@ -24,10 +24,30 @@ export class BeautyMatchCart extends Interaction {
 
     setup() {
         this.syncCartUI();
+        this.setupCartObserver();
     }
 
     start() {
         this.syncCartUI();
+        this.setupCartObserver();
+    }
+
+    setupCartObserver() {
+        if (this._cartObserver) return;
+        const shopCart = this.el;
+        if (!shopCart) return;
+
+        this._cartObserver = new MutationObserver(() => {
+            const headers = shopCart.querySelectorAll(".bm-cart-select-all-header");
+            if (headers.length > 1) {
+                for (let i = 0; i < headers.length - 1; i++) {
+                    headers[i].remove();
+                }
+            }
+            this.syncCartUI();
+        });
+
+        this._cartObserver.observe(shopCart, { childList: true, subtree: true });
     }
 
     async onSelectAllChange(ev) {

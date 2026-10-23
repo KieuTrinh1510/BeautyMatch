@@ -29,7 +29,7 @@ function initProductDetail() {
     const buyNowBtn = document.querySelector('.o_we_buy_now');
 
     function updateStockUI(isOutOfStock) {
-        if (!stockBadge || !stockText) return;
+        if (!stockBadge) return;
 
         if (isOutOfStock) {
             stockBadge.className = 'badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1 rounded-pill small';
@@ -47,8 +47,37 @@ function initProductDetail() {
                 buyNowBtn.style.opacity = '0.5';
             }
         } else {
-            stockBadge.className = 'badge bg-success-subtle text-success border border-success-subtle px-2 py-1 rounded-pill small';
-            stockBadge.innerHTML = '<i class="fa fa-check-circle me-1"></i><span id="bm_stock_status_text">Còn hàng</span>';
+            const thresholdEl = document.querySelector('#threshold_message');
+            let badgeClass = 'badge bg-success-subtle text-success border border-success-subtle px-2 py-1 rounded-pill small';
+            let iconHtml = '<i class="fa fa-check-circle me-1"></i>';
+            let textHtml = 'Còn hàng';
+
+            if (thresholdEl && thresholdEl.textContent.trim()) {
+                const match = thresholdEl.textContent.match(/\d+/);
+                if (match) {
+                    const qty = parseInt(match[0], 10);
+                    if (qty <= 5) {
+                        badgeClass = 'badge bg-warning-subtle text-dark border border-warning-subtle px-2 py-1 rounded-pill small';
+                        iconHtml = '<i class="fa fa-fire text-danger me-1"></i>';
+                        textHtml = `Chỉ còn <strong class="text-danger">${qty}</strong> sản phẩm`;
+                    } else {
+                        textHtml = `Còn hàng (${qty} sản phẩm)`;
+                    }
+                }
+            } else {
+                const currentText = stockText ? stockText.textContent.trim() : '';
+                if (currentText.includes('sản phẩm')) {
+                    textHtml = currentText;
+                    if (currentText.includes('Chỉ còn')) {
+                        badgeClass = 'badge bg-warning-subtle text-dark border border-warning-subtle px-2 py-1 rounded-pill small';
+                        iconHtml = '<i class="fa fa-fire text-danger me-1"></i>';
+                    }
+                }
+            }
+
+            stockBadge.className = badgeClass;
+            stockBadge.innerHTML = `${iconHtml}<span id="bm_stock_status_text">${textHtml}</span>`;
+
             if (addToCartBtn) {
                 addToCartBtn.classList.remove('disabled');
                 addToCartBtn.removeAttribute('disabled');
@@ -109,6 +138,101 @@ function initProductDetail() {
             }, 200);
         });
     });
+
+    // ========================================================
+    // 3. XỬ LÝ NÚT "MUA NGAY" -> VÀO THẲNG TRANG THANH TOÁN (/shop/payment)
+    // ========================================================
+    let isSubmittingBuyNow = false;
+
+    document.addEventListener('click', async (ev) => {
+        const buyNowBtn = ev.target.closest('.o_we_buy_now');
+        if (!buyNowBtn) return;
+
+        // Chặn hoàn toàn hành vi mặc định và handler của Odoo (Odoo native chuyển sang /shop/cart)
+        ev.preventDefault();
+        ev.stopPropagation();
+        ev.stopImmediatePropagation();
+
+        if (isSubmittingBuyNow) return;
+        if (buyNowBtn.classList.contains('disabled') || buyNowBtn.getAttribute('disabled')) {
+            return;
+        }
+
+        const form = buyNowBtn.closest('form') ||
+                     document.querySelector('form.js_add_cart_variants') ||
+                     document.querySelector('#product_detail form');
+
+        let productId = null;
+        let quantity = 1;
+
+        if (form) {
+            const prodInput = form.querySelector('input[name="product_id"]');
+            if (prodInput && prodInput.value) {
+                productId = parseInt(prodInput.value, 10);
+            }
+            const qtyInput = form.querySelector('input[name="add_qty"], input.quantity');
+            if (qtyInput && qtyInput.value) {
+                quantity = parseFloat(qtyInput.value) || 1;
+            }
+        }
+
+        if (!productId) {
+            const prodInput = document.querySelector('input[name="product_id"]');
+            if (prodInput && prodInput.value) {
+                productId = parseInt(prodInput.value, 10);
+            }
+        }
+
+        if (!productId) {
+            console.warn('[BeautyMatch] Không tìm thấy product_id');
+            return;
+        }
+
+        isSubmittingBuyNow = true;
+        const originalContent = buyNowBtn.innerHTML;
+        buyNowBtn.classList.add('disabled');
+        buyNowBtn.innerHTML = '<i class="fa fa-spinner fa-spin me-2"></i>Đang đến trang thanh toán...';
+
+        try {
+            const response = await fetch('/shop/cart/buy_now', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: JSON.stringify({
+                    jsonrpc: '2.0',
+                    method: 'call',
+                    params: {
+                        product_id: productId,
+                        quantity: quantity,
+                    },
+                }),
+            });
+
+            const data = await response.json();
+            const result = data.result || {};
+
+            if (result.status === 'success' && result.redirect_url) {
+                window.location.href = result.redirect_url;
+            } else if (result.redirect_url) {
+                window.location.href = result.redirect_url;
+            } else {
+                window.location.href = '/shop/payment';
+            }
+        } catch (err) {
+            console.error('[BeautyMatch] Lỗi khi xử lý Mua ngay:', err);
+            window.location.href = '/shop/payment';
+        } finally {
+            setTimeout(() => {
+                isSubmittingBuyNow = false;
+                if (buyNowBtn) {
+                    buyNowBtn.classList.remove('disabled');
+                    buyNowBtn.innerHTML = originalContent;
+                }
+            }, 4000);
+        }
+    }, true); // useCapture = true: bắt sự kiện trước khi bubble tới Odoo interactions
 }
 
 if (document.readyState === 'loading') {

@@ -15,6 +15,20 @@
         <field name="active" eval="True"/>
     </record>
 
+    <!-- Tùy chỉnh nút Mua ngay sang tiếng Việt & Giao diện BeautyMatch cao cấp -->
+    <template id="beautymatch_product_buy_now" inherit_id="website_sale.product_buy_now" name="BeautyMatch Buy Now Button">
+        <xpath expr="//a[contains(@t-attf-class, 'o_we_buy_now')]" position="replace">
+            <a
+                role="button"
+                t-attf-class="btn btn-purple o_we_buy_now w-100 {{'' if is_view_active('website_sale.cta_wrapper_boxed') or is_view_active('website_sale.cta_wrapper_large') or not is_50_pc else 'w-sm-auto'}} {{'flex-grow-1' if not is_50_pc else ''}}"
+                href="#"
+            >
+                <i class="fa fa-bolt me-2"/>
+                Mua ngay
+            </a>
+        </xpath>
+    </template>
+
     <!-- Bật bộ chọn số lượng (Quantity Selector +/-) -->
     <record id="website_sale.product_quantity" model="ir.ui.view">
         <field name="active" eval="True"/>
@@ -505,6 +519,26 @@
                         </t>
                     </div>
 
+                    <!-- Hiển thị số lượng tồn kho trên thẻ sản phẩm -->
+                    <t t-set="bm_card_qty" t-value="int(product.sudo().qty_available)"/>
+                    <div class="bm-card-stock-hint mb-2">
+                        <t t-if="bm_card_qty &lt;= 0">
+                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill" style="font-size: 0.72rem; padding: 2px 8px;">
+                                <i class="fa fa-times-circle me-1"/>Hết hàng
+                            </span>
+                        </t>
+                        <t t-elif="bm_card_qty &lt;= 5">
+                            <span class="badge bg-warning-subtle text-dark border border-warning-subtle rounded-pill" style="font-size: 0.72rem; padding: 2px 8px;">
+                                <i class="fa fa-fire text-danger me-1"/>Chỉ còn <strong class="text-danger"><t t-out="bm_card_qty"/></strong>
+                            </span>
+                        </t>
+                        <t t-else="">
+                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill" style="font-size: 0.72rem; padding: 2px 8px;">
+                                <i class="fa fa-check-circle me-1"/>Còn hàng: <t t-out="bm_card_qty"/>
+                            </span>
+                        </t>
+                    </div>
+
                     <!-- Giá và Nút Thao Tác (đồng bộ với sản phẩm nổi bật) -->
                     <div class="bm-card-footer mt-auto pt-2 border-top">
                         <div class="d-flex align-items-center justify-content-between mb-2">
@@ -527,13 +561,23 @@
                             <t t-out="product_actions"/>
                         </t>
                         <t t-else="">
-                            <button t-if="product_variant_id"
-                                    type="submit"
-                                    class="bm-btn-addtocart w-100"
-                                    t-att-data-product-id="product_variant_id"
-                                    t-att-data-product-template-id="product.id">
-                                <i class="fa fa-shopping-cart me-1"/>Thêm giỏ hàng
-                            </button>
+                            <t t-if="bm_card_qty &lt;= 0">
+                                <button type="button"
+                                        class="bm-btn-addtocart w-100 disabled"
+                                        disabled="disabled"
+                                        style="opacity: 0.6; cursor: not-allowed; background: #6c757d; border-color: #6c757d;">
+                                    <i class="fa fa-times-circle me-1"/>Hết hàng
+                                </button>
+                            </t>
+                            <t t-else="">
+                                <button t-if="product_variant_id"
+                                        type="submit"
+                                        class="bm-btn-addtocart w-100"
+                                        t-att-data-product-id="product_variant_id"
+                                        t-att-data-product-template-id="product.id">
+                                    <i class="fa fa-shopping-cart me-1"/>Thêm giỏ hàng
+                                </button>
+                            </t>
                         </t>
                     </div>
                 </div>
@@ -559,13 +603,28 @@
     <!-- 5.2 Thêm Tồn Kho & Badges phía trên CTA wrapper -->
     <template id="beautymatch_product_stock_badge" inherit_id="website_sale.cta_wrapper" name="BeautyMatch Product Stock Status">
         <xpath expr="//div[@id='o_wsale_cta_wrapper']" position="before">
-            <t t-set="bm_has_stock" t-value="product_variant.sudo().qty_available &gt; 0 if product_variant else product.sudo().qty_available &gt; 0"/>
+            <t t-set="bm_qty" t-value="int(product_variant.sudo().qty_available) if product_variant else int(product.sudo().qty_available)"/>
+            <t t-set="bm_has_stock" t-value="bm_qty &gt; 0"/>
             <!-- Badge Tồn kho và Cam kết chuẩn nguồn gốc -->
             <div class="bm-detail-stock-box d-flex flex-wrap align-items-center gap-2 mb-3">
-                <span id="bm_stock_status_badge" t-attf-class="badge #{'bg-success-subtle text-success border-success-subtle' if bm_has_stock else 'bg-danger-subtle text-danger border-danger-subtle'} border px-2 py-1 rounded-pill small">
-                    <i t-attf-class="fa #{'fa-check-circle' if bm_has_stock else 'fa-times-circle'} me-1"/>
-                    <span id="bm_stock_status_text"><t t-out="'Còn hàng' if bm_has_stock else 'Hết hàng'"/></span>
-                </span>
+                <t t-if="bm_qty &lt;= 0">
+                    <span id="bm_stock_status_badge" class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1 rounded-pill small">
+                        <i class="fa fa-times-circle me-1"/>
+                        <span id="bm_stock_status_text">Hết hàng</span>
+                    </span>
+                </t>
+                <t t-elif="bm_qty &lt;= 5">
+                    <span id="bm_stock_status_badge" class="badge bg-warning-subtle text-dark border border-warning-subtle px-2 py-1 rounded-pill small">
+                        <i class="fa fa-fire text-danger me-1"/>
+                        <span id="bm_stock_status_text">Chỉ còn <strong class="text-danger"><t t-out="bm_qty"/></strong> sản phẩm</span>
+                    </span>
+                </t>
+                <t t-else="">
+                    <span id="bm_stock_status_badge" class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 rounded-pill small">
+                        <i class="fa fa-check-circle me-1"/>
+                        <span id="bm_stock_status_text">Còn hàng (<t t-out="bm_qty"/> sản phẩm)</span>
+                    </span>
+                </t>
                 <span class="badge bg-light text-muted border px-2 py-1 rounded-pill small">
                     <i class="fa fa-shield me-1"/>Hỗ trợ đổi trả 48h
                 </span>

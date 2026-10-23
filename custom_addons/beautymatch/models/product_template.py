@@ -172,13 +172,21 @@ class ProductTemplate(models.Model):
             if not tmpl:
                 continue
             if hasattr(tmpl, 'allow_out_of_stock_order'):
-                tmpl.sudo().write({'allow_out_of_stock_order': False})
+                tmpl.sudo().write({
+                    'allow_out_of_stock_order': False,
+                    'show_availability': True,
+                    'available_threshold': 10.0,
+                })
 
             for variant in tmpl.product_variant_ids:
                 if not variant.default_code and tmpl.default_code:
                     variant.default_code = tmpl.default_code
                 if hasattr(variant, 'allow_out_of_stock_order'):
-                    variant.sudo().write({'allow_out_of_stock_order': False})
+                    variant.sudo().write({
+                        'allow_out_of_stock_order': False,
+                        'show_availability': True,
+                        'available_threshold': 10.0,
+                    })
 
                 # Test scenario: CeraVe 473ml and SomeByMi Toner are out of stock (qty = 0)
                 # Variant 236ml has 45 stock -> In stock

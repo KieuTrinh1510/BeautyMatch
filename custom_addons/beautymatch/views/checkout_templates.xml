@@ -318,9 +318,9 @@
                                 <div class="col-12 col-md-6">
                                     <div t-attf-class="bm-voucher-ticket p-3 rounded-3 border position-relative h-100 transition #{'is-active border-purple bg-purple-subtle-light shadow-sm' if vc['is_applied'] else ('disabled opacity-60' if not vc['is_eligible'] else 'hover-shadow')}">
                                         <div class="d-flex align-items-start gap-3">
-                                            <div class="bm-voucher-badge-block text-center rounded-3 p-2 text-white" style="background: linear-gradient(135deg, #8F6FA8, #6E4C7E); min-width: 75px;">
+                                            <div class="bm-voucher-badge-block text-center rounded-3 py-2 px-1 text-white flex-shrink-0 d-flex flex-column align-items-center justify-content-center" style="background: linear-gradient(135deg, #8F6FA8, #6E4C7E); width: 92px; min-width: 92px;">
                                                 <i class="fa fa-gift fa-lg mb-1 d-block"/>
-                                                <span class="badge bg-white text-purple fw-bold px-1 py-0 small" style="font-size: 0.68rem;" t-out="vc['discount_badge']"/>
+                                                <span class="badge bg-white text-purple fw-bold px-1 py-1 rounded-pill d-inline-block text-nowrap" style="font-size: 0.62rem; letter-spacing: -0.3px; max-width: 100%; box-shadow: 0 1px 3px rgba(0,0,0,0.08);" t-out="vc['discount_badge']"/>
                                             </div>
                                             <div class="flex-grow-1">
                                                 <div class="d-flex justify-content-between align-items-center mb-1">
@@ -458,7 +458,7 @@
     <template id="beautymatch_cart_lines_inherit" inherit_id="website_sale.cart_lines" name="BeautyMatch Shopee Cart Lines" priority="20">
         <!-- Chèn thanh Chọn tất cả trước danh sách sản phẩm -->
         <xpath expr="//div[@id='cart_products']" position="before">
-            <div t-if="website_sale_order and website_sale_order.website_order_line" class="bm-cart-select-all-header card mb-3 border rounded-3 p-3 bg-white shadow-xs">
+            <div t-if="website_sale_order and website_sale_order.website_order_line" class="bm-cart-select-all-header js_cart_lines card mb-3 border rounded-3 p-3 bg-white shadow-xs">
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="form-check d-flex align-items-center gap-2 mb-0">
                         <input type="checkbox"

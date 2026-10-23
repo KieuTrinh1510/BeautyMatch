@@ -84,6 +84,84 @@ class BeautyMatchWebsite(Website):
 
         return request.redirect(redirect_to or '/shop/cart')
 
+    @http.route('/shop/cart/buy_now', type='json', auth='public', methods=['POST'], website=True, sitemap=False)
+    def cart_buy_now(self, product_id, quantity=1, **kw):
+        """Xử lý 'Mua ngay':
+        1. Thêm sản phẩm và số lượng vào giỏ hàng.
+        2. Đánh dấu CHỌN duy nhất sản phẩm này (bm_is_selected=True), bỏ chọn các sản phẩm khác (bm_is_selected=False).
+        3. Tách các sản phẩm không chọn vào retained cart để bảo toàn trong giỏ hàng.
+        4. Trả về redirect_url='/shop/payment' để đi thẳng đến trang thanh toán Shopee-style.
+        """
+        try:
+            product_id = int(product_id)
+            quantity = float(quantity or 1)
+        except (ValueError, TypeError):
+            return {'status': 'error', 'message': 'Dữ liệu không hợp lệ', 'redirect_url': '/shop'}
+
+        order_sudo = request.cart or request.website._create_cart()
+
+        # Khôi phục retained_cart nếu đang có để gom đồng bộ
+        if request.session.get('bm_retained_cart_id'):
+            retained_id = request.session.get('bm_retained_cart_id')
+            retained_order = request.env['sale.order'].sudo().browse(retained_id).exists()
+            if retained_order and retained_order.state == 'draft':
+                if order_sudo and order_sudo.id != retained_order.id:
+                    for line in retained_order.order_line:
+                        line.write({'order_id': order_sudo.id, 'bm_is_selected': False})
+                    retained_order.sudo().unlink()
+                    request.session.pop('bm_retained_cart_id', None)
+            else:
+                request.session.pop('bm_retained_cart_id', None)
+
+        product = request.env['product.product'].sudo().browse(product_id).exists()
+        if not product or not product.sale_ok:
+            return {'status': 'error', 'message': 'Sản phẩm không khả dụng', 'redirect_url': '/shop'}
+
+        # Thêm sản phẩm vào giỏ hàng
+        order_sudo.with_context(skip_cart_verification=True)._cart_add(
+            product_id=product.id,
+            quantity=quantity,
+        )
+        request.session['website_sale_cart_quantity'] = int(order_sudo.cart_quantity)
+
+        # Đánh dấu CHỈ chọn sản phẩm này
+        prod_lines = order_sudo.order_line.filtered(
+            lambda l: not l.is_reward_line and not l.is_delivery and not l.reward_id
+        )
+        target_lines = prod_lines.filtered(lambda l: l.product_id.id == product.id)
+        other_lines = prod_lines.filtered(lambda l: l.product_id.id != product.id)
+
+        other_lines.write({'bm_is_selected': False})
+        target_lines.write({'bm_is_selected': True})
+
+        # Tách các sản phẩm không chọn sang retained_order để bảo toàn trong giỏ hàng
+        if other_lines:
+            retained_order = request.env['sale.order'].sudo().create({
+                'partner_id': order_sudo.partner_id.id,
+                'partner_invoice_id': order_sudo.partner_invoice_id.id,
+                'partner_shipping_id': order_sudo.partner_shipping_id.id,
+                'pricelist_id': order_sudo.pricelist_id.id,
+                'company_id': order_sudo.company_id.id,
+                'website_id': order_sudo.website_id.id,
+                'team_id': order_sudo.team_id.id,
+                'state': 'draft',
+                'bm_is_retained_cart': True,
+            })
+            other_lines.write({'order_id': retained_order.id})
+            request.session['bm_retained_cart_id'] = retained_order.id
+
+        # Dọn dẹp voucher / rewards cũ và tính lại giá
+        order_sudo._clean_beautymatch_rewards()
+        order_sudo._recompute_prices()
+        request.session['sale_last_order_id'] = order_sudo.id
+
+        return {
+            'status': 'success',
+            'redirect_url': '/shop/payment',
+            'product_name': product.name,
+            'quantity': quantity,
+        }
+
 
 class BeautyMatchWebsiteSale(WebsiteSale):
     """Mở rộng bộ lọc Shop (/shop) phục vụ phân loại da liễu & routine"""
